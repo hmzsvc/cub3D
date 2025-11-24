@@ -6,7 +6,7 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/11/24 15:32:30 by hasivaci         ###   ########.fr       */
+/*   Updated: 2025/11/24 16:06:34 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,10 @@ bool touch (float px, float py, t_game *game)
         return(true);
     return(false);
 }
+float distance (float x, float y)
+{
+    return(sqrt(x * x + y * y));    
+}
 
 void draw_line(t_player *player, t_game *game, float start_x, int i)
 {
@@ -107,6 +111,16 @@ void draw_line(t_player *player, t_game *game, float start_x, int i)
         put_pixel(ray_x, ray_y,0xFF0000, game);
         ray_x += cos_angle;
         ray_y += sin_angle;
+    }
+    
+    float dist = distance(ray_x - player->x, ray_y - player->y);
+    float height = (BLOCK / dist) * (WIDTH / 2);
+    int start_y = (HEIGHT - height) / 2;
+    int end = start_y + height;
+    while (start_y < end)
+    {
+        put_pixel(i,start_y, 255, game);
+        start_y++;
     }
     
 }
@@ -152,3 +166,5 @@ int main(void)
 
     return(0);
 }
+
+// 8. dakikada kaldık...
