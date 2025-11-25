@@ -6,7 +6,7 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 15:38:26 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/11/25 13:34:18 by hasivaci         ###   ########.fr       */
+/*   Updated: 2025/11/25 18:43:33 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int key_press(int keycode, t_player *player)
         player->left_rotate = true;
     if (keycode == RIGHT)
         player->right_rotate = true;
+    if (keycode == 65307)
+        close_game(player->game);
     return(0);
 }
 int key_release(int keycode, t_player *player)

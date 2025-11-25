@@ -21,6 +21,8 @@
 #include <stdbool.h>
 #include <math.h>
 
+typedef struct s_game t_game;
+
 typedef struct s_player
 {
     float x;
@@ -34,6 +36,8 @@ typedef struct s_player
     
     bool left_rotate;
     bool right_rotate;
+
+    t_game *game;
 }t_player;
 
 typedef struct s_game
@@ -46,9 +50,10 @@ typedef struct s_game
     int bbp;
     int size_line;
     int endian;
-    t_player player;
-
+    
     char **map;
+
+    t_player player;
 } t_game;
 
 // Function declarations
@@ -58,6 +63,14 @@ int key_release(int keycode, t_player *player);
 int key_press(int keycode, t_player *player);
 void move_player(t_player *player);
 
+// Raycast functions
+bool touch(float px, float py, t_game *game);
+float distance(float x, float y);
+float fixed_dist(float x1, float y1, float x2, float y2, t_game *game);
+void draw_line(t_player *player, t_game *game, float start_x, int i);
+void perform_raycasting(t_game *game);
+void put_pixel(int x, int y, int color, t_game *game);
+int close_game(t_game *game);
 
 
 #endif

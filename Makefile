@@ -1,7 +1,14 @@
 NAME = game
 CC = cc
-SRC = srcs/main.c srcs/player.c
-OBJ = $(SRC:.c=.o)
+
+SRCS_DIR = srcs
+OBJS_DIR = objs
+
+SRCS = $(SRCS_DIR)/main.c \
+        $(SRCS_DIR)/player.c \
+        $(SRCS_DIR)/raycast.c
+
+OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
 LFLAGS = -L./minilibx-linux -lmlx -lXext -lX11 -lm -lz
 MLX_LIB = ./minilibx-linux/libmlx.a
@@ -16,17 +23,20 @@ RESET = \033[0m
 all: $(NAME)
 	@echo "$(GREEN)✅ $(NAME) is ready! 🎮$(RESET)"
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJS_DIR) $(OBJS)
 	@echo "$(BLUE)🔗 Linking $(NAME)...$(RESET)"
-	$(CC) $(OBJ) -o $(NAME) $(MLX_LIB) $(LFLAGS)
+	$(CC) $(OBJS) -o $(NAME) $(MLX_LIB) $(LFLAGS)
 
-%.o: %.c
+$(OBJS_DIR):
+	@mkdir -p $(OBJS_DIR)
+
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 	@echo "$(YELLOW)🔨 Compiling $<...$(RESET)"
 	$(CC) -c $< -o $@
 
 clean:
 	@echo "$(RED)🧹 Cleaning object files...$(RESET)"
-	rm -rf $(OBJ)
+	rm -rf $(OBJS_DIR)
 
 fclean: clean
 	@echo "$(RED)🗑️ Removing $(NAME)...$(RESET)"
