@@ -6,7 +6,7 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 15:38:26 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/11/24 15:23:31 by hasivaci         ###   ########.fr       */
+/*   Updated: 2025/11/25 13:34:18 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ int key_release(int keycode, t_player *player)
 
 void move_player(t_player *player)
 {
-    int speed = 5;
-    float angle_speed = 0.1;
+    int speed = 3;
+    float angle_speed = 0.03;
     float cos_angle = cos(player->angle);
     float sin_angle = sin(player->angle);
 
