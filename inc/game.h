@@ -16,6 +16,8 @@
 #define PI 3.14159265359
 
 #include "../minilibx-linux/mlx.h"
+#include "../lib/get_next_line/get_next_line.h"
+#include "../lib/libft/libft.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -38,7 +40,7 @@ typedef struct s_player
     bool right_rotate;
 
     t_game *game;
-}t_player;
+}	t_player;
 
 typedef struct s_game
 {
@@ -54,7 +56,7 @@ typedef struct s_game
     char **map;
 
     t_player player;
-} t_game;
+}	t_game;
 
 // Function declarations
 void init_game(t_game *game);
@@ -72,5 +74,14 @@ void perform_raycasting(t_game *game);
 void put_pixel(int x, int y, int color, t_game *game);
 int close_game(t_game *game);
 
+
+
+
+
+
+
+
+//	-------------- MAP -------------- 
+char	**read_map(char *map_path, t_game *game);
 
 #endif

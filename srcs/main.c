@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/12/06 12:43:05 by hsyn             ###   ########.fr       */
+/*   Updated: 2025/12/09 16:49:10 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,29 +57,29 @@ void clear_image(t_game *game)
 }
 
 // Test amaçlı sabit harita verisi döndüren fonksiyon
-char **get_map(void)
-{
-	char **map = malloc(sizeof(char *) * 11);
-	map[0] = "111111111111111";
-	map[1] = "100000000000001";
-	map[2] = "100000000000001";
-	map[3] = "100000100000001";
-	map[4] = "100000000000001";
-	map[5] = "100000010000001";
-	map[6] = "100001000000001";
-	map[7] = "100000000000001";
-	map[8] = "100000000000001";
-	map[9] = "111111111111111";
-	map[10] = NULL;
-	return (map);
-}
+//char **get_map(void)
+//{
+//	char **map = malloc(sizeof(char *) * 11);
+//	map[0] = "111111111111111";
+//	map[1] = "100000000000001";
+//	map[2] = "100000000000001";
+//	map[3] = "100000100000001";
+//	map[4] = "100000000000001";
+//	map[5] = "100000010000001";
+//	map[6] = "100001000000001";
+//	map[7] = "100000000000001";
+//	map[8] = "100000000000001";
+//	map[9] = "111111111111111";
+//	map[10] = NULL;
+//	return (map);
+//}
 
 // Oyun yapılarını ve MLX kütüphanesini başlatan fonksiyon
 void init_game(t_game *game)
 {
 	init_player(&game->player);
 	game->mlx = mlx_init();
-	game->map = get_map();
+	//game->map = get_map();
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	game->data = mlx_get_data_addr(game->img, &game->bbp, &game->size_line, &game->endian);
@@ -130,11 +130,19 @@ int close_game(t_game *game)
 	exit(0);
 }
 
+#include <stdio.h>
 int main(void)
 {
 	t_game game;
 
-	init_game(&game);
+	init_game(&game);	
+
+	game.map = read_map("/home/hsyn/desktop/cub3d/maps/maps.cub", &game);
+	if (!game.map)
+	{
+		printf("GELDİ\n");
+		return (0);
+	}
 
 	game.player.game = &game;
 	mlx_hook(game.win, 2, 1L << 0, key_press, &game.player);
