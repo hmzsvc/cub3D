@@ -6,7 +6,7 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/11/26 14:59:40 by hasivaci         ###   ########.fr       */
+/*   Updated: 2025/12/15 14:52:23 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void init_game(t_game *game)
     init_player(&game->player);
     game->mlx = mlx_init();
     game->map = get_map();
-    game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
+    game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "cub3D");
     game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
     game->data = mlx_get_data_addr(game->img, &game->bbp, &game->size_line, &game->endian);
     mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
