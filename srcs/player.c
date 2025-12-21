@@ -6,7 +6,7 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 15:38:26 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/11/25 18:43:33 by hasivaci         ###   ########.fr       */
+/*   Updated: 2025/12/15 17:57:01 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,33 +81,46 @@ void move_player(t_player *player)
     if (player->angle < 0)
         player->angle = 2 * PI;
 
-    if (player->key_up)
-        player->y -= speed;
-    if (player->key_down)
-        player->y += speed;
-    if (player->key_left)
-        player->x -= speed;
-    if (player->key_right)
-        player->x += speed;
-
     // if (player->key_up)
-    // {
-    //     player->x += cos_angle * speed;
-    //     player->y += sin_angle * speed;
-    // }
+    //     player->y -= speed;
     // if (player->key_down)
-    // {
-    //     player->x -= cos_angle * speed;
-    //     player->y -= sin_angle * speed;
-    // }
+    //     player->y += speed;
+    // if (player->key_left)
+    //     player->x -= speed;
+    // if (player->key_right)
+    //     player->x += speed;
+
+    if (player->key_up)
+    {
+        player->x += cos_angle * speed;
+        player->y += sin_angle * speed;
+    }
+    if (player->key_down)
+    {
+        player->x -= cos_angle * speed;
+        player->y -= sin_angle * speed;
+    }
     // if (player->key_left)
     // {
-    //     player->x += cos_angle * speed;
+    //     player->x -= cos_angle * speed;
     //     player->y -= sin_angle * speed;
     // }
     // if (player->key_right)
     // {
-    //     player->x -= cos_angle * speed;
+    //     player->x += cos_angle * speed;
     //     player->y += sin_angle * speed;
     // }
+    // SOLA STRAFE (A) - Baktığın yönün SOL tarafına git (angle - 90°)
+    if (player->key_left)
+    {
+        player->x += cos(player->angle - PI / 2) * speed;
+        player->y += sin(player->angle - PI / 2) * speed;
+    }
+    
+    // SAĞA STRAFE (D) - Baktığın yönün SAĞ tarafına git (angle + 90°)
+    if (player->key_right)
+    {
+        player->x += cos(player->angle + PI / 2) * speed;
+        player->y += sin(player->angle + PI / 2) * speed;
+    }
 }
