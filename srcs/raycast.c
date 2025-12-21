@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 15:42:26 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/12/19 18:58:28 by hsyn             ###   ########.fr       */
+/*   Updated: 2025/12/21 14:11:50 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void draw_line(t_player *player, t_game *game, float start_x, int i)
         float height = (BLOCK / dist) * (WIDTH / 2); // Sin & cos sonucu dönen değer ile her blockun height'i
         int start_y = (HEIGHT - height) / 2; // Hesaplanan block yüksekliğinin en alt başlangıç kısmı
         int end = start_y + height; // Hesaplanan block yüksekliğinin top noktası
-		printf("START_Y: %d --- HEİGHT: %f --- END: %d \n", start_y, height, end);
+		//printf("START_Y: %d --- HEİGHT: %f --- END: %d \n", start_y, height, end);
         while (start_y < end) // En alttan başlayarak her satıra pixel basma
         {
             put_pixel(i,start_y, 255, game);
