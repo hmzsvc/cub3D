@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/12/19 16:34:55 by hsyn             ###   ########.fr       */
+/*   Updated: 2025/12/21 15:08:18 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,28 +130,37 @@ int close_game(t_game *game)
 	exit(0);
 }
 
+t_game	*global_game()
+{
+	static t_game	*game;
+	game = (t_game *)ft_calloc(1, sizeof(t_game));
+	return (game);
+}
+
 #include <stdio.h>
 int main(void)
 {
-	t_game game;
+	t_game *game;
 
-	init_game(&game);	
+	game = global_game();
 
-	game.map = read_map("/home/hsyn/desktop/cub3d/maps/maps.cub", &game);
-	if (!game.map) // Error check gönderilecek
+	init_game(game);	
+
+	game->map = read_map("/home/hsyn/desktop/cub3d/maps/maps.cub", game);
+	if (!game->map) // Error check gönderilecek
 	{
 		printf("GELDİ\n");
 		return (0);
 	}
 
-	game.player.game = &game;
-	mlx_hook(game.win, 2, 1L << 0, key_press, &game.player);
-	mlx_hook(game.win, 3, 1L << 1, key_release, &game.player);
-	mlx_hook(game.win, 17, 0, close_game, &game);
+	game->player.game = game;
+	mlx_hook(game->win, 2, 1L << 0, key_press, &game->player);
+	mlx_hook(game->win, 3, 1L << 1, key_release, &game->player);
+	mlx_hook(game->win, 17, 0, close_game, game);
 
-	mlx_loop_hook(game.mlx, draw_loop, &game);
+	mlx_loop_hook(game->mlx, draw_loop, game);
 	// draw_square(WIDTH / 2, HEIGHT / 2, 10, 0x00FF00,&game);
-	mlx_loop(game.mlx);
+	mlx_loop(game->mlx);
 
 	return (0);
 }
