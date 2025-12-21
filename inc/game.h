@@ -48,7 +48,7 @@ typedef struct s_texture
 	char	*addr;		//Pixel data address
 	int		width;		//Img Width
 	int		height;		//Img Height
-	int		bpp;		//Bits per pixel (pixel başına bit sayısı)
+	int		bpp;		//Bits per pixel (pixel başına bit sayısı) (Pixelin biti yani rgba her biri 8 bit r:8 g:8 b:8 a:8)
 	int		line_len;	//Satır uzunluğu
 	int		endian;		//Byte sıralaması
 
