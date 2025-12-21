@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/12/09 16:49:10 by hsyn             ###   ########.fr       */
+/*   Updated: 2025/12/19 16:34:55 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int main(void)
 	init_game(&game);	
 
 	game.map = read_map("/home/hsyn/desktop/cub3d/maps/maps.cub", &game);
-	if (!game.map)
+	if (!game.map) // Error check gönderilecek
 	{
 		printf("GELDİ\n");
 		return (0);
