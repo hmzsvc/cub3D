@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/12/21 15:08:18 by hsyn             ###   ########.fr       */
+/*   Updated: 2025/12/21 19:13:16 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void clear_image(t_game *game)
 
 // Oyun yapılarını ve MLX kütüphanesini başlatan fonksiyon
 void init_game(t_game *game)
-{
+{	
 	init_player(&game->player);
 	game->mlx = mlx_init();
 	//game->map = get_map();
@@ -133,7 +133,8 @@ int close_game(t_game *game)
 t_game	*global_game()
 {
 	static t_game	*game;
-	game = (t_game *)ft_calloc(1, sizeof(t_game));
+	if (!game)
+		game = (t_game *)ft_calloc(1, sizeof(t_game));
 	return (game);
 }
 
@@ -144,8 +145,10 @@ int main(void)
 
 	game = global_game();
 
-	init_game(game);	
-
+	init_game(game);
+	//printf("MLX_INIT: $%p$\n", game->mlx);
+	load_all_tex();
+	
 	game->map = read_map("/home/hsyn/desktop/cub3d/maps/maps.cub", game);
 	if (!game->map) // Error check gönderilecek
 	{
