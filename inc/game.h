@@ -102,14 +102,12 @@ t_game *global_game();
 
 
 
-
-
-
 //	-------------- MAP -------------- 
 char	**read_map(char *map_path, t_game *game);
 
 
 //	-------------- TEX --------------
-int	load_all_tex(); 
+int	load_all_tex();
+int	get_tex_pixel(t_texture	*tex, int x, int y);
 
 #endif

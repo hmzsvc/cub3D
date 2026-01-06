@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 15:23:24 by hsyn              #+#    #+#             */
-/*   Updated: 2025/12/21 20:11:30 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/01/07 00:52:41 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,7 @@ int	get_tex_pixel(t_texture	*tex, int x, int y)
 
 	if (x < 0 || y < 0 || x >= tex->width || y >= tex->height)
 		return (0);
-	pixel = tex->addr + (y * tex->line_len + x * (tex->bpp / 8)); // tex.addr satırın ilk karakteri ile başlar her satır 64 pixel her pixel ise 4 byte  her 4 byte ise 32 bittir (line len ile çarpma sebebimiz her line 256 byte olduğu için satır atlamak için) 
+	pixel = tex->addr + (y * tex->line_len + x * (tex->bpp / 8)); // tex.addr satırın ilk karakteri ile başlar her satır 64 pixel her pixel ise 4 byte  her 4 byte ise 32 bittir (line len ile çarpma sebebimiz her line 256 byte olduğu için satır atlamak için)
+	color = *(int *)pixel;
+	return (color);
 }
