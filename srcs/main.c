@@ -15,9 +15,11 @@
 // Belirtilen koordinata renk pikselini yerleştiren fonksiyon
 void put_pixel(int x, int y, int color, t_game *game)
 {
+	int index;
+
 	if (x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
 		return;
-	int index = y * game->size_line + x * game->bbp / 8;
+	index = y * game->size_line + x * game->bbp / 8;
 
 	game->data[index] = color & 0xFF;
 	game->data[index + 1] = (color >> 8) & 0xFF;
@@ -27,52 +29,97 @@ void put_pixel(int x, int y, int color, t_game *game)
 // Belirlenen konumda ve boyutta kare çizen fonksiyon (sadece çerçeve)
 void draw_square(int x, int y, int size, int color, t_game *game)
 {
-	for (int i = 0; i < size; i++)
+	int i;
+	i = -1;
+	// for (int i = 0; i < size; i++)
+	while(++i < size)	
 		put_pixel(x + i, y, color, game);
-	for (int i = 0; i < size; i++)
+	i = -1;
+	
+	// for (int i = 0; i < size; i++)
+	while(++i < size)
 		put_pixel(x, y + i, color, game);
-	for (int i = 0; i < size; i++)
+	i = -1;
+	
+	// for (int i = 0; i < size; i++)
+	while(++i < size)
 		put_pixel(x + size, y + i, color, game);
-	for (int i = 0; i < size; i++)
+	i = -1;
+	
+	// for (int i = 0; i < size; i++)
+	while(++i < size)
 		put_pixel(x + i, y + size, color, game);
 }
 
 // Harita verilerini okuyarak duvarları çizen fonksiyon
 void draw_map(t_game *game)
 {
-	char **map = game->map;
-	int color = 0x0000FF;
-	for (int y = 0; map[y]; y++)
-		for (int x = 0; map[y][x]; x++)
+	char **map;
+	int color;
+	int x;
+	int y;
+
+	y = 0;
+	x = 0;
+	map = game->map;
+	color = 0x0000FF;
+	
+	while(map[y])
+	{
+		while(map[y][x])
+		{
 			if (map[y][x] == '1')
 				draw_square(x * 64, y * 64, 64, color, game);
+			x++;
+		}
+		y++;
+	}
+
+	// for (int y = 0; map[y]; y++)
+	// 	for (int x = 0; map[y][x]; x++)
+	// 		if (map[y][x] == '1')
+	//			draw_square(x * 64, y * 64, 64, color, game);
 }
 
 // Tüm ekranı siyah renge boyayan (temizleyen) fonksiyon
 void clear_image(t_game *game)
 {
+	// int y;
+	// int x;
+
+	// y = 0;
+	// x = 0;
+	// while (y < HEIGHT)
+	// {
+	// 	while (x < WIDTH)
+	// 	{
+	// 		put_pixel(x, y, 0, game);
+	// 		x++;
+	// 	}
+	// 	y++;
+	// }
 	for (int y = 0; y < HEIGHT; y++)
 		for (int x = 0; x < WIDTH; x++)
 			put_pixel(x, y, 0, game);
 }
 
 // Test amaçlı sabit harita verisi döndüren fonksiyon
-char **get_map(void)
-{
-	char **map = malloc(sizeof(char *) * 11);
-	map[0] = "111111111111111";
-	map[1] = "100000000000001";
-	map[2] = "100000000000001";
-	map[3] = "100000100000001";
-	map[4] = "100000000000001";
-	map[5] = "100000010000001";
-	map[6] = "100001000000001";
-	map[7] = "100000000000001";
-	map[8] = "100000000000001";
-	map[9] = "111111111111111";
-	map[10] = NULL;
-	return (map);
-}
+// char **get_map(void)
+// {
+// 	char **map = malloc(sizeof(char *) * 11);
+// 	map[0] = "111111111111111";
+// 	map[1] = "100000000000001";
+// 	map[2] = "100000000000001";
+// 	map[3] = "100000100000001";
+// 	map[4] = "100000000000001";
+// 	map[5] = "100000010000001";
+// 	map[6] = "100001000000001";
+// 	map[7] = "100000000000001";
+// 	map[8] = "100000000000001";
+// 	map[9] = "111111111111111";
+// 	map[10] = NULL;
+// 	return (map);
+// }
 
 // Oyun yapılarını ve MLX kütüphanesini başlatan fonksiyon
 void init_game(t_game *game)
@@ -137,8 +184,8 @@ int main(void)
 
 	init_game(&game);	
 
-	// game.map = read_map("/home/hsyn/desktop/cub3d/maps/maps.cub", &game);
-	game.map = get_map();
+	game.map = read_map("/home/hamza/cub3D/maps/maps.cub", &game);
+
 	if (!game.map)
 	{
 		printf("GELDİ\n");

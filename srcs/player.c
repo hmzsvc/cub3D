@@ -48,6 +48,7 @@ int key_press(int keycode, t_player *player)
         close_game(player->game);
     return(0);
 }
+
 int key_release(int keycode, t_player *player)
 {
     if (keycode == W)
