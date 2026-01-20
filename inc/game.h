@@ -42,6 +42,19 @@ typedef struct s_player
     t_game *game;
 }	t_player;
 
+typedef struct s_texture
+{
+	void	*img;		//img objesi
+	char	*addr;		//Pixel data address
+	int		width;		//Img Width
+	int		height;		//Img Height
+	int		bpp;		//Bits per pixel (pixel başına bit sayısı)
+	int		line_len;	//Satır uzunluğu
+	int		endian;		//Byte sıralaması
+
+} t_texture;
+
+
 typedef struct s_game
 {
     void *mlx;
@@ -56,6 +69,14 @@ typedef struct s_game
     char **map;
 
     t_player player;
+
+
+	// TEXTURE VARİABLES
+	t_texture	n_tex;
+	t_texture	s_tex;
+	t_texture	e_tex;
+	t_texture	w_tex;
+
 }	t_game;
 
 // Function declarations
@@ -74,6 +95,9 @@ void perform_raycasting(t_game *game);
 void put_pixel(int x, int y, int color, t_game *game);
 int close_game(t_game *game);
 
+//	Game Func
+t_game *global_game();
+
 
 
 
@@ -83,5 +107,9 @@ int close_game(t_game *game);
 
 //	-------------- MAP -------------- 
 char	**read_map(char *map_path, t_game *game);
+
+
+//	-------------- TEX --------------
+int	load_all_tex(); 
 
 #endif

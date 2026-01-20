@@ -123,7 +123,7 @@ void clear_image(t_game *game)
 
 // Oyun yapılarını ve MLX kütüphanesini başlatan fonksiyon
 void init_game(t_game *game)
-{
+{	
 	init_player(&game->player);
 	game->mlx = mlx_init();
 	//game->map = get_map();
@@ -177,12 +177,20 @@ int close_game(t_game *game)
 	exit(0);
 }
 
+t_game	*global_game()
+{
+	static t_game	*game;
+	if (!game)
+		game = (t_game *)ft_calloc(1, sizeof(t_game));
+	return (game);
+}
+
 #include <stdio.h>
 int main(void)
 {
-	t_game game;
+	t_game *game;
 
-	init_game(&game);	
+	game = global_game();
 
 	game.map = read_map("/home/hamza/cub3D/maps/maps.cub", &game);
 
@@ -192,14 +200,14 @@ int main(void)
 		return (0);
 	}
 
-	game.player.game = &game;
-	mlx_hook(game.win, 2, 1L << 0, key_press, &game.player);
-	mlx_hook(game.win, 3, 1L << 1, key_release, &game.player);
-	mlx_hook(game.win, 17, 0, close_game, &game);
+	game->player.game = game;
+	mlx_hook(game->win, 2, 1L << 0, key_press, &game->player);
+	mlx_hook(game->win, 3, 1L << 1, key_release, &game->player);
+	mlx_hook(game->win, 17, 0, close_game, game);
 
-	mlx_loop_hook(game.mlx, draw_loop, &game);
+	mlx_loop_hook(game->mlx, draw_loop, game);
 	// draw_square(WIDTH / 2, HEIGHT / 2, 10, 0x00FF00,&game);
-	mlx_loop(game.mlx);
+	mlx_loop(game->mlx);
 
 	return (0);
 }
