@@ -4,7 +4,7 @@
 #define WIDTH 1280
 #define HEIGHT 720
 #define BLOCK 64
-#define DEBUG 0
+#define DEBUG 1
 
 #define W 119
 #define A 97
@@ -91,7 +91,9 @@ bool touch(float px, float py, t_game *game);
 float distance(float x, float y);
 float fixed_dist(float x1, float y1, float x2, float y2, t_game *game);
 void draw_line(t_player *player, t_game *game, float start_x, int i);
-void perform_raycasting(t_game *game);
+// void perform_raycasting(t_game *game);
+void render_frame(t_game *game);
+
 void put_pixel(int x, int y, int color, t_game *game);
 int close_game(t_game *game);
 

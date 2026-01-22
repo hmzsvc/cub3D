@@ -66,6 +66,7 @@ void draw_map(t_game *game)
 	
 	while(map[y])
 	{
+		x = 0;
 		while(map[y][x])
 		{
 			if (map[y][x] == '1')
@@ -145,7 +146,8 @@ int draw_loop(t_game *game)
 		draw_map(game);
 	}
 
-	perform_raycasting(game);
+	// perform_raycasting(game);
+	render_frame(game);
 
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
@@ -192,9 +194,11 @@ int main(void)
 
 	game = global_game();
 
-	game.map = read_map("/home/hamza/cub3D/maps/maps.cub", &game);
+	init_game(game);
 
-	if (!game.map)
+	game->map = read_map("/home/hamza/cub3D/maps/maps.cub", game);
+
+	if (!game->map)
 	{
 		printf("GELDİ\n");
 		return (0);
