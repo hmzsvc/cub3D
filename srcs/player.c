@@ -66,6 +66,35 @@ int key_release(int keycode, t_player *player)
     return(0);
 }
 
+// Verilen pozisyonun duvarla çarpışıp çarpışmadığını kontrol eder
+static bool check_collision(float x, float y, t_game *game)
+{
+    int radius = COLLISION_RADIUS;
+    
+    // Karakterin 4 köşesini ve merkezi kontrol et
+    // Merkez
+    if (game->map[(int)(y / BLOCK)][(int)(x / BLOCK)] == '1')
+        return (true);
+    
+    // Sol üst köşe
+    if (game->map[(int)((y - radius) / BLOCK)][(int)((x - radius) / BLOCK)] == '1')
+        return (true);
+    
+    // Sağ üst köşe
+    if (game->map[(int)((y - radius) / BLOCK)][(int)((x + radius) / BLOCK)] == '1')
+        return (true);
+    
+    // Sol alt köşe
+    if (game->map[(int)((y + radius) / BLOCK)][(int)((x - radius) / BLOCK)] == '1')
+        return (true);
+    
+    // Sağ alt köşe
+    if (game->map[(int)((y + radius) / BLOCK)][(int)((x + radius) / BLOCK)] == '1')
+        return (true);
+    
+    return (false);
+}
+
 void move_player(t_player *player)
 {
     int speed = 3;
@@ -115,17 +144,23 @@ void move_player(t_player *player)
         new_y += sin(player->angle + PI / 2) * speed;
     }
 
-    // 🚨 DUVAR KONTROLÜ - YENİ POZİSYON DUVARIN İÇİNDE Mİ?
-    int map_x = (int)(new_x / BLOCK);
-    int map_y = (int)(new_y / BLOCK);
-    
-    // Eğer yeni pozisyon duvar değilse ('1' değilse), harekete izin ver
-    if (player->game->map[map_y][map_x] != '1')
+     if (!check_collision(new_x, new_y, player->game))
     {
         player->x = new_x;
         player->y = new_y;
     }
-    // Eğer duvarsa ('1' ise), hareket etme - eski konumda kal
+    
+    // // 🚨 DUVAR KONTROLÜ - YENİ POZİSYON DUVARIN İÇİNDE Mİ?
+    // int map_x = (int)(new_x / BLOCK);
+    // int map_y = (int)(new_y / BLOCK);
+    
+    // // Eğer yeni pozisyon duvar değilse ('1' değilse), harekete izin ver
+    // if (player->game->map[map_y][map_x] != '1')
+    // {
+    //     player->x = new_x;
+    //     player->y = new_y;
+    // }
+    // // Eğer duvarsa ('1' ise), hareket etme - eski konumda kal
 }
 
 // void move_player(t_player *player)

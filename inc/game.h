@@ -4,7 +4,7 @@
 #define WIDTH 1280
 #define HEIGHT 720
 #define BLOCK 64
-#define DEBUG 1
+#define DEBUG 0
 
 #define W 119
 #define A 97
@@ -100,8 +100,8 @@ int close_game(t_game *game);
 //	Game Func
 t_game *global_game();
 
-
-
+// Karakterin çarpışma yarıçapı (BLOCK'tan küçük olmalı)
+#define COLLISION_RADIUS 10 
 
 
 
