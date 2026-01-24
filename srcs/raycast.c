@@ -72,14 +72,16 @@ static float cast_ray(t_game *game, float ray_angle)
     //öklid mesafesi formulü(sqrt((x2-x1)^2 + (y2-y1)^2))
     return(sqrt(pow(ray_x - game->player.x, 2) + pow(ray_y -game->player.y, 2)));
 }
-
-// [YENİ] Adım 2B: Hesaplanan mesafeye göre ekrana sütun çiz
+// [YENİ] Adım 2B: Hesaplanan mesafeye göre ekrana sütun çiz (TEXTURE TEST)
 static void draw_column(t_game *game, int x_pos, float dist)
 {
     int wall_height;
     int start_y;
     int end_y;
     int y;
+    int color;
+    int tex_x;
+    int tex_y;
 
     // Duvar yüksekliği hesabı
     wall_height = (int)((BLOCK / dist) * (WIDTH / 2));
@@ -91,14 +93,52 @@ static void draw_column(t_game *game, int x_pos, float dist)
     end_y = start_y + wall_height;
     if (end_y >= HEIGHT) end_y = HEIGHT - 1;
 
-    // Sadece duvarı çiz (Tavan ve zemin ayrı fonksiyonlarda boyanabilir)
+    // TEXTURE TEST: Rastgele texture pixel'lerini kullan
     y = start_y;
     while (y < end_y)
     {
-        put_pixel(x_pos, y, 0x00FF00, game); // Beyaz renk
+        // Basit texture mapping (test için)
+        tex_x = (x_pos * 2) % game->n_tex.width;  // X pozisyonuna göre
+        tex_y = ((y - start_y) * game->n_tex.height) / wall_height;  // Y pozisyonuna göre
+        
+        // Texture'dan rengi oku
+        color = get_tex_pixel(&game->n_tex, tex_x, tex_y);
+        
+        // Eğer texture okuma başarısızsa yeşil kullan
+        if (color == 0)
+            color = 0x00FF00;
+        
+        put_pixel(x_pos, y, color, game);
         y++;
     }
 }
+
+// [YENİ] Adım 2B: Hesaplanan mesafeye göre ekrana sütun çiz
+// static void draw_column(t_game *game, int x_pos, float dist)
+// {
+//     int wall_height;
+//     int start_y;
+//     int end_y;
+//     int y;
+
+//     // Duvar yüksekliği hesabı
+//     wall_height = (int)((BLOCK / dist) * (WIDTH / 2));
+    
+//     // Tavan ve zemin sınırlarını belirle
+//     start_y = (HEIGHT - wall_height) / 2;
+//     if (start_y < 0) start_y = 0;
+    
+//     end_y = start_y + wall_height;
+//     if (end_y >= HEIGHT) end_y = HEIGHT - 1;
+
+//     // Sadece duvarı çiz (Tavan ve zemin ayrı fonksiyonlarda boyanabilir)
+//     y = start_y;
+//     while (y < end_y)
+//     {
+//         put_pixel(x_pos, y, 0x00FF00, game); // Beyaz renk
+//         y++;
+//     }
+// }
 // Raycasting için ışın çizen ve duvar yüksekliği hesaplayan fonksiyon
 // void draw_line(t_player *player, t_game *game, float start_x, int i)
 // {

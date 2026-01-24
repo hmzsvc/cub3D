@@ -126,6 +126,7 @@ void clear_image(t_game *game)
 void init_game(t_game *game)
 {	
 	init_player(&game->player);
+	init_minimap(&game->minimap);
 	game->mlx = mlx_init();
 	//game->map = get_map();
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
@@ -148,6 +149,8 @@ int draw_loop(t_game *game)
 
 	// perform_raycasting(game);
 	render_frame(game);
+
+	draw_minimap(game);
 
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
@@ -190,31 +193,68 @@ t_game	*global_game()
 #include <stdio.h>
 int main(void)
 {
-	t_game *game;
+    t_game *game;
 
-	game = global_game();
+    game = global_game();
 
-	init_game(game);
+    init_game(game);
 
-	game->map = read_map("/home/hamza/cub3D/maps/maps.cub", game);
+    game->map = read_map("/home/hamza/cub3D/maps/maps.cub", game);
 
-	if (!game->map)
-	{
-		printf("GELDİ\n");
-		return (0);
-	}
+    if (!game->map)
+    {
+        printf("Harita yüklenemedi!\n");
+        return (0);
+    }
 
-	game->player.game = game;
-	mlx_hook(game->win, 2, 1L << 0, key_press, &game->player);
-	mlx_hook(game->win, 3, 1L << 1, key_release, &game->player);
-	mlx_hook(game->win, 17, 0, close_game, game);
+    // TEXTURE'LARI YÜKLE (harita yüklendikten SONRA)
+    if (!load_all_tex())
+    {
+        printf("HATA: Texture'lar yüklenemedi!\n");
+        close_game(game);
+        return (0);
+    }
+    printf("✅ Texture'lar başarıyla yüklendi!\n");
 
-	mlx_loop_hook(game->mlx, draw_loop, game);
-	// draw_square(WIDTH / 2, HEIGHT / 2, 10, 0x00FF00,&game);
-	mlx_loop(game->mlx);
+    init_minimap(&game->minimap);  // Eğer eklememişseniz
 
-	return (0);
+    game->player.game = game;
+    mlx_hook(game->win, 2, 1L << 0, key_press, &game->player);
+    mlx_hook(game->win, 3, 1L << 1, key_release, &game->player);
+    mlx_hook(game->win, 17, 0, close_game, game);
+
+    mlx_loop_hook(game->mlx, draw_loop, game);
+    mlx_loop(game->mlx);
+
+    return (0);
 }
+// int main(void)
+// {
+// 	t_game *game;
+
+// 	game = global_game();
+
+// 	init_game(game);
+
+// 	game->map = read_map("/home/hamza/cub3D/maps/maps.cub", game);
+
+// 	if (!game->map)
+// 	{
+// 		printf("GELDİ\n");
+// 		return (0);
+// 	}
+
+// 	game->player.game = game;
+// 	mlx_hook(game->win, 2, 1L << 0, key_press, &game->player);
+// 	mlx_hook(game->win, 3, 1L << 1, key_release, &game->player);
+// 	mlx_hook(game->win, 17, 0, close_game, game);
+
+// 	mlx_loop_hook(game->mlx, draw_loop, game);
+// 	// draw_square(WIDTH / 2, HEIGHT / 2, 10, 0x00FF00,&game);
+// 	mlx_loop(game->mlx);
+
+// 	return (0);
+// }
 
 // Belirtilen koordinatın duvara değip değmediğini kontrol eden fonksiyon
 // bool touch (float px, float py, t_game *game)

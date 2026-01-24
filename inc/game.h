@@ -15,6 +15,13 @@
 
 #define PI 3.14159265359
 
+// Minimap ayarları - SABİT ÖLÇEK
+#define MINIMAP_SCALE 5         // 1/5 oranında küçültme (BLOCK/5 = 12.8 pixel)
+#define MINIMAP_X 20            // Sol üst köşeden X uzaklığı
+#define MINIMAP_Y 20            // Sol üst köşeden Y uzaklığı
+#define MINIMAP_BORDER 3        // Kenar kalınlığı
+
+
 #include "../minilibx-linux/mlx.h"
 #include "../lib/get_next_line/get_next_line.h"
 #include "../lib/libft/libft.h"
@@ -24,6 +31,12 @@
 #include <math.h>
 
 typedef struct s_game t_game;
+typedef struct s_minimap
+{
+    int pos_x;      // Ekrandaki X pozisyonu
+    int pos_y;      // Ekrandaki Y pozisyonu
+    int scale;      // Ölçek faktörü
+}   t_minimap;
 
 typedef struct s_player
 {
@@ -69,6 +82,7 @@ typedef struct s_game
     char **map;
 
     t_player player;
+    t_minimap minimap;
 
 
 	// TEXTURE VARİABLES
@@ -78,6 +92,11 @@ typedef struct s_game
 	t_texture	w_tex;
 
 }	t_game;
+
+
+// Minimap functions
+void init_minimap(t_minimap *minimap);
+void draw_minimap(t_game *game);
 
 // Function declarations
 void init_game(t_game *game);
@@ -112,6 +131,7 @@ char	**read_map(char *map_path, t_game *game);
 
 
 //	-------------- TEX --------------
-int	load_all_tex(); 
+int	load_all_tex();
+int	get_tex_pixel(t_texture *tex, int x, int y);
 
 #endif

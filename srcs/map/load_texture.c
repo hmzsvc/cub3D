@@ -40,23 +40,40 @@ int	load_all_tex()
 	game = global_game();
 	//printf("LOAD_GAME_MLX: #%p#  -  LOAD_GAME_IMG: #%p#\n", game->mlx, game->img);
 	
-	if (!load_tex(&game->n_tex, "../../assets/map/wall-64x64.xpm"))
+	if (!load_tex(&game->n_tex, "/home/hamza/cub3D/assets/map/wall-64x64.xpm"))
 		return (0);
-	if (!load_tex(&game->s_tex, "../../assets/map/wall-64x64.xpm"))
+	if (!load_tex(&game->n_tex, "/home/hamza/cub3D/assets/map/wall-64x64.xpm"))
 		return (0);
-	if (!load_tex(&game->e_tex, "../../assets/map/wall-64x64.xpm"))
+	if (!load_tex(&game->n_tex, "/home/hamza/cub3D/assets/map/wall-64x64.xpm"))
 		return (0);
-	if (!load_tex(&game->w_tex, "../../assets/map/wall-64x64.xpm"))
+	if (!load_tex(&game->n_tex, "/home/hamza/cub3D/assets/map/wall-64x64.xpm"))
 		return (0);
 	return (1);
 }
-
-int	get_tex_pixel(t_texture	*tex, int x, int y)
+int	get_tex_pixel(t_texture *tex, int x, int y)
 {
-	char	*pixel;
-	int		color;
+    char	*pixel;
+    int		color;
 
-	if (x < 0 || y < 0 || x >= tex->width || y >= tex->height)
-		return (0);
-	//pixel = tex->addr + ()
+    // Sınır kontrolü
+    if (x < 0 || y < 0 || x >= tex->width || y >= tex->height)
+        return (0x000000);  // Siyah döndür
+    
+    // Pixel adresini hesapla
+    pixel = tex->addr + (y * tex->line_len + x * (tex->bpp / 8));
+    
+    // Rengi oku (little endian)
+    color = *(unsigned int *)pixel;
+    
+    return (color);
 }
+
+// int	get_tex_pixel(t_texture	*tex, int x, int y)
+// {
+// 	char	*pixel;
+// 	int		color;
+
+// 	if (x < 0 || y < 0 || x >= tex->width || y >= tex->height)
+// 		return (0);
+// 	//pixel = tex->addr + ()
+// }
