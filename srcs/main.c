@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/12/21 19:13:16 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/01/25 18:50:15 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void init_game(t_game *game)
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	game->data = mlx_get_data_addr(game->img, &game->bbp, &game->size_line, &game->endian);
+	game->map_element_count = 0;
+	game->map_lines_count = 0;
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
@@ -149,7 +151,8 @@ int main(void)
 	//printf("MLX_INIT: $%p$\n", game->mlx);
 	load_all_tex();
 	
-	game->map = read_map("/home/hsyn/desktop/cub3d/maps/maps.cub", game);
+	//game->map = read_map("/home/hsyn/desktop/cub3d/maps/maps.cub");
+	read_map("/home/hsyn/desktop/cub3d/maps/maps.cub");
 	if (!game->map) // Error check gönderilecek
 	{
 		printf("GELDİ\n");

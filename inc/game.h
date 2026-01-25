@@ -57,6 +57,10 @@ typedef struct s_texture
 
 typedef struct s_game
 {
+	int	map_element_count; //MAP ELEMENTS COUNT
+	int	map_lines_count; //MAP LİNES COUNT
+
+
     void *mlx;
     void *win;
     void *img;
@@ -76,6 +80,16 @@ typedef struct s_game
 	t_texture	s_tex;
 	t_texture	e_tex;
 	t_texture	w_tex;
+
+	char		*n_path;
+	char		*s_path;
+	char		*e_path;
+	char		*w_path;
+
+
+	// COLOR VARİABLES
+	int			floor_color;
+	int			ceiling_color;
 
 }	t_game;
 
@@ -103,7 +117,21 @@ t_game *global_game();
 
 
 //	-------------- MAP -------------- 
-char	**read_map(char *map_path, t_game *game);
+//char	**read_map(char *map_path, t_game *game);
+int	read_map(char *map_path);
+static int	parse_util(int fd, t_game *game);
+static char **read_map_util(int	fd,	int	line_count);
+static int	count_map_lines(int fd);
+int	is_empty_line(char *line);
+int	is_map_line(char *line);
+int	parse_floor_ceiling(char *trimmed);
+int	parse_element_continue(char *trimmed);
+//int	parse_element(char *trimmed);
+//static char *trim_newline(char *str);
+//static int	parse_color(char *line);
+
+
+
 
 
 //	-------------- TEX --------------
