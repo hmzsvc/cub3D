@@ -48,7 +48,7 @@ typedef struct s_texture
 	char	*addr;		//Pixel data address
 	int		width;		//Img Width
 	int		height;		//Img Height
-	int		bpp;		//Bits per pixel (pixel başına bit sayısı)
+	int		bpp;		//Bits per pixel (pixel başına bit sayısı) (Pixelin biti yani rgba her biri 8 bit r:8 g:8 b:8 a:8)
 	int		line_len;	//Satır uzunluğu
 	int		endian;		//Byte sıralaması
 
@@ -57,6 +57,10 @@ typedef struct s_texture
 
 typedef struct s_game
 {
+	int	map_element_count; //MAP ELEMENTS COUNT
+	int	map_lines_count; //MAP LİNES COUNT
+
+
     void *mlx;
     void *win;
     void *img;
@@ -76,6 +80,16 @@ typedef struct s_game
 	t_texture	s_tex;
 	t_texture	e_tex;
 	t_texture	w_tex;
+
+	char		*n_path;
+	char		*s_path;
+	char		*e_path;
+	char		*w_path;
+
+
+	// COLOR VARİABLES
+	int			floor_color;
+	int			ceiling_color;
 
 }	t_game;
 
@@ -102,14 +116,28 @@ t_game *global_game();
 
 
 
-
-
-
 //	-------------- MAP -------------- 
-char	**read_map(char *map_path, t_game *game);
+//char	**read_map(char *map_path, t_game *game);
+int	read_map(char *map_path);
+static int	parse_util(int fd, t_game *game);
+static char **read_map_util(int	fd,	int	line_count);
+static int	count_map_lines(int fd);
+int	is_empty_line(char *line);
+int	is_map_line(char *line);
+int	parse_floor_ceiling(char *trimmed);
+int	parse_element_continue(char *trimmed);
+//int	parse_element(char *trimmed);
+//static char *trim_newline(char *str);
+//static int	parse_color(char *line);
+char *whitespaces_term(char *line);
+
+
+
+
 
 
 //	-------------- TEX --------------
-int	load_all_tex(); 
+int	load_all_tex();
+int	get_tex_pixel(t_texture	*tex, int x, int y);
 
 #endif

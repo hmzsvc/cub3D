@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 15:23:24 by hsyn              #+#    #+#             */
-/*   Updated: 2025/12/21 19:06:36 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/01/28 20:26:10 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,18 @@ static int	load_tex(t_texture	*tex, char *path)
 	
 
 	tex->width = 60;
-	tex->height = 60;
+	tex->height = 60;	
 	
-	
+	//printf("GAME_MLX: $%p$ - PATH: $%s$ - width: $%d$ - height: $%d$\n", game->mlx, path, tex->width, tex->height);
 	tex->img = mlx_xpm_file_to_image(game->mlx, path, &tex->width, &tex->height);
 	if (!tex->img)
 		return (0);
 	tex->addr = mlx_get_data_addr(tex->img, &tex->bpp, &tex->line_len, &tex->endian);
 
 
-	printf("\nTEX_ADDR: %s\n", tex->addr);
+	//printf("TEX_ADDR: %p - BPP:%d - LINE:%d - END:%d\n", 
+	//	(void *)tex->addr, tex->bpp, tex->line_len, tex->endian);
+		
 	return (1);
 }
 int	load_all_tex()
@@ -38,15 +40,17 @@ int	load_all_tex()
 	t_game	*game;
 	
 	game = global_game();
-	//printf("LOAD_GAME_MLX: #%p#  -  LOAD_GAME_IMG: #%p#\n", game->mlx, game->img);
-	
-	if (!load_tex(&game->n_tex, "../../assets/map/wall-64x64.xpm"))
+	game->n_path = whitespaces_term(game->n_path); // NULL CHECK EKLENECEK
+	game->s_path = whitespaces_term(game->s_path); // NULL CHECK EKLENECEK
+	game->e_path = whitespaces_term(game->e_path); // NULL CHECK EKLENECEK
+	game->w_path = whitespaces_term(game->w_path); // NULL CHECK EKLENECEK
+	if (!load_tex(&game->n_tex, game->n_path))
 		return (0);
-	if (!load_tex(&game->s_tex, "../../assets/map/wall-64x64.xpm"))
+	if (!load_tex(&game->s_tex, game->s_path))
 		return (0);
-	if (!load_tex(&game->e_tex, "../../assets/map/wall-64x64.xpm"))
+	if (!load_tex(&game->e_tex, game->e_path))
 		return (0);
-	if (!load_tex(&game->w_tex, "../../assets/map/wall-64x64.xpm"))
+	if (!load_tex(&game->w_tex, game->w_path))
 		return (0);
 	return (1);
 }
@@ -58,5 +62,7 @@ int	get_tex_pixel(t_texture	*tex, int x, int y)
 
 	if (x < 0 || y < 0 || x >= tex->width || y >= tex->height)
 		return (0);
-	//pixel = tex->addr + ()
+	pixel = tex->addr + (y * tex->line_len + x * (tex->bpp / 8)); // tex.addr satırın ilk karakteri ile başlar her satır 64 pixel her pixel ise 4 byte  her 4 byte ise 32 bittir (line len ile çarpma sebebimiz her line 256 byte olduğu için satır atlamak için)
+	color = *(int *)pixel;
+	return (color);
 }

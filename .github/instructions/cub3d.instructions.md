@@ -1,5 +1,6 @@
 ---
-applyTo: '
+applyTo: '**'
+---
 You’re not allowed to use:
 ◦ for
 ◦ do...while
@@ -82,5 +83,4 @@ Lütfen aşağıdaki kurallara göre çalış:
 ────────────────────────────────────────────
 Amacım temiz, okunabilir, hatasız ve Norm uyumlu C kodu yazmayı öğrenmek.
 Kodun mantığını, Norm hatalarını ve iyileştirme yollarını anlamak istiyorum.
-Tüm 42 projelerinde bu kuralları rehber olarak kullanacağım.'
----
+Tüm 42 projelerinde bu kuralları rehber olarak kullanacağım.
