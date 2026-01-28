@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/01/25 18:50:15 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/01/28 19:13:20 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,10 +149,11 @@ int main(void)
 
 	init_game(game);
 	//printf("MLX_INIT: $%p$\n", game->mlx);
-	load_all_tex();
 	
 	//game->map = read_map("/home/hsyn/desktop/cub3d/maps/maps.cub");
 	read_map("/home/hsyn/desktop/cub3d/maps/maps.cub");
+	load_all_tex();
+
 	if (!game->map) // Error check gönderilecek
 	{
 		printf("GELDİ\n");

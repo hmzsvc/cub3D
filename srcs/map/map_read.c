@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/01/25 19:09:32 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/01/28 19:36:15 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,35 @@ static int	open_map(char *map_path)
 		return (0);
 	}
 	return (fd);
+}
+
+char *whitespaces_term(char *line)
+{
+	int	i;
+	int	j;
+	char	*result;
+
+	i = 0;
+	j = 0;
+	result = calloc(ft_strlen(line) + 1, sizeof(char));
+	if (!result)
+		return (NULL);
+	
+	while (line[j])
+	{
+		//while (*line && (*line == ' ' || *line == '\t'))
+		//	line++;
+		if (line[j] != ' ' && line[j] != '\t' && line[j] != '\n')
+		{
+			result[i] = line[j];
+			i++;
+		}
+		j++;
+
+	}
+	result[i] = '\0';
+	//printf("result: $%s$\n", result);
+	return (result);
 }
 
 
@@ -176,7 +205,7 @@ static int	count_map_lines(int fd)
 			map_started = 1;
 			line_count++;
 		}
-		else if (map_started && !is_empty_line(line))
+		else if (map_started && !is_empty_line(line) && is_map_line(line))
 			break;
 		free(line);
 		line = get_next_line(fd);
@@ -259,14 +288,6 @@ int read_map(char *path)
 		return (1);
 	fd = open_map(path);
 	game->map = read_map_util(fd, game->map_lines_count);
-
-	int	f = 0;
-	while (f >= 0)
-	{
-		printf("MAP[%d]: $%s$\n", f, game->map[1]);
-		f--;
-	}
-	
 	close (fd);
 	return (0);
 }

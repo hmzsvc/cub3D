@@ -129,6 +129,8 @@ int	parse_element_continue(char *trimmed);
 //int	parse_element(char *trimmed);
 //static char *trim_newline(char *str);
 //static int	parse_color(char *line);
+char *whitespaces_term(char *line);
+
 
 
 

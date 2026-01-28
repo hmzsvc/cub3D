@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 15:23:24 by hsyn              #+#    #+#             */
-/*   Updated: 2026/01/25 18:57:46 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/01/28 20:26:10 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ static int	load_tex(t_texture	*tex, char *path)
 	
 
 	tex->width = 60;
-	tex->height = 60;
-	
+	tex->height = 60;	
 	
 	//printf("GAME_MLX: $%p$ - PATH: $%s$ - width: $%d$ - height: $%d$\n", game->mlx, path, tex->width, tex->height);
 	tex->img = mlx_xpm_file_to_image(game->mlx, path, &tex->width, &tex->height);
@@ -41,15 +40,17 @@ int	load_all_tex()
 	t_game	*game;
 	
 	game = global_game();
-	//printf("LOAD_GAME_MLX: #%p#  -  LOAD_GAME_IMG: #%p#\n", game->mlx, game->img);
-	
-	if (!load_tex(&game->n_tex, "assets/map/wall-64x64.xpm"))
+	game->n_path = whitespaces_term(game->n_path); // NULL CHECK EKLENECEK
+	game->s_path = whitespaces_term(game->s_path); // NULL CHECK EKLENECEK
+	game->e_path = whitespaces_term(game->e_path); // NULL CHECK EKLENECEK
+	game->w_path = whitespaces_term(game->w_path); // NULL CHECK EKLENECEK
+	if (!load_tex(&game->n_tex, game->n_path))
 		return (0);
-	if (!load_tex(&game->s_tex, "assets/map/wall-64x64.xpm"))
+	if (!load_tex(&game->s_tex, game->s_path))
 		return (0);
-	if (!load_tex(&game->e_tex, "assets/map/wall-64x64.xpm"))
+	if (!load_tex(&game->e_tex, game->e_path))
 		return (0);
-	if (!load_tex(&game->w_tex, "assets/map/wall-64x64.xpm"))
+	if (!load_tex(&game->w_tex, game->w_path))
 		return (0);
 	return (1);
 }
