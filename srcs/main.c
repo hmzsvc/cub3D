@@ -3,10 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hmzsvc <hmzsvc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
 /*   Updated: 2026/01/28 19:13:20 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/01/06 20:15:38 by hmzsvc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +16,11 @@
 // Belirtilen koordinata renk pikselini yerleştiren fonksiyon
 void put_pixel(int x, int y, int color, t_game *game)
 {
+	int index;
+
 	if (x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
 		return;
-	int index = y * game->size_line + x * game->bbp / 8;
+	index = y * game->size_line + x * game->bbp / 8;
 
 	game->data[index] = color & 0xFF;
 	game->data[index + 1] = (color >> 8) & 0xFF;
@@ -27,57 +30,104 @@ void put_pixel(int x, int y, int color, t_game *game)
 // Belirlenen konumda ve boyutta kare çizen fonksiyon (sadece çerçeve)
 void draw_square(int x, int y, int size, int color, t_game *game)
 {
-	for (int i = 0; i < size; i++)
+	int i;
+	i = -1;
+	// for (int i = 0; i < size; i++)
+	while(++i < size)	
 		put_pixel(x + i, y, color, game);
-	for (int i = 0; i < size; i++)
+	i = -1;
+	
+	// for (int i = 0; i < size; i++)
+	while(++i < size)
 		put_pixel(x, y + i, color, game);
-	for (int i = 0; i < size; i++)
+	i = -1;
+	
+	// for (int i = 0; i < size; i++)
+	while(++i < size)
 		put_pixel(x + size, y + i, color, game);
-	for (int i = 0; i < size; i++)
+	i = -1;
+	
+	// for (int i = 0; i < size; i++)
+	while(++i < size)
 		put_pixel(x + i, y + size, color, game);
 }
 
 // Harita verilerini okuyarak duvarları çizen fonksiyon
 void draw_map(t_game *game)
 {
-	char **map = game->map;
-	int color = 0x0000FF;
-	for (int y = 0; map[y]; y++)
-		for (int x = 0; map[y][x]; x++)
+	char **map;
+	int color;
+	int x;
+	int y;
+
+	y = 0;
+	x = 0;
+	map = game->map;
+	color = 0x0000FF;
+	
+	while(map[y])
+	{
+		x = 0;
+		while(map[y][x])
+		{
 			if (map[y][x] == '1')
 				draw_square(x * 64, y * 64, 64, color, game);
+			x++;
+		}
+		y++;
+	}
+
+	// for (int y = 0; map[y]; y++)
+	// 	for (int x = 0; map[y][x]; x++)
+	// 		if (map[y][x] == '1')
+	//			draw_square(x * 64, y * 64, 64, color, game);
 }
 
 // Tüm ekranı siyah renge boyayan (temizleyen) fonksiyon
 void clear_image(t_game *game)
 {
+	// int y;
+	// int x;
+
+	// y = 0;
+	// x = 0;
+	// while (y < HEIGHT)
+	// {
+	// 	while (x < WIDTH)
+	// 	{
+	// 		put_pixel(x, y, 0, game);
+	// 		x++;
+	// 	}
+	// 	y++;
+	// }
 	for (int y = 0; y < HEIGHT; y++)
 		for (int x = 0; x < WIDTH; x++)
 			put_pixel(x, y, 0, game);
 }
 
 // Test amaçlı sabit harita verisi döndüren fonksiyon
-//char **get_map(void)
-//{
-//	char **map = malloc(sizeof(char *) * 11);
-//	map[0] = "111111111111111";
-//	map[1] = "100000000000001";
-//	map[2] = "100000000000001";
-//	map[3] = "100000100000001";
-//	map[4] = "100000000000001";
-//	map[5] = "100000010000001";
-//	map[6] = "100001000000001";
-//	map[7] = "100000000000001";
-//	map[8] = "100000000000001";
-//	map[9] = "111111111111111";
-//	map[10] = NULL;
-//	return (map);
-//}
+// char **get_map(void)
+// {
+// 	char **map = malloc(sizeof(char *) * 11);
+// 	map[0] = "111111111111111";
+// 	map[1] = "100000000000001";
+// 	map[2] = "100000000000001";
+// 	map[3] = "100000100000001";
+// 	map[4] = "100000000000001";
+// 	map[5] = "100000010000001";
+// 	map[6] = "100001000000001";
+// 	map[7] = "100000000000001";
+// 	map[8] = "100000000000001";
+// 	map[9] = "111111111111111";
+// 	map[10] = NULL;
+// 	return (map);
+// }
 
 // Oyun yapılarını ve MLX kütüphanesini başlatan fonksiyon
 void init_game(t_game *game)
 {	
 	init_player(&game->player);
+	init_minimap(&game->minimap);
 	game->mlx = mlx_init();
 	//game->map = get_map();
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
@@ -100,7 +150,10 @@ int draw_loop(t_game *game)
 		draw_map(game);
 	}
 
-	perform_raycasting(game);
+	// perform_raycasting(game);
+	render_frame(game);
+
+	draw_minimap(game);
 
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
@@ -143,9 +196,9 @@ t_game	*global_game()
 #include <stdio.h>
 int main(void)
 {
-	t_game *game;
+    t_game *game;
 
-	game = global_game();
+    game = global_game();
 
 	init_game(game);
 	//printf("MLX_INIT: $%p$\n", game->mlx);
@@ -159,18 +212,64 @@ int main(void)
 		printf("GELDİ\n");
 		return (0);
 	}
+    init_game(game);
 
-	game->player.game = game;
-	mlx_hook(game->win, 2, 1L << 0, key_press, &game->player);
-	mlx_hook(game->win, 3, 1L << 1, key_release, &game->player);
-	mlx_hook(game->win, 17, 0, close_game, game);
+    game->map = read_map("/home/hamza/cub3D/maps/maps.cub", game);
 
-	mlx_loop_hook(game->mlx, draw_loop, game);
-	// draw_square(WIDTH / 2, HEIGHT / 2, 10, 0x00FF00,&game);
-	mlx_loop(game->mlx);
+    if (!game->map)
+    {
+        printf("Harita yüklenemedi!\n");
+        return (0);
+    }
 
-	return (0);
+    // TEXTURE'LARI YÜKLE (harita yüklendikten SONRA)
+    if (!load_all_tex())
+    {
+        printf("HATA: Texture'lar yüklenemedi!\n");
+        close_game(game);
+        return (0);
+    }
+    printf("✅ Texture'lar başarıyla yüklendi!\n");
+
+    init_minimap(&game->minimap);  // Eğer eklememişseniz
+
+    game->player.game = game;
+    mlx_hook(game->win, 2, 1L << 0, key_press, &game->player);
+    mlx_hook(game->win, 3, 1L << 1, key_release, &game->player);
+    mlx_hook(game->win, 17, 0, close_game, game);
+
+    mlx_loop_hook(game->mlx, draw_loop, game);
+    mlx_loop(game->mlx);
+
+    return (0);
 }
+// int main(void)
+// {
+// 	t_game *game;
+
+// 	game = global_game();
+
+// 	init_game(game);
+
+// 	game->map = read_map("/home/hamza/cub3D/maps/maps.cub", game);
+
+// 	if (!game->map)
+// 	{
+// 		printf("GELDİ\n");
+// 		return (0);
+// 	}
+
+// 	game->player.game = game;
+// 	mlx_hook(game->win, 2, 1L << 0, key_press, &game->player);
+// 	mlx_hook(game->win, 3, 1L << 1, key_release, &game->player);
+// 	mlx_hook(game->win, 17, 0, close_game, game);
+
+// 	mlx_loop_hook(game->mlx, draw_loop, game);
+// 	// draw_square(WIDTH / 2, HEIGHT / 2, 10, 0x00FF00,&game);
+// 	mlx_loop(game->mlx);
+
+// 	return (0);
+// }
 
 // Belirtilen koordinatın duvara değip değmediğini kontrol eden fonksiyon
 // bool touch (float px, float py, t_game *game)
