@@ -46,22 +46,31 @@ bool	touch(float px, float py, t_game *game)
         return (true);
     return (false);
 }
+// bool touch (float px, float py, t_game *game)
+// {
+//     int x = px / BLOCK;
+//     int y = py / BLOCK;
+    
+//     if (game->map[y][x] == '1')
+//         return(true);
+//     return(false);
+// }
 
 // İki nokta arasındaki Öklid mesafesini hesaplayan fonksiyon
-float distance (float x, float y)
-{
-    return(sqrt(x * x + y * y));    
-}
+// float distance (float x, float y)
+// {
+//     return(sqrt(x * x + y * y));    
+// }
 
 // Balık gözü etkisini düzelten mesafe hesaplama fonksiyonu
-float fixed_dist(float x1, float y1, float x2, float y2, t_game *game)
-{
-    float delta_x = x2 - x1;
-    float delta_y = y2 - y1;
-    float angle = atan2(delta_y, delta_x) - game->player.angle;
-    float fix_dist = distance(delta_x, delta_y) * cos(angle);
-    return(fix_dist);    
-}
+// float fixed_dist(float x1, float y1, float x2, float y2, t_game *game)
+// {
+//     float delta_x = x2 - x1;
+//     float delta_y = y2 - y1;
+//     float angle = atan2(delta_y, delta_x) - game->player.angle;
+//     float fix_dist = distance(delta_x, delta_y) * cos(angle);
+//     return(fix_dist);    
+// }
 
 int	get_wall_dir(float cos_a, float sin_a)
 {

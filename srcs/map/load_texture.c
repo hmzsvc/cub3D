@@ -54,11 +54,10 @@ int	load_all_tex()
 		return (0);
 	return (1);
 }
-
-int	get_tex_pixel(t_texture	*tex, int x, int y)
+int	get_tex_pixel(t_texture *tex, int x, int y)
 {
-	char	*pixel;
-	int		color;
+    char	*pixel;
+    int		color;
 
 	if (x < 0 || y < 0 || x >= tex->width || y >= tex->height)
 		return (0);
