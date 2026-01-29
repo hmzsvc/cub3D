@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 15:23:24 by hsyn              #+#    #+#             */
-/*   Updated: 2026/01/28 20:26:10 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/01/29 15:08:50 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static int	load_tex(t_texture	*tex, char *path)
 	t_game	*game;
 
 	game = global_game();
-	
+	if (!tex || !path)
+		return (0);
 
 	tex->width = 60;
 	tex->height = 60;	

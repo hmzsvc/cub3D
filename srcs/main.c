@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/01/28 19:13:20 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/01/29 15:14:46 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ t_game	*global_game()
 }
 
 #include <stdio.h>
-int main(void)
+int main(int ac, char **av)
 {
 	t_game *game;
 
@@ -151,7 +151,7 @@ int main(void)
 	//printf("MLX_INIT: $%p$\n", game->mlx);
 	
 	//game->map = read_map("/home/hsyn/desktop/cub3d/maps/maps.cub");
-	read_map("/home/hsyn/desktop/cub3d/maps/maps.cub");
+	read_map(av[1]);
 	load_all_tex();
 
 	if (!game->map) // Error check gönderilecek

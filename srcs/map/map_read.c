@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/01/28 19:36:15 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/01/29 15:15:57 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char *whitespaces_term(char *line)
 
 	i = 0;
 	j = 0;
+	if (!line)
+        return (NULL);
 	result = calloc(ft_strlen(line) + 1, sizeof(char));
 	if (!result)
 		return (NULL);
