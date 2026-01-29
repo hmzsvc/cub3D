@@ -20,6 +20,7 @@ SRCS = $(SRCS_DIR)/main.c \
         $(SRCS_DIR)/raycast.c \
 		$(SRCS_DIR)/map/map_read.c \
 		$(SRCS_DIR)/map/load_texture.c \
+		$(SRCS_DIR)/minimap.c \
 
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 

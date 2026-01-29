@@ -54,15 +54,30 @@ int	load_all_tex()
 		return (0);
 	return (1);
 }
-
-int	get_tex_pixel(t_texture	*tex, int x, int y)
+int	get_tex_pixel(t_texture *tex, int x, int y)
 {
-	char	*pixel;
-	int		color;
+    char	*pixel;
+    int		color;
 
-	if (x < 0 || y < 0 || x >= tex->width || y >= tex->height)
-		return (0);
-	pixel = tex->addr + (y * tex->line_len + x * (tex->bpp / 8)); // tex.addr satırın ilk karakteri ile başlar her satır 64 pixel her pixel ise 4 byte  her 4 byte ise 32 bittir (line len ile çarpma sebebimiz her line 256 byte olduğu için satır atlamak için)
-	color = *(int *)pixel;
-	return (color);
+    // Sınır kontrolü
+    if (x < 0 || y < 0 || x >= tex->width || y >= tex->height)
+        return (0x000000);  // Siyah döndür
+    
+    // Pixel adresini hesapla
+    pixel = tex->addr + (y * tex->line_len + x * (tex->bpp / 8));
+    
+    // Rengi oku (little endian)
+    color = *(unsigned int *)pixel;
+    
+    return (color);
 }
+
+// int	get_tex_pixel(t_texture	*tex, int x, int y)
+// {
+// 	char	*pixel;
+// 	int		color;
+
+// 	if (x < 0 || y < 0 || x >= tex->width || y >= tex->height)
+// 		return (0);
+// 	//pixel = tex->addr + ()
+// }
