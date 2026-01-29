@@ -6,7 +6,7 @@
 /*   By: hmzsvc <hmzsvc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/01/06 20:15:38 by hmzsvc           ###   ########.fr       */
+/*   Updated: 2026/01/29 15:55:12 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,8 @@ void init_game(t_game *game)
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	game->data = mlx_get_data_addr(game->img, &game->bbp, &game->size_line, &game->endian);
+	game->map_element_count = 0;
+	game->map_lines_count = 0;
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
@@ -191,15 +193,26 @@ t_game	*global_game()
 }
 
 #include <stdio.h>
-int main(void)
+int main(int ac, char **av)
 {
     t_game *game;
 
     game = global_game();
 
-    init_game(game);
+	init_game(game);
+	//printf("MLX_INIT: $%p$\n", game->mlx);
+	
+	//game->map = read_map("/home/hsyn/desktop/cub3d/maps/maps.cub");
+	read_map(av[1]);
+	load_all_tex();
 
-    game->map = read_map("/home/hamza/cub3D/maps/maps.cub", game);
+	if (!game->map) // Error check gönderilecek
+	{
+		printf("GELDİ\n");
+		return (0);
+	}
+
+    /*game->map = read_map("/home/hamza/cub3D/maps/maps.cub", game);
 
     if (!game->map)
     {
@@ -214,7 +227,7 @@ int main(void)
         close_game(game);
         return (0);
     }
-    printf("✅ Texture'lar başarıyla yüklendi!\n");
+    printf("✅ Texture'lar başarıyla yüklendi!\n");*/
 
     init_minimap(&game->minimap);  // Eğer eklememişseniz
 
