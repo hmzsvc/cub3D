@@ -6,140 +6,157 @@
 /*   By: hmzsvc <hmzsvc@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 15:42:26 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/01/29 17:02:13 by hmzsvc           ###   ########.fr       */
+/*   Updated: 2026/01/30 16:34:13 by hmzsvc           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/game.h"
 
-static bool	is_wall_hit(float x, float y, t_game *game)
+typedef struct s_ray
 {
-    int	map_x;
-    int	map_y;
+    float	angle;
+    int		map_x;
+    int		map_y;
+    float	side_x;
+    float	side_y;
+    float	delta_x;
+    float	delta_y;
+    int		step_x;
+    int		step_y;
+    int		side;
+    float	wall_dist;
+    float	wall_x;
+}	t_ray;
+
+static void	init_ray_direction(t_ray *ray, t_game *g)
+{
+    float	dir_x;
+    float	dir_y;
+
+    dir_x = cos(ray->angle);
+    dir_y = sin(ray->angle);
+    ray->map_x = (int)(g->player.x / BLOCK);
+    ray->map_y = (int)(g->player.y / BLOCK);
+    ray->delta_x = fabs(1.0 / dir_x);
+    ray->delta_y = fabs(1.0 / dir_y);
+    if (dir_x < 0)
+    {
+        ray->step_x = -1;
+        ray->side_x = (g->player.x / BLOCK - ray->map_x) * ray->delta_x;
+    }
+    else
+    {
+        ray->step_x = 1;
+        ray->side_x = (ray->map_x + 1.0 - g->player.x / BLOCK) * ray->delta_x;
+    }
+    if (dir_y < 0)
+    {
+        ray->step_y = -1;
+        ray->side_y = (g->player.y / BLOCK - ray->map_y) * ray->delta_y;
+    }
+    else
+    {
+        ray->step_y = 1;
+        ray->side_y = (ray->map_y + 1.0 - g->player.y / BLOCK) * ray->delta_y;
+    }
+}
+
+static bool	is_wall(int x, int y, t_game *g)
+{
     int	max_y;
     int	max_x;
 
-    map_x = (int)(x / BLOCK);
-    map_y = (int)(y / BLOCK);
-    if (map_y < 0 || map_x < 0)
+    if (y < 0 || x < 0)
         return (true);
     max_y = 0;
-    while (game->map[max_y])
+    while (g->map[max_y])
         max_y++;
-    if (map_y >= max_y)
+    if (y >= max_y)
         return (true);
-    max_x = ft_strlen(game->map[map_y]);
-    if (map_x >= max_x)
+    max_x = ft_strlen(g->map[y]);
+    if (x >= max_x)
         return (true);
-    if (game->map[map_y][map_x] == '1')
-        return (true);
-    return (false);
+    return (g->map[y][x] == '1');
 }
 
-static void	cast_ray_data(t_game *g, float angle, float *ray_info)
+static void	dda_step(t_ray *ray, t_game *g)
 {
-    float	ray_x;
-    float	ray_y;
-    float	step_x;
-    float	step_y;
-
-    ray_x = g->player.x;
-    ray_y = g->player.y;
-    step_x = cos(angle);
-    step_y = sin(angle);
-    while (!is_wall_hit(ray_x, ray_y, g))
+    while (!is_wall(ray->map_x, ray->map_y, g))
     {
-        if (DEBUG)
-            put_pixel(ray_x, ray_y, 0xFF0000, g);
-        ray_x += step_x;
-        ray_y += step_y;
+        if (ray->side_x < ray->side_y)
+        {
+            ray->side_x += ray->delta_x;
+            ray->map_x += ray->step_x;
+            ray->side = 0;
+        }
+        else
+        {
+            ray->side_y += ray->delta_y;
+            ray->map_y += ray->step_y;
+            ray->side = 1;
+        }
     }
-    ray_info[0] = ray_x;
-    ray_info[1] = ray_y;
-    ray_info[2] = step_x;
-    ray_info[3] = step_y;
-    ray_info[4] = sqrt(pow(ray_x - g->player.x, 2) + \
-        pow(ray_y - g->player.y, 2));
 }
 
-// ⭐ YENİ: DUVARIN HANGİ KENARI olduğunu bul (küp yüzü)
-static int	get_wall_face(float hit_x, float hit_y, float step_x, float step_y)
+static void	calc_wall_distance(t_ray *ray, t_game *g)
 {
-    float	dx;
-    float	dy;
-
-    dx = fmod(hit_x, BLOCK);
-    dy = fmod(hit_y, BLOCK);
-    if (dx < 0)
-        dx += BLOCK;
-    if (dy < 0)
-        dy += BLOCK;
-    if (dx < 2.0 && step_x > 0)
-        return (1);
-    if (dx > BLOCK - 2.0 && step_x < 0)
-        return (0);
-    if (dy < 2.0 && step_y > 0)
-        return (3);
-    if (dy > BLOCK - 2.0 && step_y < 0)
-        return (2);
-    if (fabs(step_x) > fabs(step_y))
-        return (step_x > 0 ? 1 : 0);
-    return (step_y > 0 ? 3 : 2);
-}
-
-static t_texture	*select_texture(t_game *game, int face)
-{
-    if (face == 0)
-        return (&game->e_tex);
-    if (face == 1)
-        return (&game->w_tex);
-    if (face == 2)
-        return (&game->s_tex);
-    return (&game->n_tex);
-}
-
-static int	calc_tex_x(float hit_x, float hit_y, t_texture *tex, int face)
-{
-    float	wall_hit;
-    int		tex_x;
-
-    if (face == 0 || face == 1)
-        wall_hit = fmod(hit_y, BLOCK);
+    if (ray->side == 0)
+        ray->wall_dist = (ray->map_x - g->player.x / BLOCK
+                + (1 - ray->step_x) / 2) / cos(ray->angle);
     else
-        wall_hit = fmod(hit_x, BLOCK);
-    if (wall_hit < 0)
-        wall_hit += BLOCK;
-    wall_hit = wall_hit / BLOCK;
-    tex_x = (int)(wall_hit * tex->width);
-    if (tex_x < 0)
-        tex_x = 0;
-    if (tex_x >= tex->width)
-        tex_x = tex->width - 1;
-    return (tex_x);
+        ray->wall_dist = (ray->map_y - g->player.y / BLOCK
+                + (1 - ray->step_y) / 2) / sin(ray->angle);
+    ray->wall_dist = fabs(ray->wall_dist) * BLOCK;
+    ray->wall_dist *= cos(ray->angle - g->player.angle);
 }
 
-// ✅ DÜZELTME 3: Texture Y sınır kontrolü
-static void	draw_texture_column(t_game *g, int x, float dist, \
-    t_texture *tex, int tx)
+static void	calc_wall_x(t_ray *ray, t_game *g)
+{
+    if (ray->side == 0)
+        ray->wall_x = g->player.y / BLOCK + ray->wall_dist
+            * sin(ray->angle) / BLOCK;
+    else
+        ray->wall_x = g->player.x / BLOCK + ray->wall_dist
+            * cos(ray->angle) / BLOCK;
+    ray->wall_x -= floor(ray->wall_x);
+}
+
+static t_texture	*select_texture(t_ray *ray, t_game *g)
+{
+    if (ray->side == 0)
+    {
+        if (ray->step_x > 0)
+            return (&g->e_tex);
+        return (&g->w_tex);
+    }
+    if (ray->step_y > 0)
+        return (&g->s_tex);
+    return (&g->n_tex);
+}
+
+static void	draw_wall_column(t_game *g, int x, t_ray *ray, t_texture *tex)
 {
     int		h;
     int		start;
     int		end;
     int		y;
-    float	tex_pos;
     float	step;
+    float	tex_pos;
+    int		tex_x;
     int		tex_y;
-    int		color;
 
-    if (dist < 1.0)
-        dist = 1.0;
-    h = (int)((BLOCK / dist) * (WIDTH / 2));
+    h = (int)(BLOCK / ray->wall_dist * (WIDTH / 2));
     start = (HEIGHT - h) / 2;
     if (start < 0)
         start = 0;
     end = start + h;
     if (end > HEIGHT)
         end = HEIGHT;
+    tex_x = (int)(ray->wall_x * tex->width);
+    if (tex_x < 0)
+        tex_x = 0;
+    if (tex_x >= tex->width)
+        tex_x = tex->width - 1;
     step = (float)tex->height / h;
     tex_pos = (start - (HEIGHT - h) / 2) * step;
     if (tex_pos < 0)
@@ -148,14 +165,8 @@ static void	draw_texture_column(t_game *g, int x, float dist, \
     while (y < end)
     {
         tex_y = (int)tex_pos;
-        if (tex_y < 0)
-            tex_y = 0;
-        if (tex_y >= tex->height)
-            tex_y = tex->height - 1;
-        color = get_tex_pixel(tex, tx, tex_y);
-        if (color == 0)
-            color = 0xFF00FF;
-        put_pixel(x, y, color, g);
+        if (tex_y >= 0 && tex_y < tex->height)
+            put_pixel(x, y, get_tex_pixel(tex, tex_x, tex_y), g);
         tex_pos += step;
         y++;
     }
@@ -163,33 +174,213 @@ static void	draw_texture_column(t_game *g, int x, float dist, \
 
 void	render_frame(t_game *game)
 {
-    int			i;
-    float		angle;
-    float		ray_info[5];
-    float		dist;
-    int			wall_face;
+    int			x;
+    t_ray		ray;
     t_texture	*tex;
-    int			tex_x;
 
-    i = 0;
-    angle = game->player.angle - (PI / 6);
-    while (i < WIDTH)
+    x = 0;
+    while (x < WIDTH)
     {
-        cast_ray_data(game, angle, ray_info);
-        dist = ray_info[4];
+        ray.angle = game->player.angle - (PI / 6) + ((float)x / WIDTH) * (PI / 3);
+        init_ray_direction(&ray, game);
+        dda_step(&ray, game);
+        calc_wall_distance(&ray, game);
+        calc_wall_x(&ray, game);
+        tex = select_texture(&ray, game);
         if (!DEBUG)
-        {
-            dist = dist * cos(angle - game->player.angle);
-            wall_face = get_wall_face(ray_info[0], ray_info[1], \
-                ray_info[2], ray_info[3]);
-            tex = select_texture(game, wall_face);
-            tex_x = calc_tex_x(ray_info[0], ray_info[1], tex, wall_face);
-            draw_texture_column(game, i, dist, tex, tex_x);
-        }
-        angle += (PI / 3) / WIDTH;
-        i++;
+            draw_wall_column(game, x, &ray, tex);
+        x++;
     }
 }
+// static bool	is_wall_hit(float x, float y, t_game *game)
+// {
+//     int	map_x;
+//     int	map_y;
+//     int	max_y;
+//     int	max_x;
+
+//     map_x = (int)(x / BLOCK);
+//     map_y = (int)(y / BLOCK);
+//     if (map_y < 0 || map_x < 0)
+//         return (true);
+//     max_y = 0;
+//     while (game->map[max_y])
+//         max_y++;
+//     if (map_y >= max_y)
+//         return (true);
+//     max_x = ft_strlen(game->map[map_y]);
+//     if (map_x >= max_x)
+//         return (true);
+//     if (game->map[map_y][map_x] == '1')
+//         return (true);
+//     return (false);
+// }
+
+// static void	cast_ray_data(t_game *g, float angle, float *ray_info)
+// {
+//     float	ray_x;
+//     float	ray_y;
+//     float	step_x;
+//     float	step_y;
+//     float	prev_x;
+//     float	prev_y;
+
+//     ray_x = g->player.x;
+//     ray_y = g->player.y;
+//     step_x = cos(angle);
+//     step_y = sin(angle);
+    
+//     while (!is_wall_hit(ray_x, ray_y, g))
+//     {
+//         if (DEBUG)
+//             put_pixel(ray_x, ray_y, 0xFF0000, g);
+//         prev_x = ray_x;  // ✅ Önceki pozisyonu kaydet
+//         prev_y = ray_y;
+//         ray_x += step_x;
+//         ray_y += step_y;
+//     }
+    
+//     // ✅ Duvara çarpmadan ÖNCEKİ pozisyonu kullan
+//     ray_info[0] = prev_x;
+//     ray_info[1] = prev_y;
+//     ray_info[2] = step_x;
+//     ray_info[3] = step_y;
+//     ray_info[4] = sqrt(pow(prev_x - g->player.x, 2) + \
+//         pow(prev_y - g->player.y, 2));
+// }
+
+// // ⭐ YENİ: DUVARIN HANGİ KENARI olduğunu bul (küp yüzü)
+// static int	get_wall_face(float hit_x, float hit_y, float step_x, float step_y)
+// {
+//     float	dx;
+//     float	dy;
+
+//     dx = fmod(hit_x, BLOCK);
+//     dy = fmod(hit_y, BLOCK);
+//     if (dx < 0)
+//         dx += BLOCK;
+//     if (dy < 0)
+//         dy += BLOCK;
+    
+//     // Hangi kenara daha yakınsak o yüzü seç
+//     if (dx < 1.0)           // Sol kenara çok yakın
+//         return (1);         // WEST
+//     if (dx > BLOCK - 1.0)   // Sağ kenara çok yakın
+//         return (0);         // EAST
+//     if (dy < 1.0)           // Üst kenara çok yakın
+//         return (3);         // NORTH
+//     if (dy > BLOCK - 1.0)   // Alt kenara çok yakın
+//         return (2);         // SOUTH
+    
+//     // Ortadaysa ray yönüne bak
+//     if (fabs(step_x) > fabs(step_y))
+//         return (step_x > 0 ? 0 : 1);
+//     return (step_y > 0 ? 2 : 3);
+// }
+
+// static t_texture	*select_texture(t_game *game, int face)
+// {
+//     if (face == 0)
+//         return (&game->e_tex);
+//     if (face == 1)
+//         return (&game->w_tex);
+//     if (face == 2)
+//         return (&game->s_tex);
+//     return (&game->n_tex);
+// }
+
+// static int	calc_tex_x(float hit_x, float hit_y, t_texture *tex, int face)
+// {
+//     float	wall_hit;
+//     int		tex_x;
+
+//     if (face == 0 || face == 1)
+//         wall_hit = fmod(hit_y, BLOCK);
+//     else
+//         wall_hit = fmod(hit_x, BLOCK);
+//     if (wall_hit < 0)
+//         wall_hit += BLOCK;
+//     wall_hit = wall_hit / BLOCK;
+//     tex_x = (int)(wall_hit * tex->width);
+//     if (tex_x < 0)
+//         tex_x = 0;
+//     if (tex_x >= tex->width)
+//         tex_x = tex->width - 1;
+//     return (tex_x);
+// }
+
+// // ✅ DÜZELTME 3: Texture Y sınır kontrolü
+// static void	draw_texture_column(t_game *g, int x, float dist, \
+//     t_texture *tex, int tx)
+// {
+//     int		h;
+//     int		start;
+//     int		end;
+//     int		y;
+//     float	tex_pos;
+//     float	step;
+//     int		tex_y;
+//     int		color;
+
+//     if (dist < 1.0)
+//         dist = 1.0;
+//     h = (int)((BLOCK / dist) * (WIDTH / 2));
+//     start = (HEIGHT - h) / 2;
+//     if (start < 0)
+//         start = 0;
+//     end = start + h;
+//     if (end > HEIGHT)
+//         end = HEIGHT;
+//     step = (float)tex->height / h;
+//     tex_pos = (start - (HEIGHT - h) / 2) * step;
+//     if (tex_pos < 0)
+//         tex_pos = 0;
+//     y = start;
+//     while (y < end)
+//     {
+//         tex_y = (int)tex_pos;
+//         if (tex_y < 0)
+//             tex_y = 0;
+//         if (tex_y >= tex->height)
+//             tex_y = tex->height - 1;
+//         color = get_tex_pixel(tex, tx, tex_y);
+//         if (color == 0)
+//             color = 0xFF00FF;
+//         put_pixel(x, y, color, g);
+//         tex_pos += step;
+//         y++;
+//     }
+// }
+
+// void	render_frame(t_game *game)
+// {
+//     int			i;
+//     float		angle;
+//     float		ray_info[5];
+//     float		dist;
+//     int			wall_face;
+//     t_texture	*tex;
+//     int			tex_x;
+
+//     i = 0;
+//     angle = game->player.angle - (PI / 6);
+//     while (i < WIDTH)
+//     {
+//         cast_ray_data(game, angle, ray_info);
+//         dist = ray_info[4];
+//         if (!DEBUG)
+//         {
+//             dist = dist * cos(angle - game->player.angle);
+//             wall_face = get_wall_face(ray_info[0], ray_info[1], \
+//                 ray_info[2], ray_info[3]);
+//             tex = select_texture(game, wall_face);
+//             tex_x = calc_tex_x(ray_info[0], ray_info[1], tex, wall_face);
+//             draw_texture_column(game, i, dist, tex, tex_x);
+//         }
+//         angle += (PI / 3) / WIDTH;
+//         i++;
+//     }
+// }
 
 // #include "../inc/game.h"
 
