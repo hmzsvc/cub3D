@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/01/29 15:55:34 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/02 23:13:49 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,54 @@ int	parse_floor_ceiling(char *trimmed)
 	return (0);
 }
 
+static void	player_check_dir(char *line)
+{
+	char	*trimmed;
+	t_game	*game;
+	
+	game = global_game();
+	trimmed = skip_whitespaces(line);
+	while (*trimmed)
+	{
+		if (*trimmed == 'N')
+		{
+			if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
+				printf("HATA1\n");
+			else
+				game->player.dir_check = 1;
+			game->player.dir = 'N';
+		}
+		else if (*trimmed == 'S')
+		{
+			if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
+				printf("HATA2\n");
+			else
+				game->player.dir_check = 1;
+			game->player.dir = 'S';
+		}
+		else if (*trimmed == 'W')
+		{
+			if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
+				printf("HATA3\n");
+			else
+				game->player.dir_check = 1;
+			game->player.dir = 'W';
+		}
+		else if (*trimmed == 'E')
+		{
+			if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
+				printf("HATA4\n");
+			else
+				game->player.dir_check = 1;
+			game->player.dir = 'E';
+		}
+		trimmed++;
+	}
+	
+	
+	printf("player_dir: $%c$\n", game->player.dir);
+}
+
 int	is_map_line(char *line)
 {
 	char	*trimmed;
@@ -236,6 +284,7 @@ static char **read_map_util(int	fd,	int	line_count)
 	{
 		if (is_map_line(line))
 		{
+			player_check_dir(line);
 			map[i] = trim_newline(ft_strdup(line));
 			i++;
 		}

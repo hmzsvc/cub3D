@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 15:23:24 by hsyn              #+#    #+#             */
-/*   Updated: 2026/01/28 20:26:10 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/01/31 14:01:48 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static int	load_tex(t_texture	*tex, char *path)
 	game = global_game();
 	
 
-	tex->width = 60;
-	tex->height = 60;	
+	tex->width = 64;
+	tex->height = 64;	
 	
 	//printf("GAME_MLX: $%p$ - PATH: $%s$ - width: $%d$ - height: $%d$\n", game->mlx, path, tex->width, tex->height);
 	tex->img = mlx_xpm_file_to_image(game->mlx, path, &tex->width, &tex->height);

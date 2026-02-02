@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 15:38:26 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/12/15 17:57:01 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/02 22:52:11 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void init_player(t_player *player)
     player->y = HEIGHT / 2;
     // player->y = 200;
     player->angle = PI / 2;
+	player->dir_check = 0;
     
     player->key_up = false;
     player->key_down = false;

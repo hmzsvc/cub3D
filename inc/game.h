@@ -40,9 +40,12 @@ typedef struct s_minimap
 
 typedef struct s_player
 {
-    float x;
-    float y;
-    float angle;
+    float 	x;
+    float 	y;
+    float 	angle;
+	int		dir_check;
+
+	char	dir;
 
     bool key_up;
     bool key_down;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmzsvc <hmzsvc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/01/29 15:55:12 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/02 22:51:27 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ void init_game(t_game *game)
 	game->data = mlx_get_data_addr(game->img, &game->bbp, &game->size_line, &game->endian);
 	game->map_element_count = 0;
 	game->map_lines_count = 0;
+	
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
