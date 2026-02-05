@@ -6,7 +6,7 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 15:38:26 by hasivaci          #+#    #+#             */
-/*   Updated: 2025/12/15 17:57:01 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/05 17:03:27 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void init_player(t_player *player)
     // player->x = 200;
     player->y = HEIGHT / 2;
     // player->y = 200;
-    player->angle = PI / 2;
+    player->angle = 2 * PI;
     
     player->key_up = false;
     player->key_down = false;
@@ -33,10 +33,10 @@ int key_press(int keycode, t_player *player)
 {
     if (keycode == W)
         player->key_up = true;
-    if (keycode == S)
-        player->key_down = true;
     if (keycode == A)
         player->key_left = true;
+    if (keycode == S)
+        player->key_down = true;
     if (keycode == D)
         player->key_right = true;
     
@@ -53,10 +53,10 @@ int key_release(int keycode, t_player *player)
 {
     if (keycode == W)
         player->key_up = false;
-    if (keycode == S)
-        player->key_down = false;
     if (keycode == A)
         player->key_left = false;
+    if (keycode == S)
+        player->key_down = false;
     if (keycode == D)
         player->key_right = false;
     if (keycode == LEFT)
@@ -149,18 +149,6 @@ void move_player(t_player *player)
         player->x = new_x;
         player->y = new_y;
     }
-    
-    // // 🚨 DUVAR KONTROLÜ - YENİ POZİSYON DUVARIN İÇİNDE Mİ?
-    // int map_x = (int)(new_x / BLOCK);
-    // int map_y = (int)(new_y / BLOCK);
-    
-    // // Eğer yeni pozisyon duvar değilse ('1' değilse), harekete izin ver
-    // if (player->game->map[map_y][map_x] != '1')
-    // {
-    //     player->x = new_x;
-    //     player->y = new_y;
-    // }
-    // // Eğer duvarsa ('1' ise), hareket etme - eski konumda kal
 }
 
 // void move_player(t_player *player)
