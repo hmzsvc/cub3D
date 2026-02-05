@@ -11,21 +11,7 @@
 /* ************************************************************************** */
 #include "../inc/game.h"
 
-typedef struct s_ray
-{
-    float   angle;
-    int     map_x;
-    int     map_y;
-    float   side_x;
-    float   side_y;
-    float   delta_x;
-    float   delta_y;
-    int     step_x;
-    int     step_y;
-    int     side;
-    float   wall_dist;
-    float   wall_x;
-}   t_ray;
+
 
 static void init_ray_direction(t_ray *ray, t_game *g)
 {
