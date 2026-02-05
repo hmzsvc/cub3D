@@ -48,7 +48,7 @@
 c.md
 .tmp_versions/
 modules.order
-.github
+.github/instructions
 Module.symvers
 read.md
 Mkfile.old
