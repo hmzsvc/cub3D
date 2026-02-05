@@ -45,10 +45,15 @@
 # Kernel Module Compile Results
 *.mod*
 *.cmd
+c.md
 .tmp_versions/
 modules.order
+.github
 Module.symvers
+read.md
 Mkfile.old
+a.md
+d.md
 dkms.conf
 
 # debug information files
