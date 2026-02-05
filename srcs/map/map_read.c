@@ -100,7 +100,7 @@ static char *trim_newline(char *str)
 	len = ft_strlen(str);
 	while (len > 0 && (str[len - 1] == '\n' || str[len - 1] == '\r'))
 	{
-		str[len - 1] == '\0';
+		str[len - 1] = '\0';
 		len--;
 	}
 	return (str);
@@ -188,6 +188,7 @@ static void	player_check_dir(char *line)
 			else
 				game->player.dir_check = 1;
 			game->player.dir = 'N';
+			game->player.angle = 3 * (PI / 2);
 		}
 		else if (*trimmed == 'S')
 		{
@@ -196,6 +197,7 @@ static void	player_check_dir(char *line)
 			else
 				game->player.dir_check = 1;
 			game->player.dir = 'S';
+			game->player.angle = PI / 2;
 		}
 		else if (*trimmed == 'W')
 		{
@@ -204,6 +206,7 @@ static void	player_check_dir(char *line)
 			else
 				game->player.dir_check = 1;
 			game->player.dir = 'W';
+			game->player.angle = PI;
 		}
 		else if (*trimmed == 'E')
 		{
@@ -212,6 +215,7 @@ static void	player_check_dir(char *line)
 			else
 				game->player.dir_check = 1;
 			game->player.dir = 'E';
+			game->player.angle = 0;
 		}
 		trimmed++;
 	}
