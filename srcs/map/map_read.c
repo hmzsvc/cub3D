@@ -183,45 +183,42 @@ static void	player_check_dir(char *line)
 	{
 		if (*trimmed == 'N')
 		{
-			if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
-				printf("HATA1\n");
-			else
-				game->player.dir_check = 1;
-			game->player.dir = 'N';
-			game->player.angle = 3 * (PI / 2);
+			set_player_dir(3 * (PI / 2));
+			// if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
+			// 	printf("HATA1\n");
+			// else
+			// 	game->player.dir_check = 1;
+			// game->player.angle = 3 * (PI / 2);
 		}
 		else if (*trimmed == 'S')
 		{
-			if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
-				printf("HATA2\n");
-			else
-				game->player.dir_check = 1;
-			game->player.dir = 'S';
-			game->player.angle = PI / 2;
+			set_player_dir(PI / 2);
+			// if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
+			// 	printf("HATA2\n");
+			// else
+			// 	game->player.dir_check = 1;
+			// game->player.angle = PI / 2;
 		}
 		else if (*trimmed == 'W')
 		{
-			if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
-				printf("HATA3\n");
-			else
-				game->player.dir_check = 1;
-			game->player.dir = 'W';
-			game->player.angle = PI;
+			set_player_dir(PI);
+			// if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
+			// 	printf("HATA3\n");
+			// else
+			// 	game->player.dir_check = 1;
+			// game->player.angle = PI;
 		}
 		else if (*trimmed == 'E')
 		{
-			if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
-				printf("HATA4\n");
-			else
-				game->player.dir_check = 1;
-			game->player.dir = 'E';
-			game->player.angle = 0;
+			set_player_dir(0);
+			// if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
+			// 	printf("HATA4\n");
+			// else
+			// 	game->player.dir_check = 1;
+			// game->player.angle = 0;
 		}
 		trimmed++;
 	}
-	
-	
-	printf("player_dir: $%c$\n", game->player.dir);
 }
 
 int	is_map_line(char *line)

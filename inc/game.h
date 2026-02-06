@@ -61,8 +61,6 @@ typedef struct s_player
     float 	angle;
 	int		dir_check;
 
-	char	dir;
-
     bool key_up;
     bool key_down;
     bool key_left;
@@ -170,7 +168,7 @@ int	parse_element_continue(char *trimmed);
 //static char *trim_newline(char *str);
 //static int	parse_color(char *line);
 char *whitespaces_term(char *line);
-
+void	set_player_dir(double angle);
 
 
 

@@ -18,7 +18,7 @@ void init_player(t_player *player)
     // player->x = 200;
     player->y = HEIGHT / 2;
     // player->y = 200;
-    player->angle = PI / 2;
+    player->angle = 0;
 	player->dir_check = 0;
     
     player->key_up = false;
