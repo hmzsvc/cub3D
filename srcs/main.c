@@ -125,7 +125,7 @@ void clear_image(t_game *game)
 // Oyun yapılarını ve MLX kütüphanesini başlatan fonksiyon
 void init_game(t_game *game)
 {	
-	init_player(&game->player);
+	// init_player(&game->player);
 	init_minimap(&game->minimap);
 	game->mlx = mlx_init();
 	//game->map = get_map();
@@ -135,7 +135,7 @@ void init_game(t_game *game)
 	game->map_element_count = 0;
 	game->map_lines_count = 0;
 	
-	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
+	// mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
 // Ana oyun döngüsü - her frame'de çalışan fonksiyon
@@ -199,19 +199,20 @@ int main(int ac, char **av)
     t_game *game;
 
     game = global_game();
+	init_player(&game->player);
 
-	init_game(game);
 	//printf("MLX_INIT: $%p$\n", game->mlx);
 	
 	//game->map = read_map("/home/hsyn/desktop/cub3d/maps/maps.cub");
 	read_map(av[1]);
-	load_all_tex();
 
 	if (!game->map) // Error check gönderilecek
 	{
 		printf("GELDİ\n");
 		return (0);
 	}
+	init_game(game);
+	load_all_tex();
 
     /*game->map = read_map("/home/hamza/cub3D/maps/maps.cub", game);
 
