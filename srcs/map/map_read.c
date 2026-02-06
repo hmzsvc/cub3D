@@ -28,39 +28,6 @@ static int	open_map(char *map_path)
 	return (fd);
 }
 
-char *whitespaces_term(char *line)
-{
-	int	i;
-	int	j;
-	char	*result;
-
-	i = 0;
-	j = 0;
-	if (!line)
-		return (NULL);	
-
-	result = calloc(ft_strlen(line) + 1, sizeof(char));
-	if (!result)
-		return (NULL);
-	
-	while (line[j])
-	{
-		//while (*line && (*line == ' ' || *line == '\t'))
-		//	line++;
-		if (line[j] != ' ' && line[j] != '\t' && line[j] != '\n')
-		{
-			result[i] = line[j];
-			i++;
-		}
-		j++;
-
-	}
-	result[i] = '\0';
-	//printf("result: $%s$\n", result);
-	return (result);
-}
-
-
 static char *skip_whitespaces(char *line)
 {
 	while (*line && (*line == ' ' || *line == '\t'))
@@ -182,41 +149,13 @@ static void	player_check_dir(char *line)
 	while (*trimmed)
 	{
 		if (*trimmed == 'N')
-		{
 			set_player_dir(3 * (PI / 2));
-			// if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
-			// 	printf("HATA1\n");
-			// else
-			// 	game->player.dir_check = 1;
-			// game->player.angle = 3 * (PI / 2);
-		}
 		else if (*trimmed == 'S')
-		{
 			set_player_dir(PI / 2);
-			// if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
-			// 	printf("HATA2\n");
-			// else
-			// 	game->player.dir_check = 1;
-			// game->player.angle = PI / 2;
-		}
 		else if (*trimmed == 'W')
-		{
 			set_player_dir(PI);
-			// if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
-			// 	printf("HATA3\n");
-			// else
-			// 	game->player.dir_check = 1;
-			// game->player.angle = PI;
-		}
 		else if (*trimmed == 'E')
-		{
 			set_player_dir(0);
-			// if (game->player.dir_check != 0) // Burada hata yazdirip exit aticaz
-			// 	printf("HATA4\n");
-			// else
-			// 	game->player.dir_check = 1;
-			// game->player.angle = 0;
-		}
 		trimmed++;
 	}
 }
@@ -344,61 +283,3 @@ int read_map(char *path)
 	close (fd);
 	return (0);
 }
-
-
-
-
-//				OLD
-
-//static int	open_map(char *map_path)
-//{
-//	int	fd;
-
-//	fd = open(map_path, O_RDONLY);
-//	if (!fd)
-//	{
-
-//		perror("Fd cannot open!");
-//		return (0);
-//	}
-//	return (fd);
-//}
-
-//static char *read_map_utility(int fd)
-//{
-//	char	*line;
-//	char	*temp;
-//	char	*joined_map;
-
-//	joined_map = NULL;
-//	line = get_next_line(fd);
-//	while (line)
-//	{
-//		temp = joined_map;
-//		joined_map = ft_strjoin(joined_map, line);
-//		if (temp)
-//			free(temp);
-//		free(line);
-//		line = get_next_line(fd);
-//	}
-//	return (joined_map);
-//}
-
-//char	**read_map(char *map_path, t_game *game)
-//{
-//	int		fd;
-//	char	**map;
-//	char	*map_line;
-
-//	fd = open_map(map_path);
-//	if (fd <= 0)
-//		return (NULL);
-
-//	map_line = read_map_utility(fd);
-//	close(fd);
-//	if (!map_line)
-//		return (NULL);
-//	map =  ft_split(map_line, '\n');
-//	free(map_line);
-//	return (map);
-//}
