@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/02 23:13:49 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/07 19:07:35 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	open_map(char *map_path)
 	return (fd);
 }
 
-static char *skip_whitespaces(char *line)
+char *skip_whitespaces(char *line)
 {
 	while (*line && (*line == ' ' || *line == '\t'))
 		line++;
@@ -165,8 +165,10 @@ int	is_map_line(char *line)
 	char	*trimmed;
 
 	trimmed = skip_whitespaces(line);
-	if (*trimmed == '1' ||*trimmed == '0')
+	if (*trimmed == '1' || *trimmed == '0')
+	{
 		return (1);
+	}
 	return (0);
 }
 
@@ -180,7 +182,17 @@ int	is_empty_line(char *line)
 	return (0);
 }
 
-static int	count_map_lines(int fd)
+int	map_space_check(char *line)
+{
+	char	*trimmed;
+
+	trimmed = skip_whitespaces(line);
+	if (*trimmed == '\n')
+		return (1);
+	return (0);
+}
+
+static int	count_map_lines(int fd) // Map started olduğunda map line count artacak fakat is_empty ile new line kontrolü yaparak map arasında boşluk varmı check eklenecek 
 {
 	char	*line;
 	int		line_count;
@@ -189,15 +201,20 @@ static int	count_map_lines(int fd)
 	line_count = 0;
 	map_started = 0;
 	line = get_next_line(fd);
+
 	while (line)
 	{
+		//printf("LİNE: $%s$\n", line);
+
 		if (is_map_line(line))
 		{
 			map_started = 1;
 			line_count++;
 		}
-		else if (map_started && !is_empty_line(line) && is_map_line(line))
-			break;
+		else if (map_started == 1 && !is_map_line(line) && map_space_check(line))
+			printf("HATAAAASDASDASDSADASDASAAAA\n");;
+		//else if (map_started && !is_empty_line(line) && is_map_line(line))
+		//	break;
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -206,6 +223,7 @@ static int	count_map_lines(int fd)
 		free(line);
 		line = get_next_line(fd);
 	}
+	//printf("LINE_COUNT: $%d$\n", line_count);
 	return (line_count);
 }
 
@@ -220,6 +238,7 @@ static char **read_map_util(int	fd,	int	line_count)
 		return (NULL);
 	i = 0;
 	line = get_next_line(fd);
+
 	while (line && i < line_count)
 	{
 		if (is_map_line(line))
@@ -244,6 +263,7 @@ static int	parse_util(int fd, t_game *game)
 	line = get_next_line(fd);
 	while (line && count < 6)
 	{
+
 		if (!is_empty_line(line) && !is_map_line(line))
 		{
 			if (parse_element(line))
@@ -280,6 +300,7 @@ int read_map(char *path)
 		return (1);
 	fd = open_map(path);
 	game->map = read_map_util(fd, game->map_lines_count);
+	game->map_clone = read_map_util(fd, game->map_lines_count);
 	close (fd);
 	return (0);
 }

@@ -101,6 +101,7 @@ typedef struct s_game
     int endian;
     
     char **map;
+    char **map_clone;
 
     t_player player;
     t_minimap minimap;
@@ -169,6 +170,7 @@ int	parse_element_continue(char *trimmed);
 //static int	parse_color(char *line);
 char *whitespaces_term(char *line);
 void	set_player_dir(double angle);
+char *skip_whitespaces(char *line);
 
 
 
