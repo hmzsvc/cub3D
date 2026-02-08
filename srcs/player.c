@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 15:38:26 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/02 22:52:11 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/08 19:15:26 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 void init_player(t_player *player)
 {
-    player->x = WIDTH / 2;
-    // player->x = 200;
-    player->y = HEIGHT / 2;
+    player->x = 0;
+    //player->y = HEIGHT / 2;
+	player->y = 0;
     // player->y = 200;
     player->angle = 0;
 	player->dir_check = 0;
     
+	//printf("Player_x: $%d$ - Player_y: $%d$\n", player->x, player->y);
     player->key_up = false;
     player->key_down = false;
     player->key_right = false;

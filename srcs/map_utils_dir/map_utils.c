@@ -21,7 +21,7 @@ void	set_player_dir(double angle)
 		printf("Player Dir ERROR\n");
 	else
 		game->player.dir_check = 1;
-	game->player.angle = angle;	
+	game->player.angle = angle;
 }
 
 char *whitespaces_term(char *line)

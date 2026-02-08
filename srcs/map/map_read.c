@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/07 19:07:35 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/08 19:13:33 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,34 @@ static int	open_map(char *map_path)
 		return (0);
 	}
 	return (fd);
+}
+
+static void read_cub(int fd)
+{
+	char	*line;
+	char	*joined_map;
+	char	*temp;
+	t_game	*game;
+
+	game = global_game();
+	joined_map = NULL;
+	temp = NULL;
+	line = get_next_line(fd);
+	while (line)
+	{
+		temp = joined_map;
+		joined_map = ft_strjoin(joined_map, line);
+		if (temp)
+			free(temp);
+		free(line);
+		line = get_next_line(fd);
+	}
+	game->all_line = ft_split(joined_map, '\n');
+	//for (size_t i = 0; game->all_line[i]; i++)
+	//{
+	//	printf("ALL_LINES[%d]: $%s$\n", i, game->all_line[i]);
+	//}
+	
 }
 
 char *skip_whitespaces(char *line)
@@ -139,24 +167,42 @@ int	parse_floor_ceiling(char *trimmed)
 	return (0);
 }
 
-static void	player_check_dir(char *line)
+static void	player_check_dir(char *line, int map_y) // Burada player x ve y almak için çift boyutlu diziye geçmek lazım
 {
+	int		index;
 	char	*trimmed;
 	t_game	*game;
 	
+	index = 0;
 	game = global_game();
 	trimmed = skip_whitespaces(line);
-	while (*trimmed)
+	while (trimmed[index])
 	{
-		if (*trimmed == 'N')
+		if (trimmed[index] == 'N')
+		{
 			set_player_dir(3 * (PI / 2));
-		else if (*trimmed == 'S')
+			game->player.x = (index * BLOCK) + (BLOCK / 2);
+			game->player.y = (map_y * BLOCK) + (BLOCK / 2);
+		}
+		else if (trimmed[index] == 'S')
+		{
 			set_player_dir(PI / 2);
-		else if (*trimmed == 'W')
+			game->player.x = (index * BLOCK) + (BLOCK / 2);
+			game->player.y = (map_y * BLOCK) + (BLOCK / 2);
+		}
+		else if (trimmed[index] == 'W')
+		{
 			set_player_dir(PI);
-		else if (*trimmed == 'E')
+			game->player.x = (index * BLOCK) + (BLOCK / 2);
+			game->player.y = (map_y * BLOCK) + (BLOCK / 2);
+		}
+		else if (trimmed[index] == 'E')
+		{
 			set_player_dir(0);
-		trimmed++;
+			game->player.x = (index * BLOCK) + (BLOCK / 2);
+			game->player.y = (map_y * BLOCK) + (BLOCK / 2);
+		}
+		index++;
 	}
 }
 
@@ -192,90 +238,93 @@ int	map_space_check(char *line)
 	return (0);
 }
 
-static int	count_map_lines(int fd) // Map started olduğunda map line count artacak fakat is_empty ile new line kontrolü yaparak map arasında boşluk varmı check eklenecek 
+static int	count_map_lines() // Map started olduğunda map line count artacak fakat is_empty ile new line kontrolü yaparak map arasında boşluk varmı check eklenecek 
 {
-	char	*line;
+	char	**line;
 	int		line_count;
 	int		map_started;
+	int		index;
+	t_game *game;
 
+	game = global_game();
 	line_count = 0;
 	map_started = 0;
-	line = get_next_line(fd);
-
-	while (line)
+	//line = game->all_line;
+	index = 0;
+	while (game->all_line[index])
 	{
-		//printf("LİNE: $%s$\n", line);
-
-		if (is_map_line(line))
+		if (is_map_line(game->all_line[index]))
 		{
 			map_started = 1;
 			line_count++;
 		}
-		else if (map_started == 1 && !is_map_line(line) && map_space_check(line))
+		else if (map_started == 1 && !is_map_line(game->all_line[index]) && map_space_check(game->all_line[index]))
 			printf("HATAAAASDASDASDSADASDASAAAA\n");;
 		//else if (map_started && !is_empty_line(line) && is_map_line(line))
 		//	break;
-		free(line);
-		line = get_next_line(fd);
+		//free(*line);
+		index++;
 	}
-	while (line)
-	{
-		free(line);
-		line = get_next_line(fd);
-	}
+	//while (*line)
+	//{
+	//	free(*line);
+	//	*line++;
+	//}
 	//printf("LINE_COUNT: $%d$\n", line_count);
 	return (line_count);
 }
 
-static char **read_map_util(int	fd,	int	line_count)
+static char **read_map_util(int	line_count)
 {
+	t_game	*game;
 	char	**map;
-	char	*line;
 	int		i;
+	int		index;
 
+	game = global_game();
 	map	= calloc(sizeof(char *), line_count + 1);
 	if (!map)
 		return (NULL);
 	i = 0;
-	line = get_next_line(fd);
-
-	while (line && i < line_count)
+	index = 0;
+	while (game->all_line[index] && i < line_count)
 	{
-		if (is_map_line(line))
+		if (is_map_line(game->all_line[index]))
 		{
-			player_check_dir(line);
-			map[i] = trim_newline(ft_strdup(line));
+			player_check_dir(game->all_line[index], i);
+			map[i] = trim_newline(ft_strdup(game->all_line[index]));
 			i++;
 		}
-		free(line);
-		line = get_next_line(fd);
+		//free(*line);
+		index++;
 	}
 	map[i] = NULL;
 	return (map);
 }
 
-static int	parse_util(int fd, t_game *game)
+static int	parse_util(t_game *game)
 {
-	char	*line;
+	char	**line;
 	int		count;
+	int		index;
 
 	count = 0;
-	line = get_next_line(fd);
-	while (line && count < 6)
+	index = 0;
+	//line = game->all_line;
+	while (game->all_line[index] && count < 6)
 	{
-
-		if (!is_empty_line(line) && !is_map_line(line))
+		if (!is_empty_line(game->all_line[index]) && !is_map_line(game->all_line[index]))
 		{
-			if (parse_element(line))
+			if (parse_element(game->all_line[index]))
 				count++;
 		}
-		else if (is_map_line(line))
+		else if (is_map_line(game->all_line[index]))
 		{
-			free(line);
+			//free(game->all_line[index]);
 			break;
 		}
-		free(line);
-		line = get_next_line(fd);
+		//free(*line);
+		index++;
 	}
 	return (count);
 }
@@ -289,18 +338,15 @@ int read_map(char *path)
 	fd = open_map(path);
 	if (fd < 0)
 		return (1);
-	game->map_element_count = parse_util(fd, game);
+	read_cub(fd);
 	close(fd);
+	game->map_element_count = parse_util(game);
 	if (game->map_element_count != 6) // Hata kontrolü & Hata mesajı:(Map elements err)
 		return (1);
-	fd = open_map(path);
-	game->map_lines_count = count_map_lines(fd);
-	close(fd);
+	game->map_lines_count = count_map_lines();
 	if (game->map_lines_count == 0) // BURASI TEKRAR KONTROL EDİLECEK
 		return (1);
-	fd = open_map(path);
-	game->map = read_map_util(fd, game->map_lines_count);
-	game->map_clone = read_map_util(fd, game->map_lines_count);
-	close (fd);
+	game->map = read_map_util(game->map_lines_count);
+	//game->map_clone = read_map_util(fd, game->map_lines_count);
 	return (0);
 }

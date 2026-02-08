@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 16:09:51 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/07 16:37:23 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/08 18:36:11 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	wall_control_util(int x, int y)
 	
 }
 
-void	wall_control(char *line)
+void	wall_control(const char *line)
 {
 	t_game	*game;
 	int		x;

@@ -89,6 +89,7 @@ typedef struct s_game
 {
 	int	map_element_count; //MAP ELEMENTS COUNT
 	int	map_lines_count; //MAP LİNES COUNT
+	int	cub_lines_count;
 
 
     void *mlx;
@@ -100,8 +101,9 @@ typedef struct s_game
     int size_line;
     int endian;
     
-    char **map;
-    char **map_clone;
+	char	**all_line;
+    char	**map;
+    char	**map_clone;
 
     t_player player;
     t_minimap minimap;
@@ -158,9 +160,9 @@ t_game *global_game();
 //	-------------- MAP -------------- 
 //char	**read_map(char *map_path, t_game *game);
 int	read_map(char *map_path);
-static int	parse_util(int fd, t_game *game);
-static char **read_map_util(int	fd,	int	line_count);
-static int	count_map_lines(int fd);
+static int	parse_util(t_game *game);
+static char **read_map_util(int	line_count);
+static int	count_map_lines();
 int	is_empty_line(char *line);
 int	is_map_line(char *line);
 int	parse_floor_ceiling(char *trimmed);
