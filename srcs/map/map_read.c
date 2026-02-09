@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/08 19:13:33 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/10 01:42:01 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,19 @@ static void read_cub(int fd)
 	char	*joined_map;
 	char	*temp;
 	t_game	*game;
+	int		flag;
 
 	game = global_game();
 	joined_map = NULL;
 	temp = NULL;
 	line = get_next_line(fd);
+	flag = 0;
 	while (line)
 	{
+		if (is_map_line(line))
+			flag = 1;
+		if (flag == 1 && !is_map_line(line)) // Hata yazdirilicaka ve exit atilacak
+			printf("HARITADA BOSLUK VAR!\n");
 		temp = joined_map;
 		joined_map = ft_strjoin(joined_map, line);
 		if (temp)
@@ -208,14 +214,23 @@ static void	player_check_dir(char *line, int map_y) // Burada player x ve y alma
 
 int	is_map_line(char *line)
 {
-	char	*trimmed;
+	int		i;
+	//char	*trimmed;
 
-	trimmed = skip_whitespaces(line);
-	if (*trimmed == '1' || *trimmed == '0')
-	{
+	i = 0;
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	
+	if (line[i] == '1' || line[i] == '0')
 		return (1);
-	}
 	return (0);
+
+	//trimmed = skip_whitespaces(line);	
+	//if (*trimmed == '1' || *trimmed == '0')
+	//{
+	//	return (1);
+	//}
+	//return (0);
 }
 
 int	is_empty_line(char *line)
