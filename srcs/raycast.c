@@ -6,269 +6,261 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 15:42:26 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/05 17:39:16 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/09 15:50:57 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/game.h"
 
-/* Işın verisi yapısı - tek bir raycasting işlemi için gerekli bilgiler */
+/* Işın verisi yapısı - Raycasting işlemi için anlık durum bilgileri */
 typedef struct s_ray
 {
-    float	angle;      /* Işının açısı (radyan cinsinden) */
-    int		map_x;      /* Şu anki grid X pozisyonu */
-    int		map_y;      /* Şu anki grid Y pozisyonu */
-    float	side_x;     /* Sonraki dikey grid çizgisine mesafe */
-    float	side_y;     /* Sonraki yatay grid çizgisine mesafe */
-    float	delta_x;    /* Dikey grid çizgileri arası mesafe */
-    float	delta_y;    /* Yatay grid çizgileri arası mesafe */
-    int		step_x;     /* X yönünde ilerleme (-1 veya +1) */
-    int		step_y;     /* Y yönünde ilerleme (-1 veya +1) */
-    int		side;       /* Çarpılan duvar yüzü (0=dikey, 1=yatay) */
-    float	wall_dist;  /* Duvara dik mesafe */
-    float	wall_x;     /* Duvardaki tam çarpma noktası (0.0-1.0 arası) */
-}	t_ray;
+    float   angle;      /* Işının atıldığı açı (radyan) */
+    int     map_x;      /* Işının haritada bulunduğu anlık X karesi */
+    int     map_y;      /* Işının haritada bulunduğu anlık Y karesi */
+    float   side_x;     /* Bir sonraki X kenarına olan uzaklık */
+    float   side_y;     /* Bir sonraki Y kenarına olan uzaklık */
+    float   delta_x;    /* Bir X karesi gitmek için ışının kat edeceği mesafe */
+    float   delta_y;    /* Bir Y karesi gitmek için ışının kat edeceği mesafe */
+    int     step_x;     /* X ekseninde ilerleme yönü (-1: Sol, +1: Sağ) */
+    int     step_y;     /* Y ekseninde ilerleme yönü (-1: Yukarı, +1: Aşağı) */
+    int     side;       /* Son çarpılan duvar yüzü (0: Dikey, 1: Yatay) */
+    float   wall_dist;  /* Duvara olan dik mesafe (Grid birimi cinsinden) */
+    float   wall_x;     /* Duvar yüzeyindeki tam çarpma noktası (0.0 - 1.0) */
+}   t_ray;
 
-/* Işın yönünü ve DDA algoritması parametrelerini başlatır */
-static void	init_ray_direction(t_ray *ray, t_game *g)
+/* Işın yön vektörlerini ve DDA başlangıç parametrelerini hesaplar */
+static void init_ray_direction(t_ray *ray, t_game *g, float dir_x, float dir_y)
 {
-    float	dir_x;
-    float	dir_y;
-
-    /* Açıdan ışın yön vektörünü hesapla */
-    dir_x = cos(ray->angle);
-    dir_y = sin(ray->angle);
-    
-    /* Oyuncu piksel pozisyonunu grid koordinatlarına çevir */
+    /* Oyuncunun piksel konumunu grid (kutu) koordinatına çevir */
     ray->map_x = (int)(g->player.x / BLOCK);
     ray->map_y = (int)(g->player.y / BLOCK);
     
-    /* Sonraki grid çizgisine kadar artış miktarını hesapla */
+    /* Bir birim kare ilerlemek için gereken delta mesafelerini hesapla */
     ray->delta_x = fabs(1.0 / dir_x);
     ray->delta_y = fabs(1.0 / dir_y);
     
-    /* X yönü adımını ve başlangıç yan mesafesini ayarla */
+    /* X ekseni için adım yönünü ve ilk kenar mesafesini (side_x) belirle */
     if (dir_x < 0)
     {
-        ray->step_x = -1;  /* Işın sola gidiyor */
+        ray->step_x = -1;  /* Sola gidiyor */
         ray->side_x = (g->player.x / BLOCK - ray->map_x) * ray->delta_x;
     }
     else
     {
-        ray->step_x = 1;  /* Işın sağa gidiyor */
+        ray->step_x = 1;  /* Sağa gidiyor */
         ray->side_x = (ray->map_x + 1.0 - g->player.x / BLOCK) * ray->delta_x;
     }
     
-    /* Y yönü adımını ve başlangıç yan mesafesini ayarla */
+    /* Y ekseni için adım yönünü ve ilk kenar mesafesini (side_y) belirle */
     if (dir_y < 0)
     {
-        ray->step_y = -1;  /* Işın yukarı gidiyor */
+        ray->step_y = -1;  /* Yukarı gidiyor */
         ray->side_y = (g->player.y / BLOCK - ray->map_y) * ray->delta_y;
     }
     else
     {
-        ray->step_y = 1;  /* Işın aşağı gidiyor */
+        ray->step_y = 1;  /* Aşağı gidiyor */
         ray->side_y = (ray->map_y + 1.0 - g->player.y / BLOCK) * ray->delta_y;
     }
 }
 
-/* Verilen grid pozisyonunda duvar olup olmadığını kontrol eder */
-static bool	is_wall(int x, int y, t_game *g)
+/* Verilen grid koordinatının duvar olup olmadığını kontrol eder */
+static bool is_wall(int x, int y, t_game *g)
 {
-    int	max_y;
-    int	max_x;
+    int max_y;
+    int max_x;
 
-    /* Sınır kontrolü: negatif koordinatlar duvardır */
+    /* Harita sınırları dışı kontrolü (Negatif indeks) */
     if (y < 0 || x < 0)
         return (true);
     
-    /* Harita yüksekliğini hesapla (satır sayısı) */
+    /* Harita satır sayısını hesapla */
     max_y = 0;
     while (g->map[max_y])
         max_y++;
     
-    /* Sınır kontrolü: harita yüksekliğinin ötesi duvardır */
+    /* Y ekseni taşma kontrolü */
     if (y >= max_y)
         return (true);
     
-    /* Mevcut satırın genişliğini hesapla */
+    /* İlgili satırın uzunluğunu hesapla */
     max_x = ft_strlen(g->map[y]);
     
-    /* Sınır kontrolü: satır genişliğinin ötesi duvardır */
+    /* X ekseni taşma kontrolü */
     if (x >= max_x)
         return (true);
     
-    /* Hücrede '1' karakteri var mı kontrol et */
+    /* Koordinattaki karakter '1' (Duvar) mi? */
     return (g->map[y][x] == '1');
 }
 
-/* DDA algoritması - duvara çarpana kadar grid üzerinde ilerler */
-static void	dda_step(t_ray *ray, t_game *g)
+/* DDA (Digital Differential Analyzer) algoritmasını çalıştırır */
+static void dda_step(t_ray *ray, t_game *g)
 {
-    /* Işın duvara çarpana kadar döngü */
+    /* Duvar bulunana kadar ışını grid üzerinde ilerlet */
     while (!is_wall(ray->map_x, ray->map_y, g))
     {
-        /* Sonraki grid çizgilerine olan mesafeleri karşılaştır */
+        /* Hangi eksendeki kenar daha yakınsa o yönde ilerle */
         if (ray->side_x < ray->side_y)
         {
-            /* Sonraki dikey çizgi daha yakın */
-            ray->side_x += ray->delta_x;  /* Sonraki dikey çizgiye geç */
-            ray->map_x += ray->step_x;    /* Grid X pozisyonunu güncelle */
-            ray->side = 0;                /* Dikey duvara çarptı olarak işaretle */
+            ray->side_x += ray->delta_x;  /* X kenarına zıpla */
+            ray->map_x += ray->step_x;    /* Grid X'i güncelle */
+            ray->side = 0;                /* Çarpılan yüzey: Dikey */
         }
         else
         {
-            /* Sonraki yatay çizgi daha yakın */
-            ray->side_y += ray->delta_y;  /* Sonraki yatay çizgiye geç */
-            ray->map_y += ray->step_y;    /* Grid Y pozisyonunu güncelle */
-            ray->side = 1;                /* Yatay duvara çarptı olarak işaretle */
+            ray->side_y += ray->delta_y;  /* Y kenarına zıpla */
+            ray->map_y += ray->step_y;    /* Grid Y'yi güncelle */
+            ray->side = 1;                /* Çarpılan yüzey: Yatay */
         }
     }
 }
 
-/* Duvara dik mesafeyi hesaplar (balık gözü etkisi düzeltilmiş) */
-static void	calc_wall_distance(t_ray *ray, t_game *g)
+/* Işının kat ettiği mesafeyi hesaplar ve balık gözü etkisini düzeltir */
+static void calc_wall_distance(t_ray *ray, t_game *g)
 {
-    /* Hangi yüze çarptığına göre mesafeyi hesapla */
+    /* Çarpılan yüze göre dik mesafeyi (Euclidean değil) hesapla */
+    /* Not: Sonuç piksel değil, GRID BİRİMİ (kaç kutu ötede) cinsindendir */
     if (ray->side == 0)
-        /* Dikey duvar: X mesafesini kullan */
         ray->wall_dist = (ray->map_x - g->player.x / BLOCK
                 + (1 - ray->step_x) / 2) / cos(ray->angle);
     else
-        /* Yatay duvar: Y mesafesini kullan */
         ray->wall_dist = (ray->map_y - g->player.y / BLOCK
                 + (1 - ray->step_y) / 2) / sin(ray->angle);
     
-    /* Grid mesafesini piksel mesafesine çevir */
+    /* Mesafenin negatif olma ihtimaline karşı mutlak değer al */
     ray->wall_dist = fabs(ray->wall_dist);
     
-    /* Balık gözü düzeltmesi uygula (dik mesafe) */
+    /* Balık gözü (Fisheye) efektini düzeltmek için açıyı normalize et */
     ray->wall_dist *= cos(ray->angle - g->player.angle);
 }
 
-/* Texture haritalama için duvardaki tam çarpma noktasını hesaplar */
-static void	calc_wall_x(t_ray *ray, t_game *g)
+/* Texture kaplaması için duvar yüzeyindeki tam X koordinatını bulur */
+static void calc_wall_x(t_ray *ray, t_game *g)
 {
-    /* Duvar oryantasyonuna göre çarpma pozisyonunu hesapla */
+    /* Duvarın yönüne göre tam çarpma noktasını hesapla */
+    /* Not: wall_dist grid biriminde olduğu için BLOCK'a bölmeye gerek yoktur */
     if (ray->side == 0)
-        /* Dikey duvar: Y pozisyonunu kullan */
+        /* Dikey duvar: Oyuncunun Y konumu + Y yönündeki ilerleme */
         ray->wall_x = g->player.y / BLOCK + ray->wall_dist
             * sin(ray->angle);
     else
-        /* Yatay duvar: X pozisyonunu kullan */
+        /* Yatay duvar: Oyuncunun X konumu + X yönündeki ilerleme */
         ray->wall_x = g->player.x / BLOCK + ray->wall_dist
             * cos(ray->angle);
     
-    /* Ondalık kısmı al (0.0-1.0 arası texture koordinatı için) */
+    /* Sadece ondalık kısmı al (0.0 ile 1.0 arası) */
+    /* Bu değer texture'ın hangi sütununun çizileceğini belirler */
     ray->wall_x -= floor(ray->wall_x);
 }
 
-/* Duvar yönüne göre uygun texture'ı seçer */
-static t_texture	*select_texture(t_ray *ray, t_game *g)
+/* Işının çarptığı duvarın yönüne göre doğru texture'ı seçer */
+static t_texture    *select_texture(t_ray *ray, t_game *g)
 {
-    /* Dikey duvarlar (Kuzey-Güney ekseni) */
+    /* Dikey duvara çarptıysa (Doğu veya Batı) */
     if (ray->side == 0)
     {
         if (ray->step_x > 0)
-            return (&g->e_tex);  /* Işın batıdan geldi, DOĞU texture göster */
-        return (&g->w_tex);      /* Işın doğudan geldi, BATI texture göster */
+            return (&g->e_tex);  /* Işın sağa gidiyorsa DOĞU yüzünü görür */
+        return (&g->w_tex);      /* Işın sola gidiyorsa BATI yüzünü görür */
     }
     
-    /* Yatay duvarlar (Doğu-Batı ekseni) */
+    /* Yatay duvara çarptıysa (Kuzey veya Güney) */
     if (ray->step_y > 0)
-        return (&g->s_tex);  /* Işın kuzeyden geldi, GÜNEY texture göster */
-    return (&g->n_tex);      /* Işın güneyden geldi, KUZEY texture göster */
+        return (&g->s_tex);  /* Işın aşağı gidiyorsa GÜNEY yüzünü görür */
+    return (&g->n_tex);      /* Işın yukarı gidiyorsa KUZEY yüzünü görür */
 }
-
-/* Ekrana tek bir dikey texture sütunu çizer */
-static void	draw_wall_column(t_game *g, int x, t_ray *ray, t_texture *tex)
+static void ft_put_draw(t_draw *d, t_game *g, t_texture *tex, int x)
 {
-    int		h;
-    int		start;
-    int		end;
-    int		y;
-    float	step;
-    float	tex_pos;
-    int		tex_x;
-    int		tex_y;
-
-    /* Ekrandaki duvar yüksekliğini hesapla (perspektif projeksiyonu) */
-    // h = (int)(BLOCK / ray->wall_dist * (WIDTH / 2));
-    h = (int)((WIDTH / 2) / ray->wall_dist);
-    
-    /* Dikey çizim aralığını hesapla (ekranın ortasında) */
-    start = (HEIGHT - h) / 2;
-    if (start < 0)
-        start = 0;  /* Ekran üstüne sınırla */
-    end = start + h;
-    if (end > HEIGHT)
-        end = HEIGHT;  /* Ekran altına sınırla */
-    
-    /* Yatay texture koordinatını hesapla */
-    tex_x = (int)(ray->wall_x * tex->width);
-    if (tex_x < 0)
-        tex_x = 0;  /* Negatif indeksi önle */
-    if (tex_x >= tex->width)
-        tex_x = tex->width - 1;  /* Taşmayı önle */
-    
-    /* Texture dikey adım boyutunu hesapla */
-    step = (float)tex->height / h;
-    
-    /* Texture Y pozisyonunu başlat (ekran dışı duvarları işle) */
-    tex_pos = (start - (HEIGHT - h) / 2) * step;
-    if (tex_pos < 0)
-        tex_pos = 0;
-    
-    /* Dikey çizgiyi piksel piksel çiz */
-    y = start;
-    while (y < end)
+    int     y;
+    // burada tavan basılıyor
+    y = 0;
+    while (y < d->start)
     {
-        /* Mevcut texture Y koordinatını al */
-        tex_y = (int)tex_pos;
+        put_pixel(x, y, g->ceiling_color, g);
+        y++;
+    }
+    /* Sütunu yukarıdan aşağıya boya */
+    while (y < d->end)
+    {
+        d->tex_y = (int)d->tex_pos;
         
-        /* Texture koordinatı geçerliyse pikseli çiz */
-        if (tex_y >= 0 && tex_y < tex->height)
-            put_pixel(x, y, get_tex_pixel(tex, tex_x, tex_y), g);
+        /* Texture sınırları içinde güvenli çizim */
+        if (d->tex_y >= 0 && d->tex_y < tex->height)
+            put_pixel(x, y, get_tex_pixel(tex, d->tex_x, d->tex_y), g);
         
-        /* Sonraki texture satırına geç */
-        tex_pos += step;
+        d->tex_pos += d->step;
+        y++;
+    }
+    while (y < HEIGHT)
+    {
+        put_pixel(x, y, g->floor_color, g);
         y++;
     }
 }
-
-/* Ana render fonksiyonu - tüm ekran genişliği için ışın atar */
-void	render_frame(t_game *game)
+/* Hesaplanan verilere göre ekrana tek bir dikey sütun çizer */
+static void calc_draw_data(t_game *g, t_ray *ray, t_texture *tex, t_draw *draw)
 {
-    int			x;
-    t_ray		ray;
-    t_texture	*tex;
+    //1. adım /* Duvar yüksekliğini hesapla. (1.0 / dist) formülü grid sistemine uygundur */
+    draw->h = (int)((WIDTH / 2) / ray->wall_dist);
+    
+    // 2. adım /* Çizimin başlayacağı ve biteceği Y koordinatlarını belirle */ /* en üst yer tavan 0 en alt nokta pencerenin HEİGHT */
+    draw->start = (HEIGHT - draw->h) / 2;
+    if (draw->start < 0)
+        draw->start = 0;  /* Ekranın üstünden taşmayı engelle */
+    draw->end = draw->start + draw->h;
+    if (draw->end > HEIGHT)
+        draw->end = HEIGHT;  /* Ekranın altından taşmayı engelle */
+    
+    // 3. adım  buradan devam et /* Texture üzerindeki X koordinatını piksel cinsinden hesapla */
+    draw->tex_x = (int)(ray->wall_x * tex->width);
+    if (draw->tex_x < 0) 
+        draw->tex_x = 0;
+    if (draw->tex_x >= tex->width) 
+        draw->tex_x = tex->width - 1;
+    
+    /* Ekran pikselleri ile texture pikselleri arasındaki adım oranını bul */
+    draw->step = (float)tex->height / draw->h;
+    
+    /* Texture başlangıç pozisyonunu ayarla (Ekran dışı kalan kısımları hesaba kat) */
+    draw->tex_pos = (draw->start - (HEIGHT - draw->h) / 2) * draw->step;
+    if (draw->tex_pos < 0)
+        draw->tex_pos = 0;
+}
 
-    /* Her ekran sütunu için iterasyon yap (1280 ışın) */
+
+/* Ana render döngüsü: Ekran genişliğince ışın atar ve çizim yapar */
+void    render_frame(t_game *game)
+{
+    int         x;
+    t_ray       ray;
+    t_texture   *tex;
+    t_draw  draw;
+    float   dir_x;
+    float   dir_y;
+
     x = 0;
     while (x < WIDTH)
     {
-        /* Mevcut sütun için ışın açısını hesapla (60° FOV) */
+        /* Her sütun için ışın açısını hesapla (FOV 60 derece) */
         ray.angle = game->player.angle - (PI / 6)
             + ((float)x / WIDTH) * (PI / 3);
-            
-        /* Adım 1: Işın parametrelerini başlat */
-        init_ray_direction(&ray, game);
+
+        /* Açının kosinüs ve sinüs bileşenlerini al */
+        dir_x = cos(ray.angle);
+        dir_y = sin(ray.angle);
+        /* Raycasting adımlarını sırayla çalıştır */
+        init_ray_direction(&ray, game, dir_x, dir_y);   /* 1. Başlat */
+        dda_step(&ray, game);             /* 2. DDA ile duvar bul */
+        calc_wall_distance(&ray, game);   /* 3. Mesafeyi hesapla */
+        calc_wall_x(&ray, game);          /* 4. Texture X'i bul */
+        tex = select_texture(&ray, game); /* 5. Texture seç */
+        calc_draw_data(game, &ray, tex, &draw);
         
-        /* Adım 2: Duvarı bulmak için DDA uygula */
-        dda_step(&ray, game);
-        
-        /* Adım 3: Duvara olan mesafeyi hesapla */
-        calc_wall_distance(&ray, game);
-        
-        /* Adım 4: Texture koordinatını hesapla */
-        calc_wall_x(&ray, game);
-        
-        /* Adım 5: Uygun texture'ı seç */
-        tex = select_texture(&ray, game);
-        
-        /* Adım 6: Duvar sütununu çiz (debug modunda atla) */
+        /* Debug modu kapalıysa çizimi yap */
         if (!DEBUG)
-            draw_wall_column(game, x, &ray, tex);
+            ft_put_draw(&draw, game, tex, x);
         x++;
     }
 }
