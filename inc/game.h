@@ -103,6 +103,8 @@ typedef struct s_game
     
 	char	**all_line;
     char	**map;
+	int		map_width;
+	int		map_height;
     char	**map_clone;
 
     t_player player;
@@ -173,9 +175,8 @@ int	parse_element_continue(char *trimmed);
 char *whitespaces_term(char *line);
 void	set_player_dir(double angle);
 char *skip_whitespaces(char *line);
-
-
-
+void	wall_control();
+void	set_map_dimension();
 
 
 //	-------------- TEX --------------

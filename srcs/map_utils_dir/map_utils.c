@@ -24,6 +24,27 @@ void	set_player_dir(double angle)
 	game->player.angle = angle;
 }
 
+void	set_map_dimension()
+{
+	//int		x;
+	int		y;
+	t_game	*game;
+
+	y = 0;
+	//x = 0;
+	game = global_game();
+	while (game->map[y])
+	{
+		y++;
+	}
+	game->map_height = y;
+	//while (game->map[x])
+	//{
+	//	x++;
+	//}
+	//game->map_width = x;
+}
+
 char *whitespaces_term(char *line)
 {
 	int	i;

@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 16:09:51 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/08 18:36:11 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/10 22:49:26 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ void	wall_control_util(int x, int y)
 	t_game 	*game;
 
 	game = global_game();
-	//is_wall = (y == 0 || x == 0 || x == (game->map))	
-	
+	is_wall = (y == 0  || x == 0 || y == game->map_height - 1 || x == ft_strlen(game->map[y]) - 1);
+	if (is_wall && game->map[y][x] != ' ' && game->map[y][x] != '\t' && game->map[y][x] != '1')
+		printf("MAP DUVAR HATA!  x: %d - y: %d\n", x, y);
 }
 
-void	wall_control(const char *line)
+void	wall_control()
 {
 	t_game	*game;
 	int		x;
@@ -34,14 +35,17 @@ void	wall_control(const char *line)
 
 	game = global_game();
 	y = 0;
-	x = 0;
-	while (game->map_clone[y])
+	while (game->map[y])
 	{
-		while (game->map_clone[y][x])
+		x = 0;
+		while (game->map[y][x])
 		{
 			wall_control_util(x, y);
 			x++;
 		}
+		game->map_width = x;
 		y++;	
 	}
 }
+
+// Map'in ortasında da boşluk olabilir ve çevresi wall olmak zorunda ayrı kontrol lazım
