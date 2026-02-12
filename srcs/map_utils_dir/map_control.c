@@ -43,6 +43,51 @@ void	wall_control_util(int x, int y)
 		printf("MAP DUVAR HATA!  x: %d - y: %d\n", x, y);
 }
 
+static void	flood_file(int x, int y)
+{
+	t_game	*game;
+
+	game = global_game();
+	if (x < 0 || y < 0 || !game->map_clone[y] || !game->map_clone[y][x])
+	{
+		printf("Map Hata1\n");
+		game->error_code = 1;
+		return ;
+	}
+	if (game->map_clone[y][x] == '1' || game->map_clone[y][x] == 'V')
+		return ;
+	if (game->map[y][x] != '1' && game->map[y][x] != '0' && game->map[y][x] != 'V' && game->map[y][x] != 'S'
+		&& game->map[y][x] != 'N' && game->map[y][x] != 'E' && game->map[y][x] != 'W')
+	{
+		printf("Map Hata2\n");
+		game->error_code = 2;
+		return ;
+	}
+	game->map[y][x] = 'V';
+	flood_file(x - 1, y);
+	flood_file(x + 1, y);
+	flood_file(x, y - 1);
+	flood_file(x, y + 1);
+}
+
+static void	create_map_clone()
+{
+	t_game	*game;
+	int		y;
+
+	game = global_game();
+	y = 0;
+	game->map_clone = calloc(sizeof(char *), game->map_height + 1);
+	if (!game->map_clone) // Burada Error Func'a gönderilecek
+		printf("Map Clone Create Error!\n");
+	while (game->map[y])
+	{
+		game->map_clone[y] = game->map[y];
+		y++;
+	}
+	game->map_clone[y] = NULL;
+}
+
 void	wall_control()
 {
 	t_game	*game;
@@ -51,11 +96,15 @@ void	wall_control()
 
 	game = global_game();
 	y = 0;
+	create_map_clone();
+	flood_file((int)(game->player.x / BLOCK), (int)(game->player.y / BLOCK));
+	printf("Player_x: %f - Player_y: %f\n", game->player.x / BLOCK, game->player.y);
 	while (game->map[y])
 	{
 		x = 0;
 		while (game->map[y][x])
 		{
+			// flood_file(x, y);
 			wall_control_util(x, y);
 			unkown_character_check(game->map[y][x]);
 			x++;
@@ -65,5 +114,7 @@ void	wall_control()
 	}
 }
 
-// Map'in ortasında da boşluk olabilir ve çevresi wall olmak zorunda ayrı kontrol lazım ('0' çevresinde boşluk karakteri varsa hata dönülebilir kısa yol)
+// Map'in ortasında da boşluk olabilir ve çevresi wall olmak zorunda ayrı kontrol lazım ('0' çevresinde boşluk karakteri varsa hata dönülebilir kısa yol) (flood_fill) 
 // Map'de istenilmeyen karakter kontorlü burada yapılabilir bir flag olacak (is_wall) gibi olması gerek karakter harici karakter gelirse '1' olacak ve hata dönecek
+
+// Map clone için her line'ı stdup ile bir diziye atıp her atıldığında da map_clone[y] ekleyebiliriz map_clone ise map_height kadar yer tahsis edilecek

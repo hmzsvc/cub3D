@@ -177,6 +177,12 @@ void    render_frame(t_game *game)
             draw_wall_column(game, x, &ray, tex);
         x++;
     }
+	// printf("ray_sidex: $%f$\n", ray.side_x);
+	// printf("ray_sidey: $%f$\n", ray.side_y);
+	// printf("delta_sidex: $%f$\n", ray.delta_x);
+	// printf("delta_sidey: $%f$\n", ray.delta_y);
+
+
 }
 
 // #include "../inc/game.h"

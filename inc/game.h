@@ -2,7 +2,7 @@
 #define GAME_H
 
 #define WIDTH 1280
-#define HEIGHT 720
+#define HEIGHT 768
 #define BLOCK 64
 #define DEBUG 0
 
@@ -90,7 +90,7 @@ typedef struct s_game
 	int	map_element_count; //MAP ELEMENTS COUNT
 	int	map_lines_count; //MAP LİNES COUNT
 	int	cub_lines_count;
-
+	int	error_code;
 
     void *mlx;
     void *win;
