@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 16:09:51 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/11 00:50:27 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/13 16:23:14 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	wall_control_util(int x, int y)
 		printf("MAP DUVAR HATA!  x: %d - y: %d\n", x, y);
 }
 
-static void	flood_file(int x, int y)
+static void	flood_fill(int x, int y)
 {
 	t_game	*game;
 
@@ -56,18 +56,19 @@ static void	flood_file(int x, int y)
 	}
 	if (game->map_clone[y][x] == '1' || game->map_clone[y][x] == 'V')
 		return ;
-	if (game->map[y][x] != '1' && game->map[y][x] != '0' && game->map[y][x] != 'V' && game->map[y][x] != 'S'
-		&& game->map[y][x] != 'N' && game->map[y][x] != 'E' && game->map[y][x] != 'W')
+	if (game->map_clone[y][x] != '1' && game->map_clone[y][x] != '0' && game->map_clone[y][x] != 'V' && game->map_clone[y][x] != 'S'
+		&& game->map_clone[y][x] != 'N' && game->map_clone[y][x] != 'E' && game->map_clone[y][x] != 'W')
 	{
 		printf("Map Hata2\n");
 		game->error_code = 2;
 		return ;
 	}
-	game->map[y][x] = 'V';
-	flood_file(x - 1, y);
-	flood_file(x + 1, y);
-	flood_file(x, y - 1);
-	flood_file(x, y + 1);
+	game->map_clone[y][x] = 'V';
+
+	flood_fill(x - 1, y);
+	flood_fill(x + 1, y);
+	flood_fill(x, y - 1);
+	flood_fill(x, y + 1);
 }
 
 static void	create_map_clone()
@@ -82,7 +83,16 @@ static void	create_map_clone()
 		printf("Map Clone Create Error!\n");
 	while (game->map[y])
 	{
-		game->map_clone[y] = game->map[y];
+		game->map_clone[y] = ft_strdup(game->map[y]);
+		if (!game->map_clone[y]) // Burasi kontrol edilecek
+        {
+            while (y > 0)
+                free(game->map_clone[--y]);
+            free(game->map_clone);
+            game->map_clone = NULL;
+            printf("Map Clone Strdup Error!\n");
+            return ;
+        }
 		y++;
 	}
 	game->map_clone[y] = NULL;
@@ -97,8 +107,7 @@ void	wall_control()
 	game = global_game();
 	y = 0;
 	create_map_clone();
-	flood_file((int)(game->player.x / BLOCK), (int)(game->player.y / BLOCK));
-	printf("Player_x: %f - Player_y: %f\n", game->player.x / BLOCK, game->player.y);
+	flood_fill((int)(game->player.x / BLOCK), (int)(game->player.y / BLOCK));
 	while (game->map[y])
 	{
 		x = 0;
