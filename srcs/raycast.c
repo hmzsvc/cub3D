@@ -39,9 +39,9 @@ static void calc_x(float dir_x, t_ray *ray, t_game *g)
 	else
 	{
 		ray->step_x = 1;
-		// printf("buraya girdi\n");
-		ray->side_x = (ray->map_x + 1.0 - g->player.x / BLOCK) * ray->delta_x;
-		// printf("side_x == %f\n", ray->side_x);
+		printf("buraya girdi\n");
+		ray->side_x = (ray->map_x + 1.0 - g->player.x / BLOCK) * ray->delta_x;// en yakın ızgaraya taşıayacak olan çapraz mesafe 
+		printf("side_x == %f\n", ray->side_x);
 
 	}
 }
@@ -54,7 +54,7 @@ static void	init_ray_direction(t_ray *ray, t_game *g, float dir_x, float dir_y)
 	ray->delta_y = fabs(1.0 / dir_y); // bir sonraki y çizgisine olan uzaklığı birim cinsinden varsayım
 	// plaeyın adım boyu 
 	// printf("map_x bu == %d\n", ray->map_x); 
-	// printf("delta_x bu == %f\n", ray->delta_x);
+	printf("delta_x bu == %f\n", ray->delta_x);
 	// printf("player_x bu == %f\n", g->player.x );
 	// printf("dir_x bu == %f\n", dir_x);
 	
@@ -108,7 +108,7 @@ static void	dda_step(t_ray *ray, t_game *g)
 	}
 }
 
-static void	calc_wall_distance(t_ray *ray, t_game *g)
+static void	calc_wall_distance(t_ray *ray, t_game *g) //p ve wall arasındaki net mesafe
 {
 	if (ray->side == 0)
 		ray->wall_dist = (ray->map_x - g->player.x / BLOCK + (1 - ray->step_x/*burası sağ mı yoksa sol mu hesabı yapar*/)
@@ -120,13 +120,13 @@ static void	calc_wall_distance(t_ray *ray, t_game *g)
 	// ray->wall_dist *= cos(ray->angle - g->player.angle);
 }
 
-static void	calc_wall_x(t_ray *ray, t_game *g)
+static void	calc_wall_x(t_ray *ray, t_game *g) // duvarın yüzde kaçında hesabı
 {
 	if (ray->side == 0)
 		ray->wall_x = g->player.y / BLOCK + ray->wall_dist * sin(ray->angle);
 	else
 		ray->wall_x = g->player.x / BLOCK + ray->wall_dist * cos(ray->angle);
-	ray->wall_x -= floor(ray->wall_x);
+	ray->wall_x -= floor(ray->wall_x); // duvarın yüzde kaçında hesabı
 }
 
 static t_texture	*select_texture(t_ray *ray, t_game *g)
@@ -141,38 +141,12 @@ static t_texture	*select_texture(t_ray *ray, t_game *g)
 		return (&g->s_tex);
 	return (&g->n_tex);
 }
-
-static void	ft_put_draw(t_draw *d, t_game *g, t_texture *tex, int x)
-{
-	int	y;
-
-	y = 0;
-	while (y < d->start)
-	{
-		put_pixel(x, y, g->ceiling_color, g);
-		y++;
-	}
-	while (y < d->end)
-	{
-		d->tex_y = (int)d->tex_pos;
-		if (d->tex_y >= 0 && d->tex_y < tex->height)
-			put_pixel(x, y, get_tex_pixel(tex, d->tex_x, d->tex_y), g);
-		d->tex_pos += d->step;
-		y++;
-	}
-	while (y < HEIGHT)
-	{
-		put_pixel(x, y, g->floor_color, g);
-		y++;
-	}
-}
-
 static void calc_draw_data(t_game *g, t_ray *ray, t_texture *tex, t_draw *draw)
 {
     float corrected_dist;
 
     /* 1. Balık gözü düzeltmesini BURADA yap (Geçici değişkene at) */
-    corrected_dist = ray->wall_dist * cos(ray->angle - g->player.angle);
+    corrected_dist = ray->wall_dist * cos(ray->angle - g->player.angle); // mesafeyi ray ve playerın açısı ile çıkart 
 
     /* 2. Yüksekliği bu DÜZELTİLMİŞ mesafeye göre hesapla */
     draw->h = (int)((WIDTH / 2) / corrected_dist);
@@ -200,6 +174,33 @@ static void calc_draw_data(t_game *g, t_ray *ray, t_texture *tex, t_draw *draw)
         draw->tex_pos = 0;
 }
 
+
+static void	ft_put_draw(t_draw *d, t_game *g, t_texture *tex, int x)
+{
+	int	y;
+
+	y = 0;
+	while (y < d->start)
+	{
+		put_pixel(x, y, g->ceiling_color, g);
+		y++;
+	}
+	while (y < d->end)
+	{
+		d->tex_y = (int)d->tex_pos;
+		if (d->tex_y >= 0 && d->tex_y < tex->height)
+			put_pixel(x, y, get_tex_pixel(tex, d->tex_x, d->tex_y), g);
+		d->tex_pos += d->step;
+		y++;
+	}
+	while (y < HEIGHT)
+	{
+		put_pixel(x, y, g->floor_color, g);
+		y++;
+	}
+}
+
+
 void	render_frame(t_game *game)
 {
 	int			x;
@@ -224,18 +225,17 @@ void	render_frame(t_game *game)
 		calc_wall_x(&ray, game);
 		tex = select_texture(&ray, game);
 		calc_draw_data(game, &ray, tex, &draw);
-		if (!DEBUG)
-			ft_put_draw(&draw, game, tex, x);
+		ft_put_draw(&draw, game, tex, x);
 		x++;
-		// if (x == 100)
+		// if (x == 2)
 		// {
 		// 	exit(1);
 		// }
 		
 	}
-	printf("delta_x bu == %f ray_angle bu == %f\n", ray.delta_x, ray.angle);
+	// printf("delta_x bu == %f ray_angle bu == %f\n", ray.delta_x, ray.angle);
 	// printf("delta_y bu == %f ray_angle bu == %f\n", ray.delta_y, ray.angle);
-	printf("side_x == %f\n", ray.side_x);
+	// printf("side_x == %f\n", ray.side_x);
 
 
 }
