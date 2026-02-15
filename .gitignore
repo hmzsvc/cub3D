@@ -45,11 +45,16 @@
 # Kernel Module Compile Results
 *.mod*
 *.cmd
+c.md
 .tmp_versions/
 modules.order
+test/
 Module.symvers
 test/
+read.md
 Mkfile.old
+a.md
+d.md
 dkms.conf
 
 # debug information files
