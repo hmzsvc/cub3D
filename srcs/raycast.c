@@ -23,9 +23,9 @@ static void calc_x(float dir_x, t_ray *ray, t_game *g)
 	else
 	{
 		ray->step_x = 1;
-		printf("buraya girdi\n");
+		// printf("buraya girdi\n");
 		ray->side_x = (ray->map_x + 1.0 - g->player.x / BLOCK) * ray->delta_x;// en yakın ızgaraya taşıayacak olan çapraz mesafe 
-		printf("side_x == %f\n", ray->side_x);
+		// printf("side_x == %f\n", ray->side_x);
 
 	}
 }
@@ -38,7 +38,7 @@ static void	init_ray_direction(t_ray *ray, t_game *g, float dir_x, float dir_y)
 	ray->delta_y = fabs(1.0 / dir_y); // bir sonraki y çizgisine olan uzaklığı birim cinsinden varsayım
 	// plaeyın adım boyu 
 	// printf("map_x bu == %d\n", ray->map_x); 
-	printf("delta_x bu == %f\n", ray->delta_x);
+	// printf("delta_x bu == %f\n", ray->delta_x);
 	// printf("player_x bu == %f\n", g->player.x );
 	// printf("dir_x bu == %f\n", dir_x);
 	

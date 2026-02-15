@@ -6,7 +6,7 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/05 16:11:59 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/15 18:00:41 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,13 @@ int close_game(t_game *game)
 	// Map memory'sini temizle (eğer malloc ile oluşturulduysa)
 	if (game->map)
 		free(game->map);
+	if (game->map_clone)
+	{
+
+		free(game->map_clone);
+	}
+	
+	clear_garbage();
 
 	exit(0);
 }
@@ -189,7 +196,7 @@ t_game	*global_game()
 {
 	static t_game	*game;
 	if (!game)
-		game = (t_game *)ft_calloc(1, sizeof(t_game));
+		game = (t_game *)ft_halloc(1, sizeof(t_game));
 	return (game);
 }
 

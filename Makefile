@@ -21,6 +21,7 @@ SRCS = $(SRCS_DIR)/main.c \
         $(SRCS_DIR)/raycast.c \
 		$(SRCS_DIR)/map/map_read.c \
 		$(SRCS_DIR)/minimap.c \
+		$(SRCS_DIR)/ft_halloc.c \
 
 SRCS_MAP = $(MAP_DIR)/load_texture.c \
 
@@ -44,7 +45,6 @@ RED = \033[0;31m
 RESET = \033[0m
 
 all: $(NAME)
-# 	@echo "$(GREEN)✅ $(NAME) is ready! 🎮$(RESET)"
 
 $(LIBFT):
 	@echo "$(BLUE)📚 Building libft...$(RESET)"
@@ -52,7 +52,8 @@ $(LIBFT):
 
 $(NAME): $(LIBFT) $(OBJS_DIR) $(OBJS) $(GNL_OBJS)
 	@echo "$(BLUE)🔗 Linking $(NAME)...$(RESET)"
-	$(CC) $(OBJS) $(GNL_OBJS) $(LIBFT) -o $(NAME) $(MLX_LIB) $(LFLAGS)
+	@$(CC) $(OBJS) $(GNL_OBJS) $(LIBFT) -o $(NAME) $(MLX_LIB) $(LFLAGS)
+	@echo "$(GREEN)✅ $(NAME) is ready! 🎮$(RESET)"
 
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
@@ -62,20 +63,21 @@ $(OBJS_DIR):
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c 
 	@echo "$(YELLOW)🔨 Compiling $<...$(RESET)"
-	$(CC) -c $< -o $@
+	@$(CC) -c $< -o $@
 
 $(OBJS_DIR)/map/%.o: $(MAP_DIR)/%.c
 	@echo "$(YELLOW)🔨 Compiling MAP $<...$(RESET)"
-	$(CC) -c $< -o $@
+	@$(CC) -c $< -o $@
 
 $(OBJS_DIR)/map_utils/%.o: $(MAP_UTIL_DIR)/%.c
 	@echo "$(YELLOW)🔨 Compiling MAP UTİLS $<...$(RESET)"
-	$(CC) -c $< -o $@
+	@$(CC) -c $< -o $@
 
 $(OBJS_DIR)/gnl/%.o: $(GNL_DIR)/%.c
 	@echo "$(YELLOW)🔨 Compiling GNL $<...$(RESET)"
 	@mkdir -p $(dir $@)
-	$(CC) -c $< -o $@
+	@$(CC) -c $< -o $@
+
 
 clean:
 	@echo "$(RED)🧹 Cleaning object files...$(RESET)"
