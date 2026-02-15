@@ -38,6 +38,19 @@ typedef struct s_minimap
     int scale;      // Ölçek faktörü
 }   t_minimap;
 
+typedef struct s_draw
+{
+    int     h;
+    int     start;
+    int     end;
+    float   step;
+    float   tex_pos;
+    int     tex_x;
+    int     tex_y;
+
+}t_draw;
+
+
 typedef struct s_ray
 {
     float   angle;

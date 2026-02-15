@@ -50,6 +50,7 @@ c.md
 modules.order
 test/
 Module.symvers
+test/
 read.md
 Mkfile.old
 a.md

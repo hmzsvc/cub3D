@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/02 22:51:27 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/05 16:11:59 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ int draw_loop(t_game *game)
 	// perform_raycasting(game);
 	render_frame(game);
 
-	draw_minimap(game);
+	// draw_minimap(game);
 
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
