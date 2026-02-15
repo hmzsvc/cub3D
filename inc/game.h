@@ -2,7 +2,7 @@
 #define GAME_H
 
 #define WIDTH 1280
-#define HEIGHT 720
+#define HEIGHT 768
 #define BLOCK 64
 #define DEBUG 0
 
@@ -51,12 +51,28 @@ typedef struct s_draw
 }t_draw;
 
 
+typedef struct s_ray
+{
+    float   angle;
+    int     map_x;
+    int     map_y;
+    float   side_x;
+    float   side_y;
+    float   delta_x;
+    float   delta_y;
+    int     step_x;
+    int     step_y;
+    int     side;
+    float   wall_dist;
+    float   wall_x;
+}   t_ray;
 
 typedef struct s_player
 {
-    float x;
-    float y;
-    float angle;
+    float 	x;
+    float 	y;
+    float 	angle;
+	int		dir_check;
 
     bool key_up;
     bool key_down;
@@ -86,7 +102,8 @@ typedef struct s_game
 {
 	int	map_element_count; //MAP ELEMENTS COUNT
 	int	map_lines_count; //MAP LİNES COUNT
-
+	int	cub_lines_count;
+	int	error_code;
 
     void *mlx;
     void *win;
@@ -97,7 +114,11 @@ typedef struct s_game
     int size_line;
     int endian;
     
-    char **map;
+	char	**all_line;
+    char	**map;
+	int		map_width;
+	int		map_height;
+    char	**map_clone;
 
     t_player player;
     t_minimap minimap;
@@ -154,9 +175,9 @@ t_game *global_game();
 //	-------------- MAP -------------- 
 //char	**read_map(char *map_path, t_game *game);
 int	read_map(char *map_path);
-static int	parse_util(int fd, t_game *game);
-static char **read_map_util(int	fd,	int	line_count);
-static int	count_map_lines(int fd);
+static int	parse_util(t_game *game);
+static char **read_map_util(int	line_count);
+static int	count_map_lines();
 int	is_empty_line(char *line);
 int	is_map_line(char *line);
 int	parse_floor_ceiling(char *trimmed);
@@ -165,10 +186,10 @@ int	parse_element_continue(char *trimmed);
 //static char *trim_newline(char *str);
 //static int	parse_color(char *line);
 char *whitespaces_term(char *line);
-
-
-
-
+void	set_player_dir(double angle);
+char *skip_whitespaces(char *line);
+void	wall_control();
+void	set_map_dimension();
 
 
 //	-------------- TEX --------------

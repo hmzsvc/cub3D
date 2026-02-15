@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 15:38:26 by hasivaci          #+#    #+#             */
 /*   Updated: 2026/02/10 13:44:00 by hasivaci         ###   ########.fr       */
@@ -23,6 +23,7 @@ void	init_player(t_player *player)
 	player->key_left = false;
 	player->left_rotate = false;
 	player->right_rotate = false;
+  player->dir_check = 0;
 }
 
 int	key_press(int keycode, t_player *player)
