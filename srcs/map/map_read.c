@@ -35,17 +35,22 @@ static void read_cub(int fd)
 	char	*temp;
 	t_game	*game;
 	int		flag;
+	int		newline_flag;
 
 	game = global_game();
 	joined_map = NULL;
 	temp = NULL;
 	line = get_next_line(fd);
 	flag = 0;
+	newline_flag = 0;
+
 	while (line)
 	{
 		if (is_map_line(line))
 			flag = 1;
-		if (flag == 1 && !is_map_line(line)) // Hata yazdirilicaka ve exit atilacak
+		if (flag == 1 && *line == '\n')
+			newline_flag = 1;
+		if (flag == 1 && newline_flag == 1 && (map_newline_check(line))) // Hata yazdirilicaka ve exit atilacak (Burada line içeriğinde newline, boşluk ve tab harici bir şey varsa hata yazılacak)
 			printf("HARITADA BOSLUK VAR!\n");
 		temp = joined_map;
 		joined_map = ft_strjoin(joined_map, line);
@@ -54,6 +59,7 @@ static void read_cub(int fd)
 		free(line);
 		line = get_next_line(fd);
 	}
+
 	game->all_line = ft_split(joined_map, '\n');
 	//for (size_t i = 0; game->all_line[i]; i++)
 	//{
@@ -308,8 +314,10 @@ static char **read_map_util(int	line_count)
 		{
 			player_check_dir(game->all_line[index], i);
 			map[i] = trim_newline(ft_strdup(game->all_line[index]));
+			// printf("map[%d]: %s\n", i, map[i]);
 			i++;
 		}
+		
 		//free(*line);
 		index++;
 	}

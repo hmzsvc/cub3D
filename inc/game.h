@@ -190,6 +190,7 @@ void	set_player_dir(double angle);
 char *skip_whitespaces(char *line);
 void	wall_control();
 void	set_map_dimension();
+int	map_newline_check(char *line);
 
 
 //	-------------- TEX --------------

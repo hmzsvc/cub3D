@@ -220,6 +220,4 @@ void	render_frame(t_game *game)
 	// printf("delta_x bu == %f ray_angle bu == %f\n", ray.delta_x, ray.angle);
 	// printf("delta_y bu == %f ray_angle bu == %f\n", ray.delta_y, ray.angle);
 	// printf("side_x == %f\n", ray.side_x);
-
-
 }
