@@ -6,12 +6,12 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:29:58 by meerkus           #+#    #+#             */
-/*   Updated: 2026/02/16 15:31:59 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/16 16:04:06 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "../libft/libft.h"
+#include <stdlib.h>
 
 int	ft_strlen_get(char *str)
 {
@@ -59,6 +59,5 @@ char	*ft_strjoin_get(char *s1, char *s2)
 	while (s2[++j])
 		tmp[i + j] = s2[j];
 	tmp[i + j] = '\0';
-	// free(s1);
 	return (tmp);
 }

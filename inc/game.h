@@ -198,7 +198,7 @@ int	get_tex_pixel(t_texture	*tex, int x, int y);
 
 // void *halloc (size_t size);
 // void    *add_garbage(void *adress);
-void	*ft_halloc(size_t count, size_t size);
+// void	*ft_halloc(size_t count, size_t size);
 
 
 #endif

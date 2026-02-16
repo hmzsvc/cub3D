@@ -6,7 +6,7 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/16 15:39:33 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/16 16:00:39 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ t_game	*global_game()
 {
 	static t_game	*game;
 	if (!game)
-		game = (t_game *)ft_halloc(1, sizeof(t_game));
+		game = (t_game *)ft_calloc(1, sizeof(t_game));
 	return (game);
 }
 
