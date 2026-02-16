@@ -3,56 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: huozturk <huozturk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/25 12:26:39 by huozturk          #+#    #+#             */
-/*   Updated: 2025/03/19 15:18:24 by huozturk         ###   ########.fr       */
+/*   Created: 2024/11/01 12:14:12 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/16 15:10:47 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "libft.h"
 
-static int	ft_lennum(int n, int sign)
+static int	len(long nb)
 {
-	int	i;
+	int	len;
 
-	i = 0;
-	if (n == 0)
-		i = 1;
-	while (n != 0)
+	len = 0;
+	if (nb < 0)
 	{
-		i++;
-		n /= 10;
+		nb *= -1;
+		len++;
 	}
-	if (sign < 0)
-		i++;
-	return (i);
+	if (nb == 0)
+	{
+		len++;
+	}
+	while (nb > 0)
+	{
+		nb /= 10;
+		len++;
+	}
+	return (len);
 }
 
 char	*ft_itoa(int n)
 {
-	char				*result;
-	unsigned int		num;
-	int					sign;
-	int					lennum;
+	char	*str;
+	long	nb;
+	int		i;
 
-	num = n;
-	sign = 1;
-	if (n < 0)
-		sign = -1;
-	num *= sign;
-	lennum = ft_lennum(n, sign);
-	result = (char *)ft_calloc((lennum + 1), sizeof(char));
-	if (!result)
+	nb = n;
+	i = len(nb);
+	str = (char *)ft_calloc(i + 1, sizeof(char));
+	if (!str)
 		return (NULL);
-	*(result + lennum) = '\0';
-	while (--lennum >= 0)
+	str[i] = '\0';
+	if (nb == 0)
 	{
-		*(result + lennum) = (num % 10) + 48;
-		num /= 10;
+		str[0] = '0';
+		return (str);
 	}
-	if (sign == -1)
-		*(result + 0) = '-';
-	return (result);
+	if (nb < 0)
+		str[0] = '-';
+	if (nb < 0)
+		nb = -nb;
+	while (nb > 0)
+	{
+		str[--i] = (nb % 10) + '0';
+		nb /= 10;
+	}
+	return (str);
 }

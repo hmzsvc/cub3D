@@ -6,7 +6,7 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 16:56:54 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/15 18:01:23 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/16 15:44:30 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ void	*add_garbage(void *adress)
 
 void	clear_garbage(void)
 {
-	t_list **collector;
-	t_list *total;
-	t_list *tmp;
+	t_list	**collector;
+	t_list	*total;
+	t_list	*tmp;
 
 	collector = get_garbage();
 	if (!collector || !*collector)

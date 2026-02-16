@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: huozturk <huozturk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/16 14:56:26 by huozturk          #+#    #+#             */
-/*   Updated: 2024/11/08 18:41:05 by huozturk         ###   ########.fr       */
+/*   Created: 2024/11/01 18:01:33 by hasivaci          #+#    #+#             */
+/*   Updated: 2024/11/09 11:52:52 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 
 	dest = (unsigned char *)dst;
 	source = (const unsigned char *)src;
-	if (!dst && !src)
+	if (dst == NULL && src == NULL)
 		return (NULL);
 	else if (src > dst)
 		ft_memcpy(dst, src, len);

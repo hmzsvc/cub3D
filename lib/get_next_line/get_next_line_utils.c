@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: huozturk <huozturk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:29:58 by meerkus           #+#    #+#             */
-/*   Updated: 2025/03/22 14:28:56 by huozturk         ###   ########.fr       */
+/*   Updated: 2026/02/16 15:31:59 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,6 @@ char	*ft_strjoin_get(char *s1, char *s2)
 	while (s2[++j])
 		tmp[i + j] = s2[j];
 	tmp[i + j] = '\0';
-	free(s1);
+	// free(s1);
 	return (tmp);
 }

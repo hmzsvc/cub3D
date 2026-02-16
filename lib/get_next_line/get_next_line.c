@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: huozturk <huozturk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:30:01 by huozturk          #+#    #+#             */
-/*   Updated: 2025/03/22 14:28:53 by huozturk         ###   ########.fr       */
+/*   Updated: 2026/02/16 15:35:31 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ static char	*ft_after_line(char *str)
 	while (str[i] && str[i] != '\n')
 		i++;
 	if (!str[i])
-		return (free(str), NULL);
+		return (/*free(str),*/ NULL);
 	newstr = ft_calloc(ft_strlen_get(str) - i + 1, sizeof(char));
 	if (!newstr)
-		return (free(str), NULL);
+		return (/*free(str),*/ NULL);
 	i++;
 	while (str[i] != '\0')
 		newstr[j++] = str[i++];
 	newstr[j] = '\0';
-	return (free(str), newstr);
+	return (/*free(str),*/ newstr);
 }
 
 static char	*ft_line(char *str)
@@ -78,11 +78,11 @@ static char	*ft_read_fd(char *str, int fd)
 	{
 		byte_readed = read(fd, buffer, BUFFER_SIZE);
 		if (byte_readed == -1)
-			return (free(str), free(buffer), NULL);
+			return (/*free(str), free(buffer),*/ NULL);
 		buffer[byte_readed] = '\0';
 		str = ft_strjoin_get(str, buffer);
 	}
-	return (free(buffer), str);
+	return (/*free(buffer),*/ str);
 }
 
 char	*get_next_line(int fd)

@@ -118,12 +118,12 @@ static t_texture	*select_texture(t_ray *ray, t_game *g)
 	if (ray->side == 0)
 	{
 		if (ray->step_x > 0)
-			return (&g->e_tex);
-		return (&g->w_tex);
+			return (&g->w_tex);
+		return (&g->e_tex);
 	}
 	if (ray->step_y > 0)
-		return (&g->s_tex);
-	return (&g->n_tex);
+		return (&g->n_tex);
+	return (&g->s_tex);
 }
 static void calc_draw_data(t_game *g, t_ray *ray, t_texture *tex, t_draw *draw)
 {

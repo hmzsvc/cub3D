@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: huozturk <huozturk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/18 16:02:07 by huozturk          #+#    #+#             */
-/*   Updated: 2024/11/07 13:15:22 by huozturk         ###   ########.fr       */
+/*   Created: 2024/11/01 17:55:53 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/16 15:10:14 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	void	*memory;
+	void	*hmz;
 
-	memory = malloc(count * size);
-	if (memory == NULL)
+	hmz = halloc(count * size);
+	if (hmz == NULL)
 	{
 		return (NULL);
 	}
-	ft_memset(memory, 0, size * count);
-	return (memory);
+	ft_memset(hmz, 0, size * count);
+	return (hmz);
 }

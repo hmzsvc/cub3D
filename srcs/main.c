@@ -6,7 +6,7 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/15 18:00:41 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/16 15:39:33 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,15 @@ int draw_loop(t_game *game)
 // Oyunu kapatıp tüm kaynakları temizleyen fonksiyon
 int close_game(t_game *game)
 {
+	if (game->n_tex.img && game->mlx)
+        mlx_destroy_image(game->mlx, game->n_tex.img);
+    if (game->s_tex.img && game->mlx)
+        mlx_destroy_image(game->mlx, game->s_tex.img);
+    if (game->e_tex.img && game->mlx)
+        mlx_destroy_image(game->mlx, game->e_tex.img);
+    if (game->w_tex.img && game->mlx)
+        mlx_destroy_image(game->mlx, game->w_tex.img);
+		
 	// Önce image'ı yok et
 	if (game->img && game->mlx)
 		mlx_destroy_image(game->mlx, game->img);
@@ -169,23 +178,27 @@ int close_game(t_game *game)
 	// Sonra window'u yok et
 	if (game->win && game->mlx)
 		mlx_destroy_window(game->mlx, game->win);
-
-	// Son olarak display'i yok et (Linux için)
+		
+		// Son olarak display'i yok et (Linux için)
+	
 	if (game->mlx)
-		mlx_destroy_display(game->mlx);
-
-	// MLX pointer'ını free et
-	if (game->mlx)
-		free(game->mlx);
-
-	// Map memory'sini temizle (eğer malloc ile oluşturulduysa)
-	if (game->map)
-		free(game->map);
-	if (game->map_clone)
 	{
-
-		free(game->map_clone);
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
 	}
+	
+	// MLX pointer'ını free et
+	// if (game->mlx)
+	// 	free(game->mlx);
+
+	// // Map memory'sini temizle (eğer malloc ile oluşturulduysa)
+	// if (game->map)
+	// 	free(game->map);
+	// if (game->map_clone)
+	// {
+
+	// 	free(game->map_clone);
+	// }
 	
 	clear_garbage();
 
