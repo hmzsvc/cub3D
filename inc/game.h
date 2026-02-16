@@ -194,7 +194,7 @@ int	map_newline_check(char *line);
 
 
 //	-------------- TEX --------------
-int	load_all_tex();
+void	load_all_tex();
 int	get_tex_pixel(t_texture	*tex, int x, int y);
 
 #endif

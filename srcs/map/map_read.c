@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/16 23:14:36 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/16 23:36:58 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,11 @@ static int parse_element(char *line)
 
 	game = global_game();
 	trimmed = skip_whitespaces(line);
+	if (!trimmed)
+	{
+		printf("Element path not found\n");
+		exit(1);
+	}
 	if (ft_strncmp(trimmed, "NO ", 3) == 0)
 	{
 		path = trim_newline(skip_whitespaces(trimmed + 3));
@@ -370,7 +375,10 @@ int read_map(char *path)
 	close(fd);
 	game->map_element_count = parse_util(game);
 	if (game->map_element_count != 6) // Hata kontrolü & Hata mesajı:(Map elements err)
-		return (1);
+	{
+		printf("Map element found\n");
+		exit(1);
+	}
 	game->map_lines_count = count_map_lines();
 	if (game->map_lines_count == 0) // BURASI TEKRAR KONTROL EDİLECEK
 		return (1);
