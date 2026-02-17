@@ -75,13 +75,34 @@ char *skip_whitespaces(char *line)
 	return (line);
 }
 
+static	int	comma_check(char *line)
+{
+	int	i;
+	int	comma_count;
+
+	i = 0;
+	comma_count = 0;
+	while (line[i])
+	{
+		if (line[i] == ',')
+			comma_count++;
+		i++;
+	}
+	return (comma_count);
+}
+
 static int	parse_color(char *line)
 {
 	int		r;
 	int		g;
 	int		b;
 	char	**split;
-	int		i;
+	
+	if (comma_check(line) != 2)
+	{
+		printf("Comma error\n");
+		exit(1);
+	}
 	
 	split = ft_split(line, ',');
 	if (!split || !split[0] || !split[1] || !split[2])
@@ -89,10 +110,6 @@ static int	parse_color(char *line)
 	r = ft_atoi(split[0]); // 8 bit
 	g = ft_atoi(split[1]); // 8 bit
 	b = ft_atoi(split[2]); // 8 bit toplam 24bit rgb
-	i = 0;
-	while (split[i])
-		free(split[i++]);
-	free(split);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
 		return (-1);
 	return ((r << 16) | (g << 8) | b);
