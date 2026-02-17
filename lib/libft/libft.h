@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/09 12:46:24 by huozturk          #+#    #+#             */
-/*   Updated: 2025/02/28 03:01:59 by hsyn             ###   ########.fr       */
+/*   Created: 2024/10/15 18:51:55 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/16 15:08:16 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,15 @@ void	ft_putnbr_fd(int n, int fd);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dest, const char *src, size_t n);
 size_t	ft_strlcat(char *dest, const char *src, size_t n);
+
+typedef struct s_list
+{
+	void			*content;
+	struct s_list	*next;
+}	t_list;
+
+void	clear_garbage(void);
+void	*halloc(size_t size);
+void	*add_garbage(void *adress);
 
 #endif

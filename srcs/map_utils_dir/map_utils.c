@@ -56,7 +56,7 @@ char *whitespaces_term(char *line)
 	if (!line)
 		return (NULL);	
 
-	result = calloc(ft_strlen(line) + 1, sizeof(char));
+	result = ft_calloc(ft_strlen(line) + 1, sizeof(char));
 	if (!result)
 		return (NULL);
 	
