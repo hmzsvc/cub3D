@@ -6,7 +6,7 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 15:38:26 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/16 17:04:07 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/17 16:00:02 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,22 +67,17 @@ static bool	check_collision(float x, float y, t_game *game)
 	int	radius;
 
 	radius = COLLISION_RADIUS;
-	// Merkez
 	if (game->map[(int)(y / BLOCK)][(int)(x / BLOCK)] == '1')
 		return (true);
-	// Sol üst köşe
 	if (game->map[(int)((y - radius) / BLOCK)][(int)((x - radius)
 			/ BLOCK)] == '1')
 		return (true);
-	// Sağ üst köşe
 	if (game->map[(int)((y - radius) / BLOCK)][(int)((x + radius)
 			/ BLOCK)] == '1')
 		return (true);
-	// Sol alt köşe
 	if (game->map[(int)((y + radius) / BLOCK)][(int)((x - radius)
 			/ BLOCK)] == '1')
 		return (true);
-	// Sağ alt köşe
 	if (game->map[(int)((y + radius) / BLOCK)][(int)((x + radius)
 			/ BLOCK)] == '1')
 		return (true);

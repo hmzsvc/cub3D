@@ -20,7 +20,6 @@ SRCS = $(SRCS_DIR)/main.c \
         $(SRCS_DIR)/player.c \
         $(SRCS_DIR)/raycast.c \
 		$(SRCS_DIR)/map/map_read.c \
-		$(SRCS_DIR)/minimap.c \
 
 SRCS_MAP = $(MAP_DIR)/load_texture.c \
 
