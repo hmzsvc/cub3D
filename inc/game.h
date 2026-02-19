@@ -175,9 +175,9 @@ t_game *global_game();
 //	-------------- MAP -------------- 
 //char	**read_map(char *map_path, t_game *game);
 int	read_map(char *map_path);
-static int	parse_util(t_game *game);
-static char **read_map_util(int	line_count);
-static int	count_map_lines();
+// static int	parse_util(t_game *game);
+// static char **read_map_util(int	line_count);
+// static int	count_map_lines();
 int	is_empty_line(char *line);
 int	is_map_line(char *line);
 int	parse_floor_ceiling(char *trimmed);
@@ -196,5 +196,10 @@ int	map_newline_check(char *line);
 //	-------------- TEX --------------
 void	load_all_tex();
 int	get_tex_pixel(t_texture	*tex, int x, int y);
+
+// void *halloc (size_t size);
+// void    *add_garbage(void *adress);
+// void	*ft_halloc(size_t count, size_t size);
+
 
 #endif

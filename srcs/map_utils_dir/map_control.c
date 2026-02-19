@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_control.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 16:09:51 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/13 16:23:14 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/16 15:25:56 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ static void	create_map_clone()
 
 	game = global_game();
 	y = 0;
-	game->map_clone = calloc(sizeof(char *), game->map_height + 1);
+	game->map_clone = ft_calloc(sizeof(char *), game->map_height + 1);
 	if (!game->map_clone) // Burada Error Func'a gönderilecek
 		printf("Map Clone Create Error!\n");
 	while (game->map[y])
@@ -98,10 +98,10 @@ static void	create_map_clone()
 		game->map_clone[y] = ft_strdup(game->map[y]);
 		if (!game->map_clone[y]) // Burasi kontrol edilecek
         {
-            while (y > 0)
-                free(game->map_clone[--y]);
-            free(game->map_clone);
-            game->map_clone = NULL;
+            // while (y > 0)
+            //     free(game->map_clone[--y]);
+            // free(game->map_clone);
+            // game->map_clone = NULL;
             printf("Map Clone Strdup Error!\n");
             return ;
         }

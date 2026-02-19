@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_read.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/16 23:36:58 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/16 15:32:32 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ static void read_cub(int fd)
 			printf("HARITADA BOSLUK VAR!\n");
 		temp = joined_map;
 		joined_map = ft_strjoin(joined_map, line);
-		if (temp)
-			free(temp);
-		free(line);
+		// if (temp)
+		// 	free(temp);
+		// free(line);
 		line = get_next_line(fd);
 	}
 
@@ -110,6 +110,10 @@ static int	parse_color(char *line)
 	r = ft_atoi(split[0]); // 8 bit
 	g = ft_atoi(split[1]); // 8 bit
 	b = ft_atoi(split[2]); // 8 bit toplam 24bit rgb
+	i = 0;
+	// while (split[i])
+	// 	free(split[i++]);
+	// free(split);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
 		return (-1);
 	return ((r << 16) | (g << 8) | b);
@@ -325,7 +329,7 @@ static char **read_map_util(int	line_count)
 	int		index;
 
 	game = global_game();
-	map	= calloc(sizeof(char *), line_count + 1);
+	map	= ft_calloc(sizeof(char *), line_count + 1);
 	if (!map)
 		return (NULL);
 	i = 0;
