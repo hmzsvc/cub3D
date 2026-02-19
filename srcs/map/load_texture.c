@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmzsvc <hmzsvc@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 15:23:24 by hsyn              #+#    #+#             */
-/*   Updated: 2026/01/30 15:26:20 by hmzsvc           ###   ########.fr       */
+/*   Updated: 2026/02/16 23:45:55 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	load_tex(t_texture	*tex, char *path)
 		
 	return (1);
 }
-int	load_all_tex()
+void	load_all_tex()
 {
 	t_game	*game;
 	
@@ -44,15 +44,19 @@ int	load_all_tex()
 	game->s_path = whitespaces_term(game->s_path); // NULL CHECK EKLENECEK
 	game->e_path = whitespaces_term(game->e_path); // NULL CHECK EKLENECEK
 	game->w_path = whitespaces_term(game->w_path); // NULL CHECK EKLENECEK
+	if (!game->n_path || !game->s_path || !game->e_path || !game->w_path)
+	{
+		printf("Texture path not found\n");
+		exit(1);
+	}
 	if (!load_tex(&game->n_tex, game->n_path))
-		return (0);
+		exit (1);
 	if (!load_tex(&game->s_tex, game->s_path))
-		return (0);
+		exit (1);
 	if (!load_tex(&game->e_tex, game->e_path))
-		return (0);
+		exit (1);
 	if (!load_tex(&game->w_tex, game->w_path))
-		return (0);
-	return (1);
+		exit (1);
 }
 int	get_tex_pixel(t_texture *tex, int x, int y)
 {

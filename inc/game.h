@@ -190,10 +190,11 @@ void	set_player_dir(double angle);
 char *skip_whitespaces(char *line);
 void	wall_control();
 void	set_map_dimension();
+int	map_newline_check(char *line);
 
 
 //	-------------- TEX --------------
-int	load_all_tex();
+void	load_all_tex();
 int	get_tex_pixel(t_texture	*tex, int x, int y);
 
 // void *halloc (size_t size);

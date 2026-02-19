@@ -32,15 +32,27 @@ static void	unkown_character_check(char c)
 	//	printf("Unkown Character Error!\n");
 }
 
-void	wall_control_util(int x, int y)
+void	wall_control_util(int x, int y) // Burada map[y]'de boşluk varsa boşluktan bir önceki wall'mu kontrol edilecek
 {
 	int		is_wall;
 	t_game 	*game;
 
 	game = global_game();
+	if (!game->map[y][x]) // Error func
+		printf("Map Yok\n");
 	is_wall = (y == 0  || x == 0 || y == game->map_height - 1 || x == ft_strlen(game->map[y]) - 1);
 	if (is_wall && game->map[y][x] != ' ' && game->map[y][x] != '\t' && game->map[y][x] != '1')
 		printf("MAP DUVAR HATA!  x: %d - y: %d\n", x, y);
+	// if (game->map[y][x] == ' ')
+	// {
+	// 	if (game->map[y - 1][x] != '1')
+	// 	{
+	// 		printf("MAP DUVAR HATA!  x: %d - y: %d\n", x, y);
+	// 		exit(1);
+	// 	}
+
+	// }
+	
 }
 
 static void	flood_fill(int x, int y)
@@ -107,7 +119,6 @@ void	wall_control()
 	game = global_game();
 	y = 0;
 	create_map_clone();
-	flood_fill((int)(game->player.x / BLOCK), (int)(game->player.y / BLOCK));
 	while (game->map[y])
 	{
 		x = 0;
@@ -121,6 +132,8 @@ void	wall_control()
 		game->map_width = x;
 		y++;	
 	}
+	flood_fill((int)(game->player.x / BLOCK), (int)(game->player.y / BLOCK));
+
 }
 
 // Map'in ortasında da boşluk olabilir ve çevresi wall olmak zorunda ayrı kontrol lazım ('0' çevresinde boşluk karakteri varsa hata dönülebilir kısa yol) (flood_fill) 

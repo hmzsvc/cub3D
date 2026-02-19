@@ -35,17 +35,22 @@ static void read_cub(int fd)
 	char	*temp;
 	t_game	*game;
 	int		flag;
+	int		newline_flag;
 
 	game = global_game();
 	joined_map = NULL;
 	temp = NULL;
 	line = get_next_line(fd);
 	flag = 0;
+	newline_flag = 0;
+
 	while (line)
 	{
 		if (is_map_line(line))
 			flag = 1;
-		if (flag == 1 && !is_map_line(line)) // Hata yazdirilicaka ve exit atilacak
+		if (flag == 1 && *line == '\n')
+			newline_flag = 1;
+		if (flag == 1 && newline_flag == 1 && (map_newline_check(line))) // Hata yazdirilicaka ve exit atilacak (Burada line içeriğinde newline, boşluk ve tab harici bir şey varsa hata yazılacak)
 			printf("HARITADA BOSLUK VAR!\n");
 		temp = joined_map;
 		joined_map = ft_strjoin(joined_map, line);
@@ -54,6 +59,7 @@ static void read_cub(int fd)
 		// free(line);
 		line = get_next_line(fd);
 	}
+
 	game->all_line = ft_split(joined_map, '\n');
 	//for (size_t i = 0; game->all_line[i]; i++)
 	//{
@@ -69,13 +75,34 @@ char *skip_whitespaces(char *line)
 	return (line);
 }
 
+static	int	comma_check(char *line)
+{
+	int	i;
+	int	comma_count;
+
+	i = 0;
+	comma_count = 0;
+	while (line[i])
+	{
+		if (line[i] == ',')
+			comma_count++;
+		i++;
+	}
+	return (comma_count);
+}
+
 static int	parse_color(char *line)
 {
 	int		r;
 	int		g;
 	int		b;
 	char	**split;
-	int		i;
+	
+	if (comma_check(line) != 2)
+	{
+		printf("Comma error\n");
+		exit(1);
+	}
 	
 	split = ft_split(line, ',');
 	if (!split || !split[0] || !split[1] || !split[2])
@@ -115,6 +142,11 @@ static int parse_element(char *line)
 
 	game = global_game();
 	trimmed = skip_whitespaces(line);
+	if (!trimmed)
+	{
+		printf("Element path not found\n");
+		exit(1);
+	}
 	if (ft_strncmp(trimmed, "NO ", 3) == 0)
 	{
 		path = trim_newline(skip_whitespaces(trimmed + 3));
@@ -308,10 +340,17 @@ static char **read_map_util(int	line_count)
 		{
 			player_check_dir(game->all_line[index], i);
 			map[i] = trim_newline(ft_strdup(game->all_line[index]));
+			// printf("map[%d]: %s\n", i, map[i]);
 			i++;
 		}
 		//free(*line);
 		index++;
+	}
+	if (game->player.dir_check == 0)
+	{
+		printf("Player Yok!\n");
+		
+		exit(1);
 	}
 	map[i] = NULL;
 	return (map);
@@ -357,7 +396,10 @@ int read_map(char *path)
 	close(fd);
 	game->map_element_count = parse_util(game);
 	if (game->map_element_count != 6) // Hata kontrolü & Hata mesajı:(Map elements err)
-		return (1);
+	{
+		printf("Map element found\n");
+		exit(1);
+	}
 	game->map_lines_count = count_map_lines();
 	if (game->map_lines_count == 0) // BURASI TEKRAR KONTROL EDİLECEK
 		return (1);
