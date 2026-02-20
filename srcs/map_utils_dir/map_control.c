@@ -48,7 +48,7 @@ void	wall_control_util(int x, int y)
 	is_wall = (y == 0  || x == 0 || y == game->map_height - 1 || x == ft_strlen(game->map[y]) - 1);
 	if (is_wall && game->map[y][x] != ' ' && game->map[y][x] != '\t' && game->map[y][x] != '1')
 	{
-		printf("MAP DUVAR HATA!  x: %d - y: %d\n", x, y);
+		printf("MAP Wall error!");
 		close_game(game);
 		exit(1);
 	}

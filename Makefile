@@ -9,6 +9,8 @@ OBJS_DIR = objs
 # Libft
 LIBFT_DIR = lib/libft
 LIBFT = $(LIBFT_DIR)/libft.a
+MLX_DIR = ./minilibx-linux
+MLX_LIB = $(MLX_DIR)/libmlx.a
 
 # Get Next Line
 GNL_DIR = lib/get_next_line
@@ -51,7 +53,11 @@ $(LIBFT):
 	@echo "$(BLUE)📚 Building libft...$(RESET)"
 	@make -C $(LIBFT_DIR)
 
-$(NAME): $(LIBFT) $(OBJS_DIR) $(OBJS) $(GNL_OBJS)
+$(MLX_LIB):
+	@echo "$(BLUE)🎨 Building MiniLibX...$(RESET)"
+	@make -C $(MLX_DIR)
+
+$(NAME): $(LIBFT) $(MLX_LIB) $(OBJS_DIR) $(OBJS) $(GNL_OBJS)
 	@echo "$(BLUE)🔗 Linking $(NAME)...$(RESET)"
 	@$(CC) $(OBJS) $(GNL_OBJS) $(LIBFT) -o $(NAME) $(MLX_LIB) $(LFLAGS)
 	@echo "$(GREEN)✅ $(NAME) is ready! 🎮$(RESET)"
@@ -83,6 +89,7 @@ $(OBJS_DIR)/gnl/%.o: $(GNL_DIR)/%.c
 clean:
 	@echo "$(RED)🧹 Cleaning object files...$(RESET)"
 	@make -C $(LIBFT_DIR) clean
+	@make -C $(MLX_DIR) clean
 	rm -rf $(OBJS_DIR)
 
 fclean: clean
