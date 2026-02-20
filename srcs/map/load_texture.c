@@ -18,15 +18,20 @@ static int	load_tex(t_texture	*tex, char *path)
 	t_game	*game;
 
 	game = global_game();
-	
+	// printf("GEGEGEGEGE\n");
+	// if (!path)
+	// {
+	// 	printf("Texture path not found --%s\n", path);
+	// 	close_game(game);
+	// 	return (0);
+	// }
 	tex->width = 64;
-	tex->height = 64;	
-	
+	tex->height = 64;
 	tex->img = mlx_xpm_file_to_image(game->mlx, path, &tex->width, &tex->height);
 	if (!tex->img)
 	{
 		printf("Texture path not found\n");
-		clear_garbage();
+		close_game(game);
 		return (0);
 	}
 	tex->addr = mlx_get_data_addr(tex->img, &tex->bpp, &tex->line_len, &tex->endian);
@@ -47,6 +52,7 @@ static void	text_path_check(char *path)
     if (fd < 0)
 	{
 		//clear_garbage();
+		printf("Text path error\n");
 		close_game(game);
         exit (1);
 	}

@@ -338,7 +338,8 @@ static char **read_map_util(int	line_count)
 	if (game->player.dir_check == 0)
 	{
 		printf("Player Yok!\n");
-		clear_garbage();
+		// clear_garbage();
+		close_game(game);
 		exit(1);
 	}
 	map[i] = NULL;

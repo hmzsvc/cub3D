@@ -24,13 +24,25 @@ void	put_pixel(int x, int y, int color, t_game *game)
 	game->data[index + 2] = (color >> 16) & 0xFF;
 }
 
-void	init_game(t_game *game)
+void	open_window()
 {
-	game->mlx = mlx_init();
+	t_game	*game;
+
+	game = global_game();
+
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	game->data = mlx_get_data_addr(game->img, &game->bbp, &game->size_line,
 			&game->endian);
+}
+
+void	init_game(t_game *game)
+{
+	game->mlx = mlx_init();
+	// game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
+	// game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+	// game->data = mlx_get_data_addr(game->img, &game->bbp, &game->size_line,
+	// 		&game->endian);
 	game->map_element_count = 0;
 	game->map_lines_count = 0;
 }
@@ -93,14 +105,16 @@ int	main(int ac, char **av)
 	extension_control(av[1]);
 	game = global_game();
 	init_player(&game->player);
+	init_game(game);
 	read_map(av[1]);
 	if (!game->map) // Error check gönderilecek
 	{
 		printf("GELDİ\n");
+		close_game(game);
 		return (0);
 	}
-	init_game(game);
 	load_all_tex();
+	open_window();
 	game->player.game = game;
 	mlx_hook(game->win, 2, 1L << 0, key_press, &game->player);
 	mlx_hook(game->win, 3, 1L << 1, key_release, &game->player);
