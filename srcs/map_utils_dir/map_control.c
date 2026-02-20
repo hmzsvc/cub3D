@@ -134,6 +134,12 @@ void	wall_control()
 		x = 0;
 		while (game->map[y][x])
 		{
+			if (game->map[y][x] == '\t')
+			{
+				printf("Tab Error!!\n");
+				close_game(game);
+				exit (1); ;
+			}
 			wall_control_util(x, y);
 			unkown_character_check(game->map[y][x]);
 			x++;

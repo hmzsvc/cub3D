@@ -371,7 +371,7 @@ int read_map(char *path)
 	game->map_element_count = parse_util(game);
 	if (game->map_element_count != 6)
 	{
-		printf("Map element found\n");
+		printf("Map element not found\n");
 		close_game(game);
 		exit(1);
 	}
