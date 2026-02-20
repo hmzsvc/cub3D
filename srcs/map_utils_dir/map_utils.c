@@ -6,7 +6,7 @@
 /*   By: huozturk <huozturk@student.42kocaeli.com.tr>              +#+  +:+       +#+        */
 /*                                                               +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/06 18:25:37 by huozturk                         #+#    #+#             */
-/*   Updated: 2026/02/06 20:52:09 by huozturk                        ###   ########.tr       */
+/*   Updated: 2026/02/20 17:16:06 by huozturk                        ###   ########.tr       */
 /*                                                                                           */
 /* ***************************************************************************************** */
 
@@ -20,7 +20,7 @@ void	set_player_dir(double angle)
 	if (game->player.dir_check != 0)
 	{
 		printf("Player Dir ERROR\n");
-		clear_garbage();
+		close_game(game);
 		exit(1);
 	}
 	else

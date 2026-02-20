@@ -20,6 +20,8 @@
 #define MINIMAP_X 20            // Sol üst köşeden X uzaklığı
 #define MINIMAP_Y 20            // Sol üst köşeden Y uzaklığı
 #define MINIMAP_BORDER 3        // Kenar kalınlığı
+// Karakterin çarpışma yarıçapı (BLOCK'tan küçük olmalı)
+#define COLLISION_RADIUS 10 
 
 
 #include "../minilibx-linux/mlx.h"
@@ -33,9 +35,9 @@
 typedef struct s_game t_game;
 typedef struct s_minimap
 {
-    int pos_x;      // Ekrandaki X pozisyonu
-    int pos_y;      // Ekrandaki Y pozisyonu
-    int scale;      // Ölçek faktörü
+    int	pos_x;
+    int	pos_y;
+    int	scale;
 }   t_minimap;
 
 typedef struct s_draw
@@ -47,8 +49,7 @@ typedef struct s_draw
     float   tex_pos;
     int     tex_x;
     int     tex_y;
-
-}t_draw;
+}	t_draw;
 
 
 typedef struct s_ray
@@ -69,140 +70,91 @@ typedef struct s_ray
 
 typedef struct s_player
 {
-    float 	x;
-    float 	y;
-    float 	angle;
+    float	x;
+    float	y;
+    float	angle;
 	int		dir_check;
-
-    bool key_up;
-    bool key_down;
-    bool key_left;
-    bool key_right;
-    
-    bool left_rotate;
-    bool right_rotate;
-
-    t_game *game;
+    bool	key_up;
+    bool	key_down;
+    bool	key_left;
+    bool	key_right;
+    bool	left_rotate;
+    bool	right_rotate;
+    t_game	*game;
 }	t_player;
 
 typedef struct s_texture
 {
-	void	*img;		//img objesi
-	char	*addr;		//Pixel data address
-	int		width;		//Img Width
-	int		height;		//Img Height
-	int		bpp;		//Bits per pixel (pixel başına bit sayısı) (Pixelin biti yani rgba her biri 8 bit r:8 g:8 b:8 a:8)
-	int		line_len;	//Satır uzunluğu
-	int		endian;		//Byte sıralaması
-
-} t_texture;
+	void	*img;
+	char	*addr;
+	int		width;
+	int		height;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}	t_texture;
 
 
 typedef struct s_game
 {
-	int	map_element_count; //MAP ELEMENTS COUNT
-	int	map_lines_count; //MAP LİNES COUNT
-	int	cub_lines_count;
-	int	error_code;
-
-    void *mlx;
-    void *win;
-    void *img;
-
-    char *data;
-    int bbp;
-    int size_line;
-    int endian;
-    
-	char	**all_line;
-    char	**map;
-	int		map_width;
-	int		map_height;
-    char	**map_clone;
-
-    t_player player;
-    t_minimap minimap;
-
-
-	// TEXTURE VARİABLES
+	int			map_element_count;
+	int			map_lines_count;
+	int			cub_lines_count;
+	int			error_code;
+    void		*mlx;
+    void		*win;
+    void		*img;
+    char		*data;
+    int			bbp;
+    int			size_line;
+    int			endian;
+	char		**all_line;
+    char		**map;
+	int			map_width;
+	int			map_height;
+    char		**map_clone;
+    t_player	player;
+    t_minimap	minimap;
 	t_texture	n_tex;
 	t_texture	s_tex;
 	t_texture	e_tex;
 	t_texture	w_tex;
-
 	char		*n_path;
 	char		*s_path;
 	char		*e_path;
 	char		*w_path;
-
-
-	// COLOR VARİABLES
 	int			floor_color;
 	int			ceiling_color;
-
 }	t_game;
 
-
-// Minimap functions
-void init_minimap(t_minimap *minimap);
-void draw_minimap(t_game *game);
-
-// Function declarations
-void init_game(t_game *game);
-void init_player(t_player *player);
-int key_release(int keycode, t_player *player);
-int key_press(int keycode, t_player *player);
-void move_player(t_player *player);
-
-// Raycast functions
-bool touch(float px, float py, t_game *game);
-float distance(float x, float y);
-float fixed_dist(float x1, float y1, float x2, float y2, t_game *game);
-void draw_line(t_player *player, t_game *game, float start_x, int i);
-// void perform_raycasting(t_game *game);
-void render_frame(t_game *game);
-
-void put_pixel(int x, int y, int color, t_game *game);
-int close_game(t_game *game);
-
-//	Game Func
-t_game *global_game();
-
-// Karakterin çarpışma yarıçapı (BLOCK'tan küçük olmalı)
-#define COLLISION_RADIUS 10 
-
-
-//	-------------- MAP -------------- 
-//char	**read_map(char *map_path, t_game *game);
-int	read_map(char *map_path);
-// static int	parse_util(t_game *game);
-// static char **read_map_util(int	line_count);
-// static int	count_map_lines();
-int	is_empty_line(char *line);
-int	is_map_line(char *line);
-int	parse_floor_ceiling(char *trimmed);
-int	parse_element_continue(char *trimmed);
-//int	parse_element(char *trimmed);
-//static char *trim_newline(char *str);
-//static int	parse_color(char *line);
-char *whitespaces_term(char *line);
+void	init_minimap(t_minimap *minimap);
+void	draw_minimap(t_game *game);
+void	init_game(t_game *game);
+void	init_player(t_player *player);
+int		key_release(int keycode, t_player *player);
+int		key_press(int keycode, t_player *player);
+void	move_player(t_player *player);
+bool	touch(float px, float py, t_game *game);
+float	distance(float x, float y);
+float	fixed_dist(float x1, float y1, float x2, float y2, t_game *game);
+void	draw_line(t_player *player, t_game *game, float start_x, int i);
+void	render_frame(t_game *game);
+void	put_pixel(int x, int y, int color, t_game *game);
+int		close_game(t_game *game);
+t_game	*global_game();
+int		read_map(char *map_path);
+int		is_empty_line(char *line);
+int		is_map_line(char *line);
+int		parse_floor_ceiling(char *trimmed);
+int		parse_element_continue(char *trimmed);
+char	*whitespaces_term(char *line);
 void	set_player_dir(double angle);
-char *skip_whitespaces(char *line);
+char	*skip_whitespaces(char *line);
 void	wall_control();
 void	set_map_dimension();
-int	map_newline_check(char *line);
-
-
+int		map_newline_check(char *line);
 void	extension_control(char *map_argv);
-
-
-//	-------------- TEX --------------
 void	load_all_tex();
-int	get_tex_pixel(t_texture	*tex, int x, int y);
-
-// void *halloc (size_t size);
-// void    *add_garbage(void *adress);
-// void	*ft_halloc(size_t count, size_t size);
-
+int		get_tex_pixel(t_texture	*tex, int x, int y);
 
 #endif

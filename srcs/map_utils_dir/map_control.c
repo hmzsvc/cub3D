@@ -12,12 +12,11 @@
 
 #include "../../inc/game.h"
 
-// Map'in üst kısmı için y = 0 x++ kontrol edilecek
-// Map'in sol sütun kısmı için x = 0 y++ kontrol edilecek
-// Map'in en sağ sütun kısmı için x max value y++ kontrol edilecek
-// map'in alt kısmı için y max value x++ kontrol edilecek
 static void	unkown_character_check(char c)
 {
+	t_game	*game;
+
+	game = global_game();
 	int	map_component;
 	int	player_component;
 	int	whitespace_component;
@@ -28,13 +27,13 @@ static void	unkown_character_check(char c)
 	if (map_component && player_component && whitespace_component)
 	{
 		printf("Unkown Character Error!\n");
-		clear_garbage();
+		close_game(game);
 		exit (1);
 	}
 	
 }
 
-void	wall_control_util(int x, int y) // Burada map[y]'de boşluk varsa boşluktan bir önceki wall'mu kontrol edilecek
+void	wall_control_util(int x, int y)
 {
 	int		is_wall;
 	t_game 	*game;
@@ -43,14 +42,22 @@ void	wall_control_util(int x, int y) // Burada map[y]'de boşluk varsa boşlukta
 	if (!game->map[y][x])
 	{
 		printf("Map Yok\n");
-		clear_garbage();
+		close_game(game);
 		exit(1);	
 	}
 	is_wall = (y == 0  || x == 0 || y == game->map_height - 1 || x == ft_strlen(game->map[y]) - 1);
 	if (is_wall && game->map[y][x] != ' ' && game->map[y][x] != '\t' && game->map[y][x] != '1')
 	{
 		printf("MAP DUVAR HATA!  x: %d - y: %d\n", x, y);
-		clear_garbage();
+		close_game(game);
+		exit(1);
+	}
+	if (game->map[y][x] == '0' && (game->map[y][x + 1] == ' '
+		|| game->map[y][x - 1] == ' '
+		|| game->map[y + 1][x] == ' ' || game->map[y - 1][x] == ' '))
+	{
+		printf("MAP Wall Error!\n");
+		close_game(game);
 		exit(1);
 	}
 }
@@ -64,7 +71,7 @@ static void	flood_fill(int x, int y)
 	{
 		printf("Map Hata1\n");
 		game->error_code = 1;
-		clear_garbage();
+		close_game(game);
 		exit(1);
 	}
 	if (game->map_clone[y][x] == '1' || game->map_clone[y][x] == 'V')
@@ -74,7 +81,7 @@ static void	flood_fill(int x, int y)
 	{
 		printf("Map Hata2\n");
 		game->error_code = 2;
-		clear_garbage();
+		close_game(game);
 		exit(1);
 	}
 	game->map_clone[y][x] = 'V';
@@ -96,7 +103,7 @@ static void	create_map_clone()
 	if (!game->map_clone)
 	{
 		printf("Map Clone Create Error!\n");
-		clear_garbage();
+		close_game(game);
 		exit (1);
 	}
 	while (game->map[y])
@@ -105,7 +112,7 @@ static void	create_map_clone()
 		if (!game->map_clone[y])
         {
             printf("Map Clone Strdup Error!\n");
-			clear_garbage();
+			close_game(game);
             exit (1); ;
         }
 		y++;
@@ -135,5 +142,4 @@ void	wall_control()
 		y++;	
 	}
 	flood_fill((int)(game->player.x / BLOCK), (int)(game->player.y / BLOCK));
-
 }

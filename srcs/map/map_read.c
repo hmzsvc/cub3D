@@ -42,7 +42,6 @@ static void read_cub(int fd)
 	line = get_next_line(fd);
 	flag = 0;
 	newline_flag = 0;
-
 	while (line)
 	{
 		if (is_map_line(line))
@@ -52,23 +51,15 @@ static void read_cub(int fd)
 		if (flag == 1 && newline_flag == 1 && (map_newline_check(line)))
 		{
 			printf("HARITADA BOSLUK VAR!\n");
-			clear_garbage();
+			close_game(game);
 			exit(1);
 		}
 		temp = joined_map;
 		joined_map = ft_strjoin(joined_map, line);
-		// if (temp)
-		// 	free(temp);
-		// free(line);
 		line = get_next_line(fd);
 	}
 
 	game->all_line = ft_split(joined_map, '\n');
-	//for (size_t i = 0; game->all_line[i]; i++)
-	//{
-	//	printf("ALL_LINES[%d]: $%s$\n", i, game->all_line[i]);
-	//}
-	
 }
 
 char *skip_whitespaces(char *line)
@@ -100,11 +91,13 @@ static int	parse_color(char *line)
 	int		g;
 	int		b;
 	char	**split;
-	
+	t_game	*game;
+
+	game = global_game();
 	if (comma_check(line) != 2)
 	{
 		printf("Comma error\n");
-		clear_garbage();
+		close_game(game);
 		exit(1);
 	}
 	
@@ -247,7 +240,6 @@ static void	player_check_dir(char *line, int map_y) // Burada player x ve y alma
 int	is_map_line(char *line)
 {
 	int		i;
-	//char	*trimmed;
 
 	i = 0;
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
@@ -256,13 +248,6 @@ int	is_map_line(char *line)
 	if (line[i] == '1' || line[i] == '0')
 		return (1);
 	return (0);
-
-	//trimmed = skip_whitespaces(line);	
-	//if (*trimmed == '1' || *trimmed == '0')
-	//{
-	//	return (1);
-	//}
-	//return (0);
 }
 
 int	is_empty_line(char *line)
@@ -296,7 +281,6 @@ static int	count_map_lines()
 	game = global_game();
 	line_count = 0;
 	map_started = 0;
-	//line = game->all_line;
 	index = 0;
 	while (game->all_line[index])
 	{
@@ -306,7 +290,11 @@ static int	count_map_lines()
 			line_count++;
 		}
 		else if (map_started == 1 && !is_map_line(game->all_line[index]) && map_space_check(game->all_line[index]))
-			printf("HATAAAASDASDASDSADASDASAAAA\n");;
+		{
+			printf("HATAAAASDASDASDSADASDASAAAA\n");
+			close_game(game);
+			exit (1);
+		}
 		index++;
 	}
 	return (line_count);
@@ -338,7 +326,6 @@ static char **read_map_util(int	line_count)
 	if (game->player.dir_check == 0)
 	{
 		printf("Player Yok!\n");
-		// clear_garbage();
 		close_game(game);
 		exit(1);
 	}
@@ -386,7 +373,7 @@ int read_map(char *path)
 	if (game->map_element_count != 6)
 	{
 		printf("Map element found\n");
-		clear_garbage();
+		close_game(game);
 		exit(1);
 	}
 	game->map_lines_count = count_map_lines();
