@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_read.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/16 15:32:32 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/20 03:12:29 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static int	open_map(char *map_path)
 	fd = open(map_path, O_RDONLY);
 	if (!fd)
 	{
-
 		perror("Fd cannot open!");
 		return (0);
 	}
@@ -50,8 +49,12 @@ static void read_cub(int fd)
 			flag = 1;
 		if (flag == 1 && *line == '\n')
 			newline_flag = 1;
-		if (flag == 1 && newline_flag == 1 && (map_newline_check(line))) // Hata yazdirilicaka ve exit atilacak (Burada line içeriğinde newline, boşluk ve tab harici bir şey varsa hata yazılacak)
+		if (flag == 1 && newline_flag == 1 && (map_newline_check(line)))
+		{
 			printf("HARITADA BOSLUK VAR!\n");
+			clear_garbage();
+			exit(1);
+		}
 		temp = joined_map;
 		joined_map = ft_strjoin(joined_map, line);
 		// if (temp)
@@ -101,6 +104,7 @@ static int	parse_color(char *line)
 	if (comma_check(line) != 2)
 	{
 		printf("Comma error\n");
+		clear_garbage();
 		exit(1);
 	}
 	
@@ -110,10 +114,6 @@ static int	parse_color(char *line)
 	r = ft_atoi(split[0]); // 8 bit
 	g = ft_atoi(split[1]); // 8 bit
 	b = ft_atoi(split[2]); // 8 bit toplam 24bit rgb
-	i = 0;
-	// while (split[i])
-	// 	free(split[i++]);
-	// free(split);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
 		return (-1);
 	return ((r << 16) | (g << 8) | b);
@@ -349,7 +349,7 @@ static char **read_map_util(int	line_count)
 	if (game->player.dir_check == 0)
 	{
 		printf("Player Yok!\n");
-		
+		clear_garbage();
 		exit(1);
 	}
 	map[i] = NULL;
@@ -398,6 +398,7 @@ int read_map(char *path)
 	if (game->map_element_count != 6) // Hata kontrolü & Hata mesajı:(Map elements err)
 	{
 		printf("Map element found\n");
+		clear_garbage();
 		exit(1);
 	}
 	game->map_lines_count = count_map_lines();

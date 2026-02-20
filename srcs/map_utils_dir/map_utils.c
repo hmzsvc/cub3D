@@ -17,8 +17,12 @@ void	set_player_dir(double angle)
 	t_game *game;
 
 	game = global_game();
-	if (game->player.dir_check != 0) // Burada hata yazdırıp exit atıcaz
+	if (game->player.dir_check != 0)
+	{
 		printf("Player Dir ERROR\n");
+		clear_garbage();
+		exit(1);
+	}
 	else
 		game->player.dir_check = 1;
 	game->player.angle = angle;
@@ -26,23 +30,17 @@ void	set_player_dir(double angle)
 
 void	set_map_dimension()
 {
-	//int		x;
 	int		y;
 	t_game	*game;
 
 	y = 0;
-	//x = 0;
 	game = global_game();
 	while (game->map[y])
 	{
 		y++;
 	}
 	game->map_height = y;
-	//while (game->map[x])
-	//{
-	//	x++;
-	//}
-	//game->map_width = x;
+
 }
 
 char *whitespaces_term(char *line)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_control.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 16:09:51 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/16 15:25:56 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/20 03:08:13 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,19 @@ void	wall_control_util(int x, int y) // Burada map[y]'de boşluk varsa boşlukta
 	t_game 	*game;
 
 	game = global_game();
-	if (!game->map[y][x]) // Error func
+	if (!game->map[y][x])
+	{
 		printf("Map Yok\n");
+		clear_garbage();
+		exit(1);	
+	}
 	is_wall = (y == 0  || x == 0 || y == game->map_height - 1 || x == ft_strlen(game->map[y]) - 1);
 	if (is_wall && game->map[y][x] != ' ' && game->map[y][x] != '\t' && game->map[y][x] != '1')
+	{
 		printf("MAP DUVAR HATA!  x: %d - y: %d\n", x, y);
-	// if (game->map[y][x] == ' ')
-	// {
-	// 	if (game->map[y - 1][x] != '1')
-	// 	{
-	// 		printf("MAP DUVAR HATA!  x: %d - y: %d\n", x, y);
-	// 		exit(1);
-	// 	}
-
-	// }
-	
+		clear_garbage();
+		exit(1);
+	}
 }
 
 static void	flood_fill(int x, int y)
@@ -64,7 +62,8 @@ static void	flood_fill(int x, int y)
 	{
 		printf("Map Hata1\n");
 		game->error_code = 1;
-		return ;
+		clear_garbage();
+		exit(1);
 	}
 	if (game->map_clone[y][x] == '1' || game->map_clone[y][x] == 'V')
 		return ;
@@ -73,7 +72,8 @@ static void	flood_fill(int x, int y)
 	{
 		printf("Map Hata2\n");
 		game->error_code = 2;
-		return ;
+		clear_garbage();
+		exit(1);
 	}
 	game->map_clone[y][x] = 'V';
 

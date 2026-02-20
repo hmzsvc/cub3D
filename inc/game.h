@@ -193,6 +193,9 @@ void	set_map_dimension();
 int	map_newline_check(char *line);
 
 
+void	extension_control(char *map_argv);
+
+
 //	-------------- TEX --------------
 void	load_all_tex();
 int	get_tex_pixel(t_texture	*tex, int x, int y);

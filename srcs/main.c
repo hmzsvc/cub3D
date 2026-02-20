@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/17 16:10:35 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/20 03:22:49 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,13 @@ int	main(int ac, char **av)
 {
 	t_game	*game;
 
+	if (ac != 2)
+	{
+		printf("Av error\n");
+		exit (1);
+	}
+	
+	extension_control(av[1]);
 	game = global_game();
 	init_player(&game->player);
 	read_map(av[1]);
