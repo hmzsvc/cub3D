@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/20 03:12:29 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/20 03:43:45 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,7 +285,7 @@ int	map_space_check(char *line)
 	return (0);
 }
 
-static int	count_map_lines() // Map started olduğunda map line count artacak fakat is_empty ile new line kontrolü yaparak map arasında boşluk varmı check eklenecek 
+static int	count_map_lines() 
 {
 	char	**line;
 	int		line_count;
@@ -307,17 +307,8 @@ static int	count_map_lines() // Map started olduğunda map line count artacak fa
 		}
 		else if (map_started == 1 && !is_map_line(game->all_line[index]) && map_space_check(game->all_line[index]))
 			printf("HATAAAASDASDASDSADASDASAAAA\n");;
-		//else if (map_started && !is_empty_line(line) && is_map_line(line))
-		//	break;
-		//free(*line);
 		index++;
 	}
-	//while (*line)
-	//{
-	//	free(*line);
-	//	*line++;
-	//}
-	//printf("LINE_COUNT: $%d$\n", line_count);
 	return (line_count);
 }
 
@@ -340,10 +331,8 @@ static char **read_map_util(int	line_count)
 		{
 			player_check_dir(game->all_line[index], i);
 			map[i] = trim_newline(ft_strdup(game->all_line[index]));
-			// printf("map[%d]: %s\n", i, map[i]);
 			i++;
 		}
-		//free(*line);
 		index++;
 	}
 	if (game->player.dir_check == 0)
@@ -374,10 +363,8 @@ static int	parse_util(t_game *game)
 		}
 		else if (is_map_line(game->all_line[index]))
 		{
-			//free(game->all_line[index]);
 			break;
 		}
-		//free(*line);
 		index++;
 	}
 	return (count);
@@ -395,7 +382,7 @@ int read_map(char *path)
 	read_cub(fd);
 	close(fd);
 	game->map_element_count = parse_util(game);
-	if (game->map_element_count != 6) // Hata kontrolü & Hata mesajı:(Map elements err)
+	if (game->map_element_count != 6)
 	{
 		printf("Map element found\n");
 		clear_garbage();
@@ -407,6 +394,5 @@ int read_map(char *path)
 	game->map = read_map_util(game->map_lines_count);
 	set_map_dimension();
 	wall_control();
-	//game->map_clone = read_map_util(fd, game->map_lines_count);
 	return (0);
 }
