@@ -325,7 +325,7 @@ static char **read_map_util(int	line_count)
 	}
 	if (game->player.dir_check == 0)
 	{
-		printf("Player Yok!\n");
+		printf("Player not found!\n");
 		close_game(game);
 		exit(1);
 	}
@@ -341,8 +341,7 @@ static int	parse_util(t_game *game)
 
 	count = 0;
 	index = 0;
-	//line = game->all_line;
-	while (game->all_line[index] && count < 6)
+	while (game->all_line[index])
 	{
 		if (!is_empty_line(game->all_line[index]) && !is_map_line(game->all_line[index]))
 		{
