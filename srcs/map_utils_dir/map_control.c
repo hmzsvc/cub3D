@@ -28,9 +28,7 @@ static void	unkown_character_check(char c)
 	{
 		printf("Unkown Character Error!\n");
 		close_game(game);
-		exit (1);
 	}
-	
 }
 
 void	wall_control_util(int x, int y)
@@ -43,14 +41,12 @@ void	wall_control_util(int x, int y)
 	{
 		printf("Map Yok\n");
 		close_game(game);
-		exit(1);	
 	}
 	is_wall = (y == 0  || x == 0 || y == game->map_height - 1 || x == ft_strlen(game->map[y]) - 1);
 	if (is_wall && game->map[y][x] != ' ' && game->map[y][x] != '\t' && game->map[y][x] != '1')
 	{
 		printf("MAP Wall error!");
 		close_game(game);
-		exit(1);
 	}
 	if (game->map[y][x] == '0' && (game->map[y][x + 1] == ' '
 		|| game->map[y][x - 1] == ' '
@@ -58,7 +54,6 @@ void	wall_control_util(int x, int y)
 	{
 		printf("MAP Wall Error!\n");
 		close_game(game);
-		exit(1);
 	}
 }
 
@@ -72,7 +67,6 @@ static void	flood_fill(int x, int y)
 		printf("Map Hata1\n");
 		game->error_code = 1;
 		close_game(game);
-		exit(1);
 	}
 	if (game->map_clone[y][x] == '1' || game->map_clone[y][x] == 'V')
 		return ;
@@ -82,7 +76,6 @@ static void	flood_fill(int x, int y)
 		printf("Map Hata2\n");
 		game->error_code = 2;
 		close_game(game);
-		exit(1);
 	}
 	game->map_clone[y][x] = 'V';
 
@@ -104,7 +97,6 @@ static void	create_map_clone()
 	{
 		printf("Map Clone Create Error!\n");
 		close_game(game);
-		exit (1);
 	}
 	while (game->map[y])
 	{
@@ -113,7 +105,6 @@ static void	create_map_clone()
         {
             printf("Map Clone Strdup Error!\n");
 			close_game(game);
-            exit (1); ;
         }
 		y++;
 	}
@@ -138,7 +129,6 @@ void	wall_control()
 			{
 				printf("Tab Error!!\n");
 				close_game(game);
-				exit (1); ;
 			}
 			wall_control_util(x, y);
 			unkown_character_check(game->map[y][x]);

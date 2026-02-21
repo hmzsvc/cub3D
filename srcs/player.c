@@ -41,7 +41,7 @@ int	key_press(int keycode, t_player *player)
 	if (keycode == RIGHT)
 		player->right_rotate = true;
 	if (keycode == 65307)
-		close_game(player->game);
+		success_close_game(player->game);
 	return (0);
 }
 

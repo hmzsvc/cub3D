@@ -16,13 +16,15 @@
 
 static int	open_map(char *map_path)
 {
-	int	fd;
+	t_game	*game;
+	int		fd;
 
+	game = global_game();
 	fd = open(map_path, O_RDONLY);
-	if (!fd)
+	if (fd <= 0)
 	{
-		perror("Fd cannot open!");
-		return (0);
+		printf("Fd cannot open!\n");
+		close_game(game);
 	}
 	return (fd);
 }
@@ -50,15 +52,13 @@ static void read_cub(int fd)
 			newline_flag = 1;
 		if (flag == 1 && newline_flag == 1 && (map_newline_check(line)))
 		{
-			printf("HARITADA BOSLUK VAR!\n");
+			printf("There is a gap on the map!\n");
 			close_game(game);
-			exit(1);
 		}
 		temp = joined_map;
 		joined_map = ft_strjoin(joined_map, line);
 		line = get_next_line(fd);
 	}
-
 	game->all_line = ft_split(joined_map, '\n');
 }
 
@@ -98,9 +98,7 @@ static int	parse_color(char *line)
 	{
 		printf("Comma error\n");
 		close_game(game);
-		exit(1);
 	}
-	
 	split = ft_split(line, ',');
 	if (!split || !split[0] || !split[1] || !split[2])
 		return (-1);
@@ -293,7 +291,6 @@ static int	count_map_lines()
 		{
 			printf("HATAAAASDASDASDSADASDASAAAA\n");
 			close_game(game);
-			exit (1);
 		}
 		index++;
 	}
@@ -327,7 +324,6 @@ static char **read_map_util(int	line_count)
 	{
 		printf("Player not found!\n");
 		close_game(game);
-		exit(1);
 	}
 	map[i] = NULL;
 	return (map);
@@ -357,29 +353,25 @@ static int	parse_util(t_game *game)
 	return (count);
 }
 
-int read_map(char *path)
+void read_map(char *path)
 {
 	int		fd;
 	t_game	*game;
 
 	game = global_game();
 	fd = open_map(path);
-	if (fd < 0)
-		return (1);
 	read_cub(fd);
 	close(fd);
 	game->map_element_count = parse_util(game);
 	if (game->map_element_count != 6)
 	{
-		printf("Map element not found\n");
+		printf("Map element notfound\n");
 		close_game(game);
-		exit(1);
 	}
 	game->map_lines_count = count_map_lines();
 	if (game->map_lines_count == 0) // BURASI TEKRAR KONTROL EDİLECEK
-		return (1);
+		exit (1);
 	game->map = read_map_util(game->map_lines_count);
 	set_map_dimension();
 	wall_control();
-	return (0);
 }
