@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/17 16:10:35 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/20 03:22:49 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,45 @@ void	put_pixel(int x, int y, int color, t_game *game)
 	game->data[index + 2] = (color >> 16) & 0xFF;
 }
 
+void	open_window()
+{
+	t_game	*game;
+
+	game = global_game();
+
+	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
+	if (!game->img)
+	{
+		printf("Image init fail\n");
+		close_game(game);
+		exit(1);
+	}
+	game->data = mlx_get_data_addr(game->img, &game->bbp, &game->size_line,
+			&game->endian);
+	if (!game->data)
+	{
+		printf("Data init fail\n");
+		close_game(game);
+		exit(1);
+	}
+	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
+	if (!game->win)
+	{
+		printf("Window init fail\n");
+		close_game(game);
+		exit(1);
+	}
+}
+
 void	init_game(t_game *game)
 {
 	game->mlx = mlx_init();
-	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
-	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
-	game->data = mlx_get_data_addr(game->img, &game->bbp, &game->size_line,
-			&game->endian);
+	if (!game->mlx)
+	{
+		close_game(game);
+		exit(1);
+	}
+	
 	game->map_element_count = 0;
 	game->map_lines_count = 0;
 }
@@ -78,22 +110,28 @@ t_game	*global_game(void)
 	return (game);
 }
 
-// #include <stdio.h>
-
 int	main(int ac, char **av)
 {
 	t_game	*game;
 
+	if (ac != 2)
+	{
+		printf("Av error\n");
+		exit (1);
+	}
+	extension_control(av[1]);
 	game = global_game();
 	init_player(&game->player);
+	init_game(game);
 	read_map(av[1]);
-	if (!game->map) // Error check gönderilecek
+	if (!game->map)
 	{
-		printf("GELDİ\n");
+		printf("Map could not be loaded\n");
+		close_game(game);
 		return (0);
 	}
-	init_game(game);
 	load_all_tex();
+	open_window();
 	game->player.game = game;
 	mlx_hook(game->win, 2, 1L << 0, key_press, &game->player);
 	mlx_hook(game->win, 3, 1L << 1, key_release, &game->player);

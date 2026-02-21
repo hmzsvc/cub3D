@@ -9,6 +9,8 @@ OBJS_DIR = objs
 # Libft
 LIBFT_DIR = lib/libft
 LIBFT = $(LIBFT_DIR)/libft.a
+MLX_DIR = ./minilibx-linux
+MLX_LIB = $(MLX_DIR)/libmlx.a
 
 # Get Next Line
 GNL_DIR = lib/get_next_line
@@ -20,11 +22,14 @@ SRCS = $(SRCS_DIR)/main.c \
         $(SRCS_DIR)/player.c \
         $(SRCS_DIR)/raycast.c \
 		$(SRCS_DIR)/map/map_read.c \
+		$(SRCS_DIR)/utils.c \
 
 SRCS_MAP = $(MAP_DIR)/load_texture.c \
 
 SRCS_MAP_UTIL = $(MAP_UTIL_DIR)/map_utils.c \
 					$(MAP_UTIL_DIR)/map_control.c \
+					$(MAP_UTIL_DIR)/map_control_utils.c \
+
 
 OBJS_MAIN = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 OBJS_MAP = $(SRCS_MAP:$(MAP_DIR)/%.c=$(OBJS_DIR)/map/%.o)
@@ -48,7 +53,11 @@ $(LIBFT):
 	@echo "$(BLUE)📚 Building libft...$(RESET)"
 	@make -C $(LIBFT_DIR)
 
-$(NAME): $(LIBFT) $(OBJS_DIR) $(OBJS) $(GNL_OBJS)
+$(MLX_LIB):
+	@echo "$(BLUE)🎨 Building MiniLibX...$(RESET)"
+	@make -C $(MLX_DIR)
+
+$(NAME): $(LIBFT) $(MLX_LIB) $(OBJS_DIR) $(OBJS) $(GNL_OBJS)
 	@echo "$(BLUE)🔗 Linking $(NAME)...$(RESET)"
 	@$(CC) $(OBJS) $(GNL_OBJS) $(LIBFT) -o $(NAME) $(MLX_LIB) $(LFLAGS)
 	@echo "$(GREEN)✅ $(NAME) is ready! 🎮$(RESET)"
@@ -80,6 +89,7 @@ $(OBJS_DIR)/gnl/%.o: $(GNL_DIR)/%.c
 clean:
 	@echo "$(RED)🧹 Cleaning object files...$(RESET)"
 	@make -C $(LIBFT_DIR) clean
+	@make -C $(MLX_DIR) clean
 	rm -rf $(OBJS_DIR)
 
 fclean: clean
