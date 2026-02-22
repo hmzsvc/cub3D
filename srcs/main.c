@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/20 03:22:49 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/22 16:03:26 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ void	init_game(t_game *game)
 	
 	game->map_element_count = 0;
 	game->map_lines_count = 0;
+	game->map_flag = 0;
+	game->newline_flag = 0;
+	game->gap_check = 0;
 }
 
 int	draw_loop(t_game *game)

@@ -125,6 +125,11 @@ typedef struct s_game
 	char		*w_path;
 	int			floor_color;
 	int			ceiling_color;
+
+	int			newline_flag;
+	int			map_flag;
+	int			gap_check;
+
 }	t_game;
 
 void	init_minimap(t_minimap *minimap);
@@ -158,6 +163,7 @@ void	load_all_tex();
 int		get_tex_pixel(t_texture	*tex, int x, int y);
 void	wall_control_continue(int x, int y);
 void	invalid_character_check(char *line);
+void	map_gap_check(char *line);
 
 
 #endif

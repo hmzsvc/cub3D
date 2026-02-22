@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/22 03:44:14 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/22 16:02:42 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,15 @@ static void read_cub(int fd)
 	char	*joined_map;
 	char	*temp;
 	t_game	*game;
-	int		flag;
-	int		newline_flag;
+
 
 	game = global_game();
 	joined_map = NULL;
 	temp = NULL;
 	line = get_next_line(fd);
-	flag = 0;
-	newline_flag = 0;
 	while (line)
 	{
-		if (is_map_line(line))
-			flag = 1;
-		if (flag == 1 && *line == '\n')
-			newline_flag = 1;
-		if (flag == 1 && newline_flag == 1 && (map_newline_check(line)))
-		{
-			printf("There is a gap on the map!\n");
-			close_game(game);
-		}
+		map_gap_check(line);
 		temp = joined_map;
 		joined_map = ft_strjoin(joined_map, line);
 		line = get_next_line(fd);
@@ -381,8 +370,13 @@ void read_map(char *path)
 		close_game(game);
 	}
 	game->map_lines_count = count_map_lines();
-	if (game->map_lines_count == 0) // BURASI TEKRAR KONTROL EDİLECEK
+	if (game->map_lines_count == 1) // BURASI TEKRAR KONTROL EDİLECEK
 		exit (1);
+	if (game->gap_check == 1)
+	{
+		printf("Gap error\n");
+		close_game(game);
+	}
 	game->map = read_map_util(game->map_lines_count);
 	set_map_dimension();
 	wall_control();
