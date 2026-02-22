@@ -156,5 +156,8 @@ int		map_newline_check(char *line);
 void	extension_control(char *map_argv);
 void	load_all_tex();
 int		get_tex_pixel(t_texture	*tex, int x, int y);
+void	wall_control_continue(int x, int y);
+void	invalid_character_check(char *line);
+
 
 #endif

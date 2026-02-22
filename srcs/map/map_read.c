@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/20 04:05:37 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/22 03:44:14 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,12 +260,22 @@ int	is_empty_line(char *line)
 
 int	map_space_check(char *line)
 {
-	char	*trimmed;
+	//char	*trimmed;
 
-	trimmed = skip_whitespaces(line);
-	if (*trimmed == '\n')
-		return (1);
-	return (0);
+	//trimmed = skip_whitespaces(line);
+	//if (*trimmed == '\n')
+	//	return (0);
+	//return (1);
+
+	int	i;
+
+	i = 0;
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	
+	if (line[i] == '\n' || line[i] == '\0')
+		return (0);
+	return (1);
 }
 
 static int	count_map_lines() 
@@ -282,14 +292,16 @@ static int	count_map_lines()
 	index = 0;
 	while (game->all_line[index])
 	{
+		invalid_character_check(game->all_line[index]);
 		if (is_map_line(game->all_line[index]))
 		{
 			map_started = 1;
 			line_count++;
 		}
-		else if (map_started == 1 && !is_map_line(game->all_line[index]) && map_space_check(game->all_line[index]))
+		if (map_started == 1 && !is_map_line(game->all_line[index])
+			&& map_space_check(game->all_line[index]))
 		{
-			printf("HATAAAASDASDASDSADASDASAAAA\n");
+			printf("Invalid Format\n");
 			close_game(game);
 		}
 		index++;
