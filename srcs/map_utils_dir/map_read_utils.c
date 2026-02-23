@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_read_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/22 20:54:44 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/23 23:48:56 by hsyn             ###   ########.fr       */
+/*   Created: 2026/02/23 16:44:50 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/23 16:44:54 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	is_empty_line(char *line)
 
 int	is_map_line(char *line)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
@@ -46,7 +46,7 @@ int	map_space_check(char *line)
 	return (1);
 }
 
-static	int	comma_check(char *line)
+static int	comma_check(char *line)
 {
 	int	i;
 	int	comma_count;

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   read_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/23 01:30:27 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/23 23:49:50 by hsyn             ###   ########.fr       */
+/*   Created: 2026/02/23 16:45:06 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/23 16:45:10 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/game.h"
-#include <unistd.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 static int	open_map(char *map_path)
 {

@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   load_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/21 15:23:24 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/23 23:47:55 by hsyn             ###   ########.fr       */
+/*   Created: 2026/02/23 16:42:35 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/23 16:43:12 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/game.h"
 #include <fcntl.h>
-#include <unistd.h>
 #include <stdio.h>
+#include <unistd.h>
 
-static int	load_tex(t_texture	*tex, char *path)
+static int	load_tex(t_texture *tex, char *path)
 {
 	t_game	*game;
 

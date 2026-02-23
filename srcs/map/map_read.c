@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_read.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/23 23:48:12 by hsyn             ###   ########.fr       */
+/*   Created: 2026/02/23 16:43:19 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/23 16:43:24 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static char	**read_map_util(int line_count)
 	i = 0;
 	index = 0;
 	while (game->all_line[index] && i < line_count)
-	{	
+	{
 		if (is_map_line(game->all_line[index]))
 		{
 			player_check_dir(game->all_line[index], i);

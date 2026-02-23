@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/23 23:59:03 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/23 16:41:28 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	open_window()
 	t_game	*game;
 
 	game = global_game();
-
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	if (!game->img)
 		error_handle("Image init fail");
@@ -62,7 +61,6 @@ int	success_close_game(t_game *game)
 	clear_garbage();
 	exit(0);
 }
-
 
 void	close_game(t_game *game)
 {

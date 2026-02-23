@@ -1,96 +1,102 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   game.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/23 17:01:18 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/23 17:02:00 by hasivaci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef GAME_H
-#define GAME_H
+# define GAME_H
 
-#define WIDTH 1280
-#define HEIGHT 768
-#define BLOCK 64
-#define DEBUG 0
+# define WIDTH 1280
+# define HEIGHT 768
+# define BLOCK 64
+# define DEBUG 0
 
-#define W 119
-#define A 97
-#define S 115
-#define D 100
-#define LEFT 65361
-#define RIGHT 65363
+# define W 119
+# define A 97
+# define S 115
+# define D 100
+# define LEFT 65361
+# define RIGHT 65363
 
-#define PI 3.14159265359
+# define PI 3.14159265359
 
-#define MINIMAP_SCALE 5
-#define MINIMAP_X 20
-#define MINIMAP_Y 20
-#define COLLISION_RADIUS 10 
+# define COLLISION_RADIUS 10
 
+# include "../lib/get_next_line/get_next_line.h"
+# include "../lib/libft/libft.h"
+# include "../minilibx-linux/mlx.h"
+# include <math.h>
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
 
-#include "../minilibx-linux/mlx.h"
-#include "../lib/get_next_line/get_next_line.h"
-#include "../lib/libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <math.h>
-
-typedef struct s_game t_game;
+typedef struct s_game	t_game;
 typedef struct s_minimap
 {
-    int	pos_x;
-    int	pos_y;
-    int	scale;
-}   t_minimap;
+	int					pos_x;
+	int					pos_y;
+	int					scale;
+}						t_minimap;
 
 typedef struct s_draw
 {
-    int     h;
-    int     start;
-    int     end;
-    float   step;
-    float   tex_pos;
-    int     tex_x;
-    int     tex_y;
-}	t_draw;
-
+	int					h;
+	int					start;
+	int					end;
+	float				step;
+	float				tex_pos;
+	int					tex_x;
+	int					tex_y;
+}						t_draw;
 
 typedef struct s_ray
 {
-    float   angle;
-    int     map_x;
-    int     map_y;
-    float   side_x;
-    float   side_y;
-    float   delta_x;
-    float   delta_y;
-    int     step_x;
-    int     step_y;
-    int     side;
-    float   wall_dist;
-    float   wall_x;
-}   t_ray;
+	float				angle;
+	int					map_x;
+	int					map_y;
+	float				side_x;
+	float				side_y;
+	float				delta_x;
+	float				delta_y;
+	int					step_x;
+	int					step_y;
+	int					side;
+	float				wall_dist;
+	float				wall_x;
+}						t_ray;
 
 typedef struct s_player
 {
-    float	x;
-    float	y;
-    float	angle;
-	int		dir_check;
-    bool	key_up;
-    bool	key_down;
-    bool	key_left;
-    bool	key_right;
-    bool	left_rotate;
-    bool	right_rotate;
-    t_game	*game;
-}	t_player;
+	float				x;
+	float				y;
+	float				angle;
+	int					dir_check;
+	bool				key_up;
+	bool				key_down;
+	bool				key_left;
+	bool				key_right;
+	bool				left_rotate;
+	bool				right_rotate;
+	t_game				*game;
+}						t_player;
 
 typedef struct s_texture
 {
-	void	*img;
-	char	*addr;
-	int		width;
-	int		height;
-	int		bpp;
-	int		line_len;
-	int		endian;
-}	t_texture;
-
+	void				*img;
+	char				*addr;
+	int					width;
+	int					height;
+	int					bpp;
+	int					line_len;
+	int					endian;
+}						t_texture;
 
 typedef struct s_game
 {

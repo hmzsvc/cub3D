@@ -6,7 +6,7 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 15:42:26 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/17 16:09:21 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/23 17:15:03 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,87 +84,6 @@ static void	dda_step(t_ray *ray, t_game *g)
 			ray->map_y += ray->step_y;
 			ray->side = 1;
 		}
-	}
-}
-
-static void	calc_wall_distance(t_ray *ray, t_game *g)
-{
-	if (ray->side == 0)
-		ray->wall_dist = (ray->map_x - g->player.x / BLOCK + (1 - ray->step_x)
-				/ 2) / cos(ray->angle);
-	else
-		ray->wall_dist = (ray->map_y - g->player.y / BLOCK + (1 - ray->step_y)
-				/ 2) / sin(ray->angle);
-	ray->wall_dist = fabs(ray->wall_dist);
-}
-
-static void	calc_wall_x(t_ray *ray, t_game *g)
-{
-	if (ray->side == 0)
-		ray->wall_x = g->player.y / BLOCK + ray->wall_dist * sin(ray->angle);
-	else
-		ray->wall_x = g->player.x / BLOCK + ray->wall_dist * cos(ray->angle);
-	ray->wall_x -= floor(ray->wall_x);
-}
-
-static t_texture	*select_texture(t_ray *ray, t_game *g)
-{
-	if (ray->side == 0)
-	{
-		if (ray->step_x > 0)
-			return (&g->w_tex);
-		return (&g->e_tex);
-	}
-	if (ray->step_y > 0)
-		return (&g->n_tex);
-	return (&g->s_tex);
-}
-
-static void	calc_draw_data(t_game *g, t_ray *ray, t_texture *tex, t_draw *draw)
-{
-	float	corrected_dist;
-
-	corrected_dist = ray->wall_dist * cos(ray->angle - g->player.angle);
-	draw->h = (int)((WIDTH / 2) / corrected_dist);
-	draw->start = (HEIGHT - draw->h) / 2;
-	if (draw->start < 0)
-		draw->start = 0;
-	draw->end = draw->start + draw->h;
-	if (draw->end > HEIGHT)
-		draw->end = HEIGHT;
-	draw->tex_x = (int)(ray->wall_x * tex->width);
-	if (draw->tex_x < 0)
-		draw->tex_x = 0;
-	if (draw->tex_x >= tex->width)
-		draw->tex_x = tex->width - 1;
-	draw->step = (float)tex->height / draw->h;
-	draw->tex_pos = (draw->start - (HEIGHT - draw->h) / 2) * draw->step;
-	if (draw->tex_pos < 0)
-		draw->tex_pos = 0;
-}
-
-static void	ft_put_draw(t_draw *d, t_game *g, t_texture *tex, int x)
-{
-	int	y;
-
-	y = 0;
-	while (y < d->start)
-	{
-		put_pixel(x, y, g->ceiling_color, g);
-		y++;
-	}
-	while (y < d->end)
-	{
-		d->tex_y = (int)d->tex_pos;
-		if (d->tex_y >= 0 && d->tex_y < tex->height)
-			put_pixel(x, y, get_tex_pixel(tex, d->tex_x, d->tex_y), g);
-		d->tex_pos += d->step;
-		y++;
-	}
-	while (y < HEIGHT)
-	{
-		put_pixel(x, y, g->floor_color, g);
-		y++;
 	}
 }
 
