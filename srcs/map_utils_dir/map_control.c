@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_control.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:44:42 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/23 16:44:46 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/24 01:53:57 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ static void	unkown_character_check(char c)
 	int		player_component;
 	int		whitespace_component;
 	t_game	*game;
-	int		map_component;
-	int		player_component;
-	int		whitespace_component;
 
 	game = global_game();
 	map_component = (c != '1' && c != '0');
