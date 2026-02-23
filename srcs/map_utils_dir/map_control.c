@@ -14,13 +14,12 @@
 
 static void	unkown_character_check(char c)
 {
+	int		map_component;
+	int		player_component;
+	int		whitespace_component;
 	t_game	*game;
 
 	game = global_game();
-	int	map_component;
-	int	player_component;
-	int	whitespace_component;
-	
 	map_component = (c != '1' && c != '0');
 	player_component = (c != 'S' && c != 'N' && c != 'E' && c != 'W');
 	whitespace_component = (c != ' ' && c != '\t');
@@ -34,7 +33,7 @@ static void	unkown_character_check(char c)
 void	wall_control_util(int x, int y)
 {
 	int		is_wall;
-	t_game 	*game;
+	t_game	*game;
 
 	game = global_game();
 	if (!game->map[y][x])
@@ -42,8 +41,10 @@ void	wall_control_util(int x, int y)
 		printf("Map not found\n");
 		close_game(game);
 	}
-	is_wall = (y == 0  || x == 0 || y == game->map_height - 1 || x == ft_strlen(game->map[y]) - 1);
-	if (is_wall && game->map[y][x] != ' ' && game->map[y][x] != '\t' && game->map[y][x] != '1')
+	is_wall = (y == 0  || x == 0 || y == game->map_height - 1
+			|| x == ft_strlen(game->map[y]) - 1);
+	if (is_wall && game->map[y][x] != ' '
+			&& game->map[y][x] != '\t' && game->map[y][x] != '1')
 	{
 		printf("MAP Wall error!\n");
 		close_game(game);
@@ -64,22 +65,23 @@ static void	flood_fill(int x, int y)
 	}
 	if (game->map_clone[y][x] == '1' || game->map_clone[y][x] == 'V')
 		return ;
-	if (game->map_clone[y][x] != '1' && game->map_clone[y][x] != '0' && game->map_clone[y][x] != 'V' && game->map_clone[y][x] != 'S'
-		&& game->map_clone[y][x] != 'N' && game->map_clone[y][x] != 'E' && game->map_clone[y][x] != 'W')
+	if (game->map_clone[y][x] != '1' && game->map_clone[y][x] != '0'
+		&& game->map_clone[y][x] != 'V' && game->map_clone[y][x] != 'S'
+		&& game->map_clone[y][x] != 'N' && game->map_clone[y][x] != 'E'
+		&& game->map_clone[y][x] != 'W')
 	{
 		printf("Map invalid character\n");
 		game->error_code = 2;
 		close_game(game);
 	}
 	game->map_clone[y][x] = 'V';
-
 	flood_fill(x - 1, y);
 	flood_fill(x + 1, y);
 	flood_fill(x, y - 1);
 	flood_fill(x, y + 1);
 }
 
-void	create_map_clone()
+void	create_map_clone(void)
 {
 	t_game	*game;
 	int		y;
@@ -96,16 +98,16 @@ void	create_map_clone()
 	{
 		game->map_clone[y] = ft_strdup(game->map[y]);
 		if (!game->map_clone[y])
-        {
-            printf("Map Clone Strdup Error!\n");
+		{
+			printf("Map Clone Strdup Error!\n");
 			close_game(game);
-        }
+		}
 		y++;
 	}
 	game->map_clone[y] = NULL;
 }
 
-void	wall_control()
+void	wall_control(void)
 {
 	t_game	*game;
 	int		x;
@@ -113,7 +115,6 @@ void	wall_control()
 
 	game = global_game();
 	y = 0;
-	
 	flood_fill((int)(game->player.x / BLOCK), (int)(game->player.y / BLOCK));
 	while (game->map[y])
 	{
@@ -130,6 +131,6 @@ void	wall_control()
 			x++;
 		}
 		game->map_width = x;
-		y++;	
+		y++;
 	}
 }

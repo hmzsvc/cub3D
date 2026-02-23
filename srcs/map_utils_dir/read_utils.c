@@ -29,7 +29,7 @@ int	open_map(char *map_path)
 	return (fd);
 }
 
-void read_cub(char *path)
+void	read_cub(char *path)
 {
 	char	*line;
 	char	*joined_map;

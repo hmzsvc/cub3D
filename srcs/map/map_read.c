@@ -11,14 +11,13 @@
 /* ************************************************************************** */
 
 #include "../../inc/game.h"
-#include <unistd.h>
 
 static void	player_check_dir(char *line, int map_y)
 {
 	int		index;
 	char	*trimmed;
 	t_game	*game;
-	
+
 	index = 0;
 	game = global_game();
 	trimmed = skip_whitespaces(line);
@@ -26,25 +25,22 @@ static void	player_check_dir(char *line, int map_y)
 	{
 		if (trimmed[index] == 'N')
 			set_player_dir(3 * (PI / 2), index, map_y);
-
 		else if (trimmed[index] == 'S')
 			set_player_dir(PI / 2, index, map_y);
 		else if (trimmed[index] == 'W')
 			set_player_dir(PI, index, map_y);
-
 		else if (trimmed[index] == 'E')
 			set_player_dir(0, index, map_y);
 		index++;
 	}
 }
 
-static int	count_map_lines() 
+static int	count_map_lines(void)
 {
-	char	**line;
 	int		line_count;
 	int		map_started;
 	int		index;
-	t_game *game;
+	t_game	*game;
 
 	game = global_game();
 	line_count = 0;
@@ -69,7 +65,7 @@ static int	count_map_lines()
 	return (line_count);
 }
 
-static char **read_map_util(int	line_count)
+static char	**read_map_util(int line_count)
 {
 	t_game	*game;
 	char	**map;
@@ -77,7 +73,7 @@ static char **read_map_util(int	line_count)
 	int		index;
 
 	game = global_game();
-	map	= ft_calloc(sizeof(char *), line_count + 1);
+	map = ft_calloc(sizeof(char *), line_count + 1);
 	if (!map)
 		return (NULL);
 	i = 0;
@@ -96,7 +92,7 @@ static char **read_map_util(int	line_count)
 	return (map);
 }
 
-void read_map(char *path)
+void	read_map(char *path)
 {
 	t_game	*game;
 

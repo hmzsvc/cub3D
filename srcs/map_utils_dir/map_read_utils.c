@@ -14,8 +14,8 @@
 
 int	is_empty_line(char *line)
 {
-	char *trimmed;	
-	
+	char	*trimmed;	
+
 	trimmed = skip_whitespaces(line);
 	if (*trimmed == '\0' || *trimmed == '\n')
 		return (1);
@@ -29,7 +29,6 @@ int	is_map_line(char *line)
 	i = 0;
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
-	
 	if (line[i] == '1' || line[i] == '0')
 		return (1);
 	return (0);
@@ -42,7 +41,6 @@ int	map_space_check(char *line)
 	i = 0;
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
-	
 	if (line[i] == '\n' || line[i] == '\0')
 		return (0);
 	return (1);

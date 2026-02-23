@@ -12,10 +12,10 @@
 
 #include "../../inc/game.h"
 
-char *trim_newline(char *str)
+char	*trim_newline(char *str)
 {
 	int		len;
-	
+
 	if (!str)
 		return (NULL);
 	len = ft_strlen(str);
@@ -27,7 +27,7 @@ char *trim_newline(char *str)
 	return (str);
 }
 
-int parse_element(char *line)
+int	parse_element(char *line)
 {
 	t_game	*game;
 	char	*path;
@@ -78,7 +78,7 @@ int	parse_element_continue(char *trimmed)
 
 int	parse_floor_ceiling(char *trimmed)
 {
-	t_game *game;
+	t_game	*game;
 
 	game = global_game();
 	if (ft_strncmp(trimmed, "F ", 2) == 0)
@@ -108,14 +108,15 @@ int	parse_util(t_game *game)
 	index = 0;
 	while (game->all_line[index])
 	{
-		if (!is_empty_line(game->all_line[index]) && !is_map_line(game->all_line[index]))
+		if (!is_empty_line(game->all_line[index])
+			&& !is_map_line(game->all_line[index]))
 		{
 			if (parse_element(game->all_line[index]))
 				count++;
 		}
 		else if (is_map_line(game->all_line[index]))
 		{
-			break;
+			break ;
 		}
 		index++;
 	}

@@ -43,7 +43,7 @@ void	open_window()
 		printf("Data init fail\n");
 		close_game(game);
 	}
-	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
+	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "cub3D");
 	if (!game->win)
 	{
 		printf("Window init fail\n");
