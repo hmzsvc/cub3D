@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 01:30:27 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/23 03:22:49 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/23 22:50:59 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ int	open_map(char *map_path)
 	fd = open(map_path, O_RDONLY);
 	if (fd <= 0)
 	{
-		printf("Fd cannot open!\n");
-		close_game(game);
+		//printf("Fd cannot open!\n");
+		//close_game(game);
+		error_handle("Fd cannot open");
 	}
 	return (fd);
 }
@@ -40,7 +41,7 @@ void	read_cub(char *path)
 	game = global_game();
 	fd = open_map(path);
 	if (fd <= 0)
-		close_game(game);
+		error_handle("Fd error");
 	joined_map = NULL;
 	temp = NULL;
 	line = get_next_line(fd);

@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 20:59:30 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/23 03:23:52 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/23 22:46:11 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,9 @@ int	parse_element(char *line)
 	trimmed = skip_whitespaces(line);
 	if (!trimmed)
 	{
-		printf("Element path not found\n");
-		exit(1);
+		//printf("Element path not found\n");
+		//exit(1);
+		error_handle("Element path not found");
 	}
 	if (ft_strncmp(trimmed, "NO ", 3) == 0)
 	{

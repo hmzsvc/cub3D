@@ -19,8 +19,9 @@ void	set_player_dir(double angle, int index, int map_y)
 	game = global_game();
 	if (game->player.dir_check != 0)
 	{
-		printf("Player Dir ERROR\n");
-		close_game(game);
+		//printf("Player Dir ERROR\n");
+		//close_game(game);
+		error_handle("Player dir error");
 	}
 	else
 		game->player.dir_check = 1;
@@ -50,15 +51,17 @@ void	wall_control_continue(int x, int y)
 		|| game->map[y][x - 1] == ' '
 		|| game->map[y + 1][x] == ' ' || game->map[y - 1][x] == ' '))
 	{
-		printf("MAP Wall Error!\n");
-		close_game(game);
+		//printf("MAP Wall Error!\n");
+		//close_game(game);
+		error_handle("Map wall error");
 	}
 	if (game->map[y][x] == '0' && (game->map[y][x + 1] == '\0'
 		|| game->map[y][x - 1] == '\0'
 		|| game->map[y + 1][x] == '\0' || game->map[y - 1][x] == '\0'))
 	{
-		printf("MAP Wall Error!\n");
-		close_game(game);
+		//printf("MAP Wall Error!\n");
+		//close_game(game);
+		error_handle("Map wall error");
 	}
 }
 
@@ -75,8 +78,9 @@ void	invalid_character_check(char *line)
 	whitespaces_check = *line != ' ' && *line != '\t' && *line != '\0';
 	if (tex_check && ceil_check && map_check && whitespaces_check)
 	{
-		printf("Invalid Character\n");
-		exit(1);
+		//printf("Invalid Character\n");
+		//exit(1);
+		error_handle("Invalid character");
 	}	
 }
 

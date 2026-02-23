@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/22 20:54:44 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/23 03:33:46 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/23 22:48:52 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ int	parse_color(char *line)
 	game = global_game();
 	if (comma_check(line) != 2)
 	{
-		printf("Comma error\n");
-		close_game(game);
+		//printf("Comma error\n");
+		//close_game(game);
+		error_handle("Comma error");
 	}
 	split = ft_split(line, ',');
 	if (!split || !split[0] || !split[1] || !split[2])

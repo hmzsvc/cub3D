@@ -172,6 +172,7 @@ int		parse_util(t_game *game);
 void	read_cub(char *path);
 int		open_map(char *map_path);
 void	create_map_clone();
+void	error_handle(char	*err_str);
 
 
 
