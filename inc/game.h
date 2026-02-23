@@ -15,12 +15,9 @@
 
 #define PI 3.14159265359
 
-// Minimap ayarları - SABİT ÖLÇEK
-#define MINIMAP_SCALE 5         // 1/5 oranında küçültme (BLOCK/5 = 12.8 pixel)
-#define MINIMAP_X 20            // Sol üst köşeden X uzaklığı
-#define MINIMAP_Y 20            // Sol üst köşeden Y uzaklığı
-#define MINIMAP_BORDER 3        // Kenar kalınlığı
-// Karakterin çarpışma yarıçapı (BLOCK'tan küçük olmalı)
+#define MINIMAP_SCALE 5
+#define MINIMAP_X 20
+#define MINIMAP_Y 20
 #define COLLISION_RADIUS 10 
 
 
@@ -99,8 +96,8 @@ typedef struct s_game
 {
 	int			map_element_count;
 	int			map_lines_count;
-	int			cub_lines_count;
-	int			error_code;
+	//int			cub_lines_count;
+	//int			error_code;
     void		*mlx;
     void		*win;
     void		*img;
@@ -110,11 +107,11 @@ typedef struct s_game
     int			endian;
 	char		**all_line;
     char		**map;
-	int			map_width;
+	//int			map_width;
 	int			map_height;
     char		**map_clone;
     t_player	player;
-    t_minimap	minimap;
+    //t_minimap	minimap;
 	t_texture	n_tex;
 	t_texture	s_tex;
 	t_texture	e_tex;
@@ -125,40 +122,38 @@ typedef struct s_game
 	char		*w_path;
 	int			floor_color;
 	int			ceiling_color;
-
 	int			newline_flag;
 	int			map_flag;
 	int			gap_check;
-
 }	t_game;
 
-void	init_minimap(t_minimap *minimap);
-void	draw_minimap(t_game *game);
+//void	init_minimap(t_minimap *minimap);
+//void	draw_minimap(t_game *game);
 void	init_game(t_game *game);
 void	init_player(t_player *player);
 int		key_release(int keycode, t_player *player);
 int		key_press(int keycode, t_player *player);
 void	move_player(t_player *player);
-bool	touch(float px, float py, t_game *game);
-float	distance(float x, float y);
-float	fixed_dist(float x1, float y1, float x2, float y2, t_game *game);
-void	draw_line(t_player *player, t_game *game, float start_x, int i);
+//bool	touch(float px, float py, t_game *game);
+//float	distance(float x, float y);
+//float	fixed_dist(float x1, float y1, float x2, float y2, t_game *game);
+//void	draw_line(t_player *player, t_game *game, float start_x, int i);
 void	render_frame(t_game *game);
 void	put_pixel(int x, int y, int color, t_game *game);
-void		close_game(t_game *game);
+void	close_game(t_game *game);
 int		success_close_game(t_game *game);
 t_game	*global_game();
 void	read_map(char *map_path);
 int		is_empty_line(char *line);
 int		is_map_line(char *line);
-int		parse_element(char *line);
-int		parse_floor_ceiling(char *trimmed);
-int		parse_element_continue(char *trimmed);
+//int		parse_element(char *line);
+//int		parse_floor_ceiling(char *trimmed);
+//int		parse_element_continue(char *trimmed);
 void	set_player_dir(double angle, int index, int map_y);
 char	*skip_whitespaces(char *line);
 void	wall_control();
 void	set_map_dimension();
-int		map_newline_check(char *line);
+//int		map_newline_check(char *line);
 void	extension_control(char *map_argv);
 void	load_all_tex();
 int		get_tex_pixel(t_texture	*tex, int x, int y);
@@ -170,7 +165,7 @@ int		parse_color(char *line);
 char	*trim_newline(char *str);
 int		parse_util(t_game *game);
 void	read_cub(char *path);
-int		open_map(char *map_path);
+//int		open_map(char *map_path);
 void	create_map_clone();
 void	error_handle(char	*err_str);
 

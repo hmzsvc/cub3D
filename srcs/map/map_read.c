@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 13:52:18 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/23 22:45:42 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/23 23:48:12 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,7 @@ static int	count_map_lines(t_game	*game)
 		}
 		if (map_started == 1 && !is_map_line(game->all_line[index])
 			&& map_space_check(game->all_line[index]))
-		{
-			//printf("Invalid Format\n");
-			//close_game(game);
 			error_handle("Invalid Format");
-		}
 		index++;
 	}
 	return (line_count);
@@ -99,25 +95,13 @@ void	read_map(char *path)
 	read_cub(path);
 	game->map_element_count = parse_util(game);
 	if (game->map_element_count != 6)
-	{
-		//printf("Map element notfound\n");
-		//close_game(game);
 		error_handle("Map element not found");
-	}
 	game->map_lines_count = count_map_lines(game);
 	if (game->gap_check == 1)
-	{
-		//printf("Gap error\n");
-		//close_game(game);
 		error_handle("Gap error");
-	}
 	game->map = read_map_util(game->map_lines_count);
 	if (game->player.dir_check == 0)
-	{
-		//printf("Player not found!\n");
-		//close_game(game);
 		error_handle("Player not found");
-	}
 	set_map_dimension();
 	create_map_clone();
 	wall_control();

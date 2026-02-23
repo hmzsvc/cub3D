@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 01:30:27 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/23 22:50:59 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/23 23:49:50 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-int	open_map(char *map_path)
+static int	open_map(char *map_path)
 {
 	t_game	*game;
 	int		fd;
@@ -22,11 +22,7 @@ int	open_map(char *map_path)
 	game = global_game();
 	fd = open(map_path, O_RDONLY);
 	if (fd <= 0)
-	{
-		//printf("Fd cannot open!\n");
-		//close_game(game);
 		error_handle("Fd cannot open");
-	}
 	return (fd);
 }
 

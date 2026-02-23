@@ -3,28 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 15:38:26 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/17 16:00:02 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/23 23:57:22 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/game.h"
-
-void	init_player(t_player *player)
-{
-	player->x = WIDTH / 2;
-	player->y = HEIGHT / 2;
-	player->angle = 2 * PI;
-	player->key_up = false;
-	player->key_down = false;
-	player->key_right = false;
-	player->key_left = false;
-	player->left_rotate = false;
-	player->right_rotate = false;
-	player->dir_check = 0;
-}
 
 int	key_press(int keycode, t_player *player)
 {
