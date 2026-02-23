@@ -33,8 +33,8 @@ void	map_gap_check(char *line)
 	newline_flag = 0;
 	if (is_map_line(line))
 		game->map_flag = 1;
-	if (game->map_flag == 1 && !is_map_line(line) && (*line == '\n'
-			|| *line == ' ' || *line == '\t'))
+	if (game->map_flag == 1 && !is_map_line(line)
+		&& (*line == '\n' || *line == ' ' || *line == '\t'))
 		game->newline_flag = 1;
 	if (game->map_flag == 1 && game->newline_flag == 1 && is_map_line(line))
 		game->gap_check = 1;

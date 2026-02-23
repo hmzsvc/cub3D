@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/game.h"
+#include "../lib/libft/libft.h"
 
 void	extension_control(char *map_argv)
 {
@@ -74,4 +75,28 @@ int	key_release(int keycode, t_player *player)
 	if (keycode == RIGHT)
 		player->right_rotate = false;
 	return (0);
+}
+	exit (1);
+}
+
+void	error_handle(char	*err_str)
+{
+	t_game	*game;
+	
+	game = global_game();
+	ft_putendl_fd("Error", 2);
+	ft_putendl_fd(err_str, 2);
+	close_game(game);
+}
+
+void	put_pixel(int x, int y, int color, t_game *game)
+{
+	int	index;
+
+	if (x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
+		return ;
+	index = y * game->size_line + x * game->bbp / 8;
+	game->data[index] = color & 0xFF;
+	game->data[index + 1] = (color >> 8) & 0xFF;
+	game->data[index + 2] = (color >> 16) & 0xFF;
 }

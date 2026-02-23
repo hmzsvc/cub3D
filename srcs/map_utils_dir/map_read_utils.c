@@ -14,7 +14,7 @@
 
 int	is_empty_line(char *line)
 {
-	char	*trimmed;
+	char	*trimmed;	
 
 	trimmed = skip_whitespaces(line);
 	if (*trimmed == '\0' || *trimmed == '\n')
@@ -72,10 +72,7 @@ int	parse_color(char *line)
 
 	game = global_game();
 	if (comma_check(line) != 2)
-	{
-		printf("Comma error\n");
-		close_game(game);
-	}
+		error_handle("Comma error");
 	split = ft_split(line, ',');
 	if (!split || !split[0] || !split[1] || !split[2])
 		return (-1);

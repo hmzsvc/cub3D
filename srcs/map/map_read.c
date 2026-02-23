@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../inc/game.h"
-#include <unistd.h>
 
 static void	player_check_dir(char *line, int map_y)
 {
@@ -36,15 +35,12 @@ static void	player_check_dir(char *line, int map_y)
 	}
 }
 
-static int	count_map_lines(void)
+static int	count_map_lines(t_game	*game)
 {
-	char	**line;
 	int		line_count;
 	int		map_started;
 	int		index;
-	t_game	*game;
 
-	game = global_game();
 	line_count = 0;
 	map_started = 0;
 	index = 0;
@@ -58,10 +54,7 @@ static int	count_map_lines(void)
 		}
 		if (map_started == 1 && !is_map_line(game->all_line[index])
 			&& map_space_check(game->all_line[index]))
-		{
-			printf("Invalid Format\n");
-			close_game(game);
-		}
+			error_handle("Invalid Format");
 		index++;
 	}
 	return (line_count);
@@ -102,22 +95,13 @@ void	read_map(char *path)
 	read_cub(path);
 	game->map_element_count = parse_util(game);
 	if (game->map_element_count != 6)
-	{
-		printf("Map element notfound\n");
-		close_game(game);
-	}
-	game->map_lines_count = count_map_lines();
+		error_handle("Map element not found");
+	game->map_lines_count = count_map_lines(game);
 	if (game->gap_check == 1)
-	{
-		printf("Gap error\n");
-		close_game(game);
-	}
+		error_handle("Gap error");
 	game->map = read_map_util(game->map_lines_count);
 	if (game->player.dir_check == 0)
-	{
-		printf("Player not found!\n");
-		close_game(game);
-	}
+		error_handle("Player not found");
 	set_map_dimension();
 	create_map_clone();
 	wall_control();

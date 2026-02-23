@@ -22,20 +22,14 @@ static int	load_tex(t_texture *tex, char *path)
 	game = global_game();
 	tex->width = 64;
 	tex->height = 64;
-	tex->img = mlx_xpm_file_to_image(game->mlx, path, &tex->width,
-			&tex->height);
+	tex->img = mlx_xpm_file_to_image(game->mlx, path,
+			&tex->width, &tex->height);
 	if (!tex->img)
-	{
-		printf("Texture path not found\n");
-		close_game(game);
-	}
-	tex->addr = mlx_get_data_addr(tex->img, &tex->bpp, &tex->line_len,
-			&tex->endian);
+		error_handle("Texture path not found");
+	tex->addr = mlx_get_data_addr(tex->img, &tex->bpp,
+			&tex->line_len, &tex->endian);
 	if (!tex->addr)
-	{
-		printf("Addr Error!\n");
-		close_game(game);
-	}
+		error_handle("Addr Error");
 	return (1);
 }
 
@@ -47,11 +41,8 @@ static void	text_path_check(char *path)
 	game = global_game();
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
-	{
-		printf("Text path error\n");
-		close_game(game);
-	}
-	close(fd);
+		error_handle("Text path error");
+	close (fd);
 }
 
 void	load_all_tex(void)
@@ -64,13 +55,13 @@ void	load_all_tex(void)
 	text_path_check(game->e_path);
 	text_path_check(game->w_path);
 	if (!load_tex(&game->n_tex, game->n_path))
-		exit(1);
+		error_handle("Load tex error");
 	if (!load_tex(&game->s_tex, game->s_path))
-		exit(1);
+		error_handle("Load tex error");
 	if (!load_tex(&game->e_tex, game->e_path))
-		exit(1);
+		error_handle("Load tex error");
 	if (!load_tex(&game->w_tex, game->w_path))
-		exit(1);
+		error_handle("Load tex error");
 }
 
 int	get_tex_pixel(t_texture *tex, int x, int y)

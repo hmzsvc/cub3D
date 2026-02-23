@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-int	open_map(char *map_path)
+static int	open_map(char *map_path)
 {
 	t_game	*game;
 	int		fd;
@@ -22,10 +22,7 @@ int	open_map(char *map_path)
 	game = global_game();
 	fd = open(map_path, O_RDONLY);
 	if (fd <= 0)
-	{
-		printf("Fd cannot open!\n");
-		close_game(game);
-	}
+		error_handle("Fd cannot open");
 	return (fd);
 }
 
@@ -40,7 +37,7 @@ void	read_cub(char *path)
 	game = global_game();
 	fd = open_map(path);
 	if (fd <= 0)
-		close_game(game);
+		error_handle("Fd error");
 	joined_map = NULL;
 	temp = NULL;
 	line = get_next_line(fd);

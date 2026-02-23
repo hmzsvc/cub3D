@@ -12,9 +12,12 @@
 
 #include "../../inc/game.h"
 
+static int	parse_element_continue(char *trimmed);
+static int	parse_floor_ceiling(char *trimmed);
+
 char	*trim_newline(char *str)
 {
-	int	len;
+	int		len;
 
 	if (!str)
 		return (NULL);
@@ -27,7 +30,7 @@ char	*trim_newline(char *str)
 	return (str);
 }
 
-int	parse_element(char *line)
+static int	parse_element(char *line)
 {
 	t_game	*game;
 	char	*path;
@@ -36,10 +39,7 @@ int	parse_element(char *line)
 	game = global_game();
 	trimmed = skip_whitespaces(line);
 	if (!trimmed)
-	{
-		printf("Element path not found\n");
-		exit(1);
-	}
+		error_handle("Element path not found");
 	if (ft_strncmp(trimmed, "NO ", 3) == 0)
 	{
 		path = trim_newline(skip_whitespaces(trimmed + 3));
@@ -55,7 +55,7 @@ int	parse_element(char *line)
 	return (parse_element_continue(trimmed));
 }
 
-int	parse_element_continue(char *trimmed)
+static int	parse_element_continue(char *trimmed)
 {
 	t_game	*game;
 	char	*path;
@@ -76,7 +76,7 @@ int	parse_element_continue(char *trimmed)
 	return (parse_floor_ceiling(trimmed));
 }
 
-int	parse_floor_ceiling(char *trimmed)
+static int	parse_floor_ceiling(char *trimmed)
 {
 	t_game	*game;
 

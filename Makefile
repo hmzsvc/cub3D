@@ -19,6 +19,7 @@ GNL_OBJS = $(GNL_SRCS:$(GNL_DIR)/%.c=$(OBJS_DIR)/gnl/%.o)
 
 
 SRCS = $(SRCS_DIR)/main.c \
+        $(SRCS_DIR)/init.c \
         $(SRCS_DIR)/player.c \
         $(SRCS_DIR)/raycast.c \
         $(SRCS_DIR)/raycast_utils.c \

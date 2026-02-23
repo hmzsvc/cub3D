@@ -12,56 +12,21 @@
 
 #include "../inc/game.h"
 
-void	put_pixel(int x, int y, int color, t_game *game)
-{
-	int	index;
-
-	if (x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
-		return ;
-	index = y * game->size_line + x * game->bbp / 8;
-	game->data[index] = color & 0xFF;
-	game->data[index + 1] = (color >> 8) & 0xFF;
-	game->data[index + 2] = (color >> 16) & 0xFF;
-}
-
-void	open_window(void)
+void	open_window()
 {
 	t_game	*game;
 
 	game = global_game();
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	if (!game->img)
-	{
-		printf("Image init fail\n");
-		close_game(game);
-	}
+		error_handle("Image init fail");
 	game->data = mlx_get_data_addr(game->img, &game->bbp, &game->size_line,
 			&game->endian);
 	if (!game->data)
-	{
-		printf("Data init fail\n");
-		close_game(game);
-	}
-	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Game");
+		error_handle("Data init fail");
+	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "cub3D");
 	if (!game->win)
-	{
-		printf("Window init fail\n");
-		close_game(game);
-	}
-}
-
-void	init_game(t_game *game)
-{
-	game->mlx = mlx_init();
-	if (!game->mlx)
-	{
-		close_game(game);
-	}
-	game->map_element_count = 0;
-	game->map_lines_count = 0;
-	game->map_flag = 0;
-	game->newline_flag = 0;
-	game->gap_check = 0;
+		error_handle("Window init fail");
 }
 
 int	draw_loop(t_game *game)
@@ -120,38 +85,19 @@ void	close_game(t_game *game)
 	exit(1);
 }
 
-t_game	*global_game(void)
-{
-	static t_game	*game;
-
-	if (!game)
-		game = (t_game *)ft_calloc(1, sizeof(t_game));
-	if (!game)
-	{
-		exit(1);
-	}
-	return (game);
-}
-
 int	main(int ac, char **av)
 {
 	t_game	*game;
 
 	if (ac != 2)
-	{
-		printf("Av error\n");
-		exit(1);
-	}
+		error_handle("Av error");
 	extension_control(av[1]);
 	game = global_game();
 	init_player(&game->player);
 	init_game(game);
 	read_map(av[1]);
 	if (!game->map)
-	{
-		printf("Map could not be loaded\n");
-		close_game(game);
-	}
+		error_handle("Map could not be loaded");
 	load_all_tex();
 	open_window();
 	game->player.game = game;
