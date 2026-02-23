@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 17:01:18 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/23 17:02:00 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/24 01:55:32 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,11 @@ void	read_cub(char *path);
 //int		open_map(char *map_path);
 void	create_map_clone();
 void	error_handle(char	*err_str);
-
+void	calc_wall_distance(t_ray *ray, t_game *g);
+void	calc_wall_x(t_ray *ray, t_game *g);
+t_texture	*select_texture(t_ray *ray, t_game *g);
+void	ft_put_draw(t_draw *d, t_game *g, t_texture *tex, int x);
+void	calc_draw_data(t_game *g, t_ray *ray, t_texture *tex, t_draw *draw);
 
 
 

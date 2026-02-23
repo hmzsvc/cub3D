@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:45:32 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/23 17:07:13 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/24 01:56:28 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,19 @@ void	extension_control(char *map_argv)
 	exit(1);
 }
 
-void	init_player(t_player *player)
-{
-	player->x = WIDTH / 2;
-	player->y = HEIGHT / 2;
-	player->angle = 2 * PI;
-	player->key_up = false;
-	player->key_down = false;
-	player->key_right = false;
-	player->key_left = false;
-	player->left_rotate = false;
-	player->right_rotate = false;
-	player->dir_check = 0;
-}
+//void	init_player(t_player *player)
+//{
+//	player->x = WIDTH / 2;
+//	player->y = HEIGHT / 2;
+//	player->angle = 2 * PI;
+//	player->key_up = false;
+//	player->key_down = false;
+//	player->key_right = false;
+//	player->key_left = false;
+//	player->left_rotate = false;
+//	player->right_rotate = false;
+//	player->dir_check = 0;
+//}
 
 int	key_press(int keycode, t_player *player)
 {
@@ -75,8 +75,6 @@ int	key_release(int keycode, t_player *player)
 	if (keycode == RIGHT)
 		player->right_rotate = false;
 	return (0);
-}
-	exit (1);
 }
 
 void	error_handle(char	*err_str)
