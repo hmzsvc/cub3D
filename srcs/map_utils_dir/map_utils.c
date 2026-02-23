@@ -1,20 +1,20 @@
-/* ***************************************************************************************** */
-/*                                                                                           */
-/*                                                                       :::      ::::::::   */
-/*   map_utils.c                                                       :+:      :+:    :+:   */
-/*                                                                   +:+ +:+         +:+     */
-/*   By: huozturk <huozturk@student.42kocaeli.com.tr>              +#+  +:+       +#+        */
-/*                                                               +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/06 18:25:37 by huozturk                         #+#    #+#             */
-/*   Updated: 2026/02/21 03:45:32 by huozturk                        ###   ########.tr       */
-/*                                                                                           */
-/* ***************************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/23 16:44:59 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/23 16:52:36 by hasivaci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../inc/game.h"
 
 void	set_player_dir(double angle, int index, int map_y)
 {
-	t_game *game;
+	t_game	*game;
 
 	game = global_game();
 	if (game->player.dir_check != 0)
@@ -29,7 +29,7 @@ void	set_player_dir(double angle, int index, int map_y)
 	game->player.y = (map_y * BLOCK) + (BLOCK / 2);
 }
 
-void	set_map_dimension()
+void	set_map_dimension(void)
 {
 	int		y;
 	t_game	*game;
@@ -46,17 +46,16 @@ void	wall_control_continue(int x, int y)
 	t_game	*game;
 
 	game = global_game();
-	if (game->map[y][x] == '0' && (game->map[y][x + 1] == ' '
-		|| game->map[y][x - 1] == ' '
-		|| game->map[y + 1][x] == ' ' || game->map[y - 1][x] == ' '))
+	if (game->map[y][x] == '0' && (game->map[y][x + 1] == ' ' || game->map[y][x
+			- 1] == ' ' || game->map[y + 1][x] == ' ' || game->map[y
+			- 1][x] == ' '))
 	{
 		printf("MAP Wall Error!\n");
 		close_game(game);
 	}
-
-	if (game->map[y][x] == '0' && (game->map[y][x + 1] == '\0'
-		|| game->map[y][x - 1] == '\0'
-		|| game->map[y + 1][x] == '\0' || game->map[y - 1][x] == '\0'))
+	if (game->map[y][x] == '0' && (game->map[y][x + 1] == '\0' || game->map[y][x
+			- 1] == '\0' || game->map[y + 1][x] == '\0' || game->map[y
+			- 1][x] == '\0'))
 	{
 		printf("MAP Wall Error!\n");
 		close_game(game);
@@ -70,7 +69,7 @@ void	invalid_character_check(char *line)
 	int	map_check;
 	int	whitespaces_check;
 
-	tex_check = *line != 'S' && *line !='N' && *line !='W' && *line !='E';
+	tex_check = *line != 'S' && *line != 'N' && *line != 'W' && *line != 'E';
 	ceil_check = *line != 'F' && *line != 'C';
 	map_check = *line != '1' && *line != '0';
 	whitespaces_check = *line != ' ' && *line != '\t' && *line != '\0';
@@ -78,10 +77,10 @@ void	invalid_character_check(char *line)
 	{
 		printf("Invalid Character\n");
 		exit(1);
-	}	
+	}
 }
 
-char *skip_whitespaces(char *line)
+char	*skip_whitespaces(char *line)
 {
 	while (*line && (*line == ' ' || *line == '\t'))
 		line++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_read_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/22 20:54:44 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/23 03:33:46 by hsyn             ###   ########.fr       */
+/*   Created: 2026/02/23 16:44:50 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/23 16:44:54 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	is_empty_line(char *line)
 {
-	char *trimmed;	
-	
+	char	*trimmed;
+
 	trimmed = skip_whitespaces(line);
 	if (*trimmed == '\0' || *trimmed == '\n')
 		return (1);
@@ -24,12 +24,11 @@ int	is_empty_line(char *line)
 
 int	is_map_line(char *line)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
-	
 	if (line[i] == '1' || line[i] == '0')
 		return (1);
 	return (0);
@@ -42,13 +41,12 @@ int	map_space_check(char *line)
 	i = 0;
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 		i++;
-	
 	if (line[i] == '\n' || line[i] == '\0')
 		return (0);
 	return (1);
 }
 
-static	int	comma_check(char *line)
+static int	comma_check(char *line)
 {
 	int	i;
 	int	comma_count;

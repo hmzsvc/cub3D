@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/22 16:03:26 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/23 16:41:28 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,11 @@ void	put_pixel(int x, int y, int color, t_game *game)
 	game->data[index + 2] = (color >> 16) & 0xFF;
 }
 
-void	open_window()
+void	open_window(void)
 {
 	t_game	*game;
 
 	game = global_game();
-
 	game->img = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	if (!game->img)
 	{
@@ -58,7 +57,6 @@ void	init_game(t_game *game)
 	{
 		close_game(game);
 	}
-	
 	game->map_element_count = 0;
 	game->map_lines_count = 0;
 	game->map_flag = 0;
@@ -98,7 +96,6 @@ int	success_close_game(t_game *game)
 	clear_garbage();
 	exit(0);
 }
-
 
 void	close_game(t_game *game)
 {
@@ -143,7 +140,7 @@ int	main(int ac, char **av)
 	if (ac != 2)
 	{
 		printf("Av error\n");
-		exit (1);
+		exit(1);
 	}
 	extension_control(av[1]);
 	game = global_game();

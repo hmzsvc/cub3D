@@ -3,32 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   load_texture.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/21 15:23:24 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/20 04:12:05 by hsyn             ###   ########.fr       */
+/*   Created: 2026/02/23 16:42:35 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/23 16:43:12 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/game.h"
 #include <fcntl.h>
-#include <unistd.h>
 #include <stdio.h>
+#include <unistd.h>
 
-static int	load_tex(t_texture	*tex, char *path)
+static int	load_tex(t_texture *tex, char *path)
 {
 	t_game	*game;
 
 	game = global_game();
 	tex->width = 64;
 	tex->height = 64;
-	tex->img = mlx_xpm_file_to_image(game->mlx, path, &tex->width, &tex->height);
+	tex->img = mlx_xpm_file_to_image(game->mlx, path, &tex->width,
+			&tex->height);
 	if (!tex->img)
 	{
 		printf("Texture path not found\n");
 		close_game(game);
 	}
-	tex->addr = mlx_get_data_addr(tex->img, &tex->bpp, &tex->line_len, &tex->endian);
+	tex->addr = mlx_get_data_addr(tex->img, &tex->bpp, &tex->line_len,
+			&tex->endian);
 	if (!tex->addr)
 	{
 		printf("Addr Error!\n");
@@ -39,23 +41,23 @@ static int	load_tex(t_texture	*tex, char *path)
 
 static void	text_path_check(char *path)
 {
-	int	fd;
+	int		fd;
 	t_game	*game;
 
 	game = global_game();
 	fd = open(path, O_RDONLY);
-    if (fd < 0)
+	if (fd < 0)
 	{
 		printf("Text path error\n");
 		close_game(game);
 	}
-    close(fd);
+	close(fd);
 }
 
-void	load_all_tex()
+void	load_all_tex(void)
 {
 	t_game	*game;
-	
+
 	game = global_game();
 	text_path_check(game->n_path);
 	text_path_check(game->s_path);
@@ -73,13 +75,12 @@ void	load_all_tex()
 
 int	get_tex_pixel(t_texture *tex, int x, int y)
 {
-    char	*pixel;
-    int		color;
+	char	*pixel;
+	int		color;
 
-    if (x < 0 || y < 0 || x >= tex->width || y >= tex->height)
-        return (0x000000);
-    pixel = tex->addr + (y * tex->line_len + x * (tex->bpp / 8));
-    color = *(unsigned int *)pixel;
-
-    return (color);
+	if (x < 0 || y < 0 || x >= tex->width || y >= tex->height)
+		return (0x000000);
+	pixel = tex->addr + (y * tex->line_len + x * (tex->bpp / 8));
+	color = *(unsigned int *)pixel;
+	return (color);
 }

@@ -1,14 +1,14 @@
-/* ***************************************************************************************** */
-/*                                                                                           */
-/*                                                                       :::      ::::::::   */
-/*   map_control_utils.c                                               :+:      :+:    :+:   */
-/*                                                                   +:+ +:+         +:+     */
-/*   By: huozturk <huozturk@student.42kocaeli.com.tr>              +#+  +:+       +#+        */
-/*                                                               +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/16 13:25:08 by huozturk                         #+#    #+#             */
-/*   Updated: 2026/02/16 15:21:47 by huozturk                        ###   ########.tr       */
-/*                                                                                           */
-/* ***************************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_control_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/23 16:44:18 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/23 16:44:23 by hasivaci         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../inc/game.h"
 
@@ -33,7 +33,8 @@ void	map_gap_check(char *line)
 	newline_flag = 0;
 	if (is_map_line(line))
 		game->map_flag = 1;
-	if (game->map_flag == 1 && !is_map_line(line) && (*line == '\n' || *line == ' ' || *line == '\t'))
+	if (game->map_flag == 1 && !is_map_line(line) && (*line == '\n'
+			|| *line == ' ' || *line == '\t'))
 		game->newline_flag = 1;
 	if (game->map_flag == 1 && game->newline_flag == 1 && is_map_line(line))
 		game->gap_check = 1;
