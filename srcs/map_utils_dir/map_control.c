@@ -6,7 +6,7 @@
 /*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/07 16:09:51 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/22 02:04:47 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/23 03:33:29 by hsyn             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	wall_control_util(int x, int y)
 	game = global_game();
 	if (!game->map[y][x])
 	{
-		printf("Map Yok\n");
+		printf("Map not found\n");
 		close_game(game);
 	}
 	is_wall = (y == 0  || x == 0 || y == game->map_height - 1 || x == ft_strlen(game->map[y]) - 1);
@@ -58,7 +58,7 @@ static void	flood_fill(int x, int y)
 	game = global_game();
 	if (x < 0 || y < 0 || !game->map_clone[y] || !game->map_clone[y][x])
 	{
-		printf("Map Hata1\n");
+		printf("Map Error\n");
 		game->error_code = 1;
 		close_game(game);
 	}
@@ -67,7 +67,7 @@ static void	flood_fill(int x, int y)
 	if (game->map_clone[y][x] != '1' && game->map_clone[y][x] != '0' && game->map_clone[y][x] != 'V' && game->map_clone[y][x] != 'S'
 		&& game->map_clone[y][x] != 'N' && game->map_clone[y][x] != 'E' && game->map_clone[y][x] != 'W')
 	{
-		printf("Map Hata2\n");
+		printf("Map invalid character\n");
 		game->error_code = 2;
 		close_game(game);
 	}
@@ -79,7 +79,7 @@ static void	flood_fill(int x, int y)
 	flood_fill(x, y + 1);
 }
 
-static void	create_map_clone()
+void	create_map_clone()
 {
 	t_game	*game;
 	int		y;
@@ -113,9 +113,8 @@ void	wall_control()
 
 	game = global_game();
 	y = 0;
-	create_map_clone();
+	
 	flood_fill((int)(game->player.x / BLOCK), (int)(game->player.y / BLOCK));
-
 	while (game->map[y])
 	{
 		x = 0;

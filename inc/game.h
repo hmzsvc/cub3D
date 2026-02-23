@@ -151,9 +151,10 @@ t_game	*global_game();
 void	read_map(char *map_path);
 int		is_empty_line(char *line);
 int		is_map_line(char *line);
+int		parse_element(char *line);
 int		parse_floor_ceiling(char *trimmed);
 int		parse_element_continue(char *trimmed);
-void	set_player_dir(double angle);
+void	set_player_dir(double angle, int index, int map_y);
 char	*skip_whitespaces(char *line);
 void	wall_control();
 void	set_map_dimension();
@@ -164,6 +165,16 @@ int		get_tex_pixel(t_texture	*tex, int x, int y);
 void	wall_control_continue(int x, int y);
 void	invalid_character_check(char *line);
 void	map_gap_check(char *line);
+int		map_space_check(char *line);
+int		parse_color(char *line);
+char	*trim_newline(char *str);
+int		parse_util(t_game *game);
+void	read_cub(char *path);
+int		open_map(char *map_path);
+void	create_map_clone();
+
+
+
 
 
 #endif

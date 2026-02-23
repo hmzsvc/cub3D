@@ -37,5 +37,4 @@ void	map_gap_check(char *line)
 		game->newline_flag = 1;
 	if (game->map_flag == 1 && game->newline_flag == 1 && is_map_line(line))
 		game->gap_check = 1;
-	//printf("flag: %d - %d - %d - %d: %s\n", game->map_flag, game->newline_flag, is_map_line(line),  game->gap_check, line);
 }

@@ -12,7 +12,7 @@
 
 #include "../../inc/game.h"
 
-void	set_player_dir(double angle)
+void	set_player_dir(double angle, int index, int map_y)
 {
 	t_game *game;
 
@@ -25,6 +25,8 @@ void	set_player_dir(double angle)
 	else
 		game->player.dir_check = 1;
 	game->player.angle = angle;
+	game->player.x = (index * BLOCK) + (BLOCK / 2);
+	game->player.y = (map_y * BLOCK) + (BLOCK / 2);
 }
 
 void	set_map_dimension()
@@ -35,11 +37,8 @@ void	set_map_dimension()
 	y = 0;
 	game = global_game();
 	while (game->map[y])
-	{
 		y++;
-	}
 	game->map_height = y;
-
 }
 
 void	wall_control_continue(int x, int y)
@@ -79,6 +78,12 @@ void	invalid_character_check(char *line)
 	{
 		printf("Invalid Character\n");
 		exit(1);
-	}
-	
+	}	
+}
+
+char *skip_whitespaces(char *line)
+{
+	while (*line && (*line == ' ' || *line == '\t'))
+		line++;
+	return (line);
 }
