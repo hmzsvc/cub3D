@@ -25,10 +25,14 @@ SRCS = $(SRCS_DIR)/main.c \
 		$(SRCS_DIR)/utils.c \
 
 SRCS_MAP = $(MAP_DIR)/load_texture.c \
+			$(MAP_DIR)/parser.c \
 
 SRCS_MAP_UTIL = $(MAP_UTIL_DIR)/map_utils.c \
 					$(MAP_UTIL_DIR)/map_control.c \
 					$(MAP_UTIL_DIR)/map_control_utils.c \
+					$(MAP_UTIL_DIR)/map_read_utils.c \
+					$(MAP_UTIL_DIR)/read_utils.c \
+
 
 
 OBJS_MAIN = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)

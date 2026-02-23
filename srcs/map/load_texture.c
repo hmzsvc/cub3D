@@ -27,14 +27,12 @@ static int	load_tex(t_texture	*tex, char *path)
 	{
 		printf("Texture path not found\n");
 		close_game(game);
-		return (0);
 	}
 	tex->addr = mlx_get_data_addr(tex->img, &tex->bpp, &tex->line_len, &tex->endian);
 	if (!tex->addr)
 	{
 		printf("Addr Error!\n");
 		close_game(game);
-		return (0);
 	}
 	return (1);
 }
@@ -50,7 +48,6 @@ static void	text_path_check(char *path)
 	{
 		printf("Text path error\n");
 		close_game(game);
-        exit (1);
 	}
     close(fd);
 }
