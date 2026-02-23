@@ -125,6 +125,11 @@ typedef struct s_game
 	char		*w_path;
 	int			floor_color;
 	int			ceiling_color;
+
+	int			newline_flag;
+	int			map_flag;
+	int			gap_check;
+
 }	t_game;
 
 void	init_minimap(t_minimap *minimap);
@@ -140,15 +145,16 @@ float	fixed_dist(float x1, float y1, float x2, float y2, t_game *game);
 void	draw_line(t_player *player, t_game *game, float start_x, int i);
 void	render_frame(t_game *game);
 void	put_pixel(int x, int y, int color, t_game *game);
-int		close_game(t_game *game);
+void		close_game(t_game *game);
+int		success_close_game(t_game *game);
 t_game	*global_game();
-int		read_map(char *map_path);
+void	read_map(char *map_path);
 int		is_empty_line(char *line);
 int		is_map_line(char *line);
+int		parse_element(char *line);
 int		parse_floor_ceiling(char *trimmed);
 int		parse_element_continue(char *trimmed);
-char	*whitespaces_term(char *line);
-void	set_player_dir(double angle);
+void	set_player_dir(double angle, int index, int map_y);
 char	*skip_whitespaces(char *line);
 void	wall_control();
 void	set_map_dimension();
@@ -156,5 +162,19 @@ int		map_newline_check(char *line);
 void	extension_control(char *map_argv);
 void	load_all_tex();
 int		get_tex_pixel(t_texture	*tex, int x, int y);
+void	wall_control_continue(int x, int y);
+void	invalid_character_check(char *line);
+void	map_gap_check(char *line);
+int		map_space_check(char *line);
+int		parse_color(char *line);
+char	*trim_newline(char *str);
+int		parse_util(t_game *game);
+void	read_cub(char *path);
+int		open_map(char *map_path);
+void	create_map_clone();
+
+
+
+
 
 #endif

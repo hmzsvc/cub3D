@@ -19,7 +19,7 @@ void	extension_control(char *map_argv)
 	check = ft_strchr(map_argv, '.');
 	if (check)
 	{
-		if (!ft_strncmp(check, ".cub", 4))
+		if (!ft_strncmp(check, ".cub", ft_strlen(check)))
 			return ;
 	}
 	printf("Invalid map extension\n");

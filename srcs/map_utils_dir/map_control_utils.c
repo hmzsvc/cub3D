@@ -19,8 +19,22 @@ int	map_newline_check(char *line)
 	i = 0;
 	while (line[i] && (line[i] == ' ' || line[i] == '\t' || line[i] == '\n'))
 		i++;
-	
 	if (line[i])
 		return (1);
 	return (0);
+}
+
+void	map_gap_check(char *line)
+{
+	t_game	*game;
+	int		newline_flag;
+
+	game = global_game();
+	newline_flag = 0;
+	if (is_map_line(line))
+		game->map_flag = 1;
+	if (game->map_flag == 1 && !is_map_line(line) && (*line == '\n' || *line == ' ' || *line == '\t'))
+		game->newline_flag = 1;
+	if (game->map_flag == 1 && game->newline_flag == 1 && is_map_line(line))
+		game->gap_check = 1;
 }
