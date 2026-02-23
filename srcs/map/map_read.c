@@ -35,14 +35,12 @@ static void	player_check_dir(char *line, int map_y)
 	}
 }
 
-static int	count_map_lines(void)
+static int	count_map_lines(t_game	*game)
 {
 	int		line_count;
 	int		map_started;
 	int		index;
-	t_game	*game;
 
-	game = global_game();
 	line_count = 0;
 	map_started = 0;
 	index = 0;
@@ -104,7 +102,7 @@ void	read_map(char *path)
 		printf("Map element notfound\n");
 		close_game(game);
 	}
-	game->map_lines_count = count_map_lines();
+	game->map_lines_count = count_map_lines(game);
 	if (game->gap_check == 1)
 	{
 		printf("Gap error\n");
