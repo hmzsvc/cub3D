@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/game.h"
+#include <stdlib.h>
 
 void	init_player(t_player *player)
 {

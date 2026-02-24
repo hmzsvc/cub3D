@@ -32,10 +32,7 @@
 # include "../lib/get_next_line/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include "../minilibx-linux/mlx.h"
-# include <math.h>
 # include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
 
 typedef struct s_game	t_game;
 

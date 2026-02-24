@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/game.h"
+#include <math.h>
 
 void	calc_wall_distance(t_ray *ray, t_game *g)
 {

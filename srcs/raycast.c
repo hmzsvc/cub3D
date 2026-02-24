@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/game.h"
+#include <math.h>
 
 static void	calc_x(float dir_x, t_ray *ray, t_game *g)
 {

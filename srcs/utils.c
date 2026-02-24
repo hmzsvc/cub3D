@@ -12,6 +12,7 @@
 
 #include "../inc/game.h"
 #include "../lib/libft/libft.h"
+#include <stdlib.h>
 
 void	extension_control(char *map_argv)
 {
@@ -23,8 +24,7 @@ void	extension_control(char *map_argv)
 		if (!ft_strncmp(check, ".cub", ft_strlen(check)))
 			return ;
 	}
-	printf("Invalid map extension\n");
-	exit(1);
+	error_handle("Invalid map extension");
 }
 
 int	key_press(int keycode, t_player *player)

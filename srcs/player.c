@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/game.h"
+#include <math.h>
 
 static bool	check_collision(float x, float y, t_game *game)
 {
