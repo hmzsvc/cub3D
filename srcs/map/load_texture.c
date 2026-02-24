@@ -12,7 +12,6 @@
 
 #include "../../inc/game.h"
 #include <fcntl.h>
-#include <stdio.h>
 #include <unistd.h>
 
 static int	load_tex(t_texture *tex, char *path)
