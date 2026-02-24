@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/23 23:57:27 by hsyn              #+#    #+#             */
-/*   Updated: 2026/02/23 23:58:36 by hsyn             ###   ########.fr       */
+/*   Created: 2026/02/24 15:49:22 by hasivaci          #+#    #+#             */
+/*   Updated: 2026/02/24 15:49:43 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ t_game	*global_game(void)
 	if (!game)
 		game = (t_game *)ft_calloc(1, sizeof(t_game));
 	if (!game)
-		error_handle("Game could not be created");
+	{
+		ft_putendl_fd("Error", 2);
+		exit(1);
+	}
 	return (game);
 }

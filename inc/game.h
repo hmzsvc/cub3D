@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 17:01:18 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/24 01:55:32 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/24 16:17:58 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,6 @@
 # include <stdlib.h>
 
 typedef struct s_game	t_game;
-typedef struct s_minimap
-{
-	int					pos_x;
-	int					pos_y;
-	int					scale;
-}						t_minimap;
 
 typedef struct s_draw
 {
@@ -100,87 +94,71 @@ typedef struct s_texture
 
 typedef struct s_game
 {
-	int			map_element_count;
-	int			map_lines_count;
-	//int			cub_lines_count;
-	//int			error_code;
-    void		*mlx;
-    void		*win;
-    void		*img;
-    char		*data;
-    int			bbp;
-    int			size_line;
-    int			endian;
-	char		**all_line;
-    char		**map;
-	//int			map_width;
-	int			map_height;
-    char		**map_clone;
-    t_player	player;
-    //t_minimap	minimap;
-	t_texture	n_tex;
-	t_texture	s_tex;
-	t_texture	e_tex;
-	t_texture	w_tex;
-	char		*n_path;
-	char		*s_path;
-	char		*e_path;
-	char		*w_path;
-	int			floor_color;
-	int			ceiling_color;
-	int			newline_flag;
-	int			map_flag;
-	int			gap_check;
-}	t_game;
+	void				*mlx;
+	void				*win;
+	void				*img;
+	int					map_element_count;
+	int					map_lines_count;
+	int					bbp;
+	int					size_line;
+	int					endian;
+	int					map_height;
+	int					floor_color;
+	int					ceiling_color;
+	int					newline_flag;
+	int					map_flag;
+	int					gap_check;
+	char				*data;
+	char				**all_line;
+	char				**map;
+	char				**map_clone;
+	char				*n_path;
+	char				*s_path;
+	char				*e_path;
+	char				*w_path;
+	t_player			player;
+	t_texture			n_tex;
+	t_texture			s_tex;
+	t_texture			e_tex;
+	t_texture			w_tex;
+}						t_game;
 
-//void	init_minimap(t_minimap *minimap);
-//void	draw_minimap(t_game *game);
-void	init_game(t_game *game);
-void	init_player(t_player *player);
-int		key_release(int keycode, t_player *player);
-int		key_press(int keycode, t_player *player);
-void	move_player(t_player *player);
-//bool	touch(float px, float py, t_game *game);
-//float	distance(float x, float y);
-//float	fixed_dist(float x1, float y1, float x2, float y2, t_game *game);
-//void	draw_line(t_player *player, t_game *game, float start_x, int i);
-void	render_frame(t_game *game);
-void	put_pixel(int x, int y, int color, t_game *game);
-void	close_game(t_game *game);
-int		success_close_game(t_game *game);
-t_game	*global_game();
-void	read_map(char *map_path);
-int		is_empty_line(char *line);
-int		is_map_line(char *line);
-//int		parse_element(char *line);
-//int		parse_floor_ceiling(char *trimmed);
-//int		parse_element_continue(char *trimmed);
-void	set_player_dir(double angle, int index, int map_y);
-char	*skip_whitespaces(char *line);
-void	wall_control();
-void	set_map_dimension();
-//int		map_newline_check(char *line);
-void	extension_control(char *map_argv);
-void	load_all_tex();
-int		get_tex_pixel(t_texture	*tex, int x, int y);
-void	wall_control_continue(int x, int y);
-void	invalid_character_check(char *line);
-void	map_gap_check(char *line);
-int		map_space_check(char *line);
-int		parse_color(char *line);
-char	*trim_newline(char *str);
-int		parse_util(t_game *game);
-void	read_cub(char *path);
-//int		open_map(char *map_path);
-void	create_map_clone();
-void	error_handle(char	*err_str);
-void	calc_wall_distance(t_ray *ray, t_game *g);
-void	calc_wall_x(t_ray *ray, t_game *g);
-t_texture	*select_texture(t_ray *ray, t_game *g);
-void	ft_put_draw(t_draw *d, t_game *g, t_texture *tex, int x);
-void	calc_draw_data(t_game *g, t_ray *ray, t_texture *tex, t_draw *draw);
-
-
-
+void					init_game(t_game *game);
+void					init_player(t_player *player);
+int						key_release(int keycode, t_player *player);
+int						key_press(int keycode, t_player *player);
+void					move_player(t_player *player);
+void					render_frame(t_game *game);
+void					put_pixel(int x, int y, int color, t_game *game);
+void					close_game(t_game *game);
+int						success_close_game(t_game *game);
+t_game					*global_game(void);
+void					read_map(char *map_path);
+int						is_empty_line(char *line);
+int						is_map_line(char *line);
+void					set_player_dir(double angle, int index, int map_y);
+char					*skip_whitespaces(char *line);
+void					wall_control(void);
+void					set_map_dimension(void);
+void					extension_control(char *map_argv);
+void					load_all_tex(void);
+int						get_tex_pixel(t_texture *tex, int x, int y);
+void					wall_control_continue(int x, int y);
+void					invalid_character_check(char *line);
+void					map_gap_check(char *line);
+int						map_space_check(char *line);
+int						parse_color(char *line);
+char					*trim_newline(char *str);
+int						parse_util(t_game *game);
+void					read_cub(char *path);
+void					create_map_clone(void);
+void					error_handle(char *err_str);
+void					calc_wall_distance(t_ray *ray, t_game *g);
+void					calc_wall_x(t_ray *ray, t_game *g);
+t_texture				*select_texture(t_ray *ray, t_game *g);
+void					ft_put_draw(t_draw *d, t_game *g, t_texture *tex,
+							int x);
+void					calc_draw_data(t_game *g, t_ray *ray, t_texture *tex,
+							t_draw *draw);
 
 #endif

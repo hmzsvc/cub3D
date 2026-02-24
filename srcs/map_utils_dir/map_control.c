@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_control.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:44:42 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/24 01:53:57 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/24 15:50:02 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ void	wall_control_util(int x, int y)
 	game = global_game();
 	if (!game->map[y][x])
 		error_handle("Map not found");
-	is_wall = (y == 0  || x == 0 || y == game->map_height - 1
+	is_wall = (y == 0 || x == 0 || y == game->map_height - 1
 			|| x == ft_strlen(game->map[y]) - 1);
-	if (is_wall && game->map[y][x] != ' '
-			&& game->map[y][x] != '\t' && game->map[y][x] != '1')
+	if (is_wall && game->map[y][x] != ' ' && game->map[y][x] != '\t'
+		&& game->map[y][x] != '1')
 		error_handle("Map wall error");
 	wall_control_continue(x, y);
 }
@@ -74,8 +74,6 @@ void	create_map_clone(void)
 	game->map_clone = ft_calloc(sizeof(char *), game->map_height + 1);
 	if (!game->map_clone)
 	{
-		//printf("Map Clone Create Error!\n");
-		//close_game(game);
 		error_handle("Map clone error");
 	}
 	while (game->map[y])
@@ -108,7 +106,6 @@ void	wall_control(void)
 			unkown_character_check(game->map[y][x]);
 			x++;
 		}
-		//game->map_width = x;
 		y++;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hsyn <hsyn@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/23 16:45:32 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/24 01:56:28 by hsyn             ###   ########.fr       */
+/*   Updated: 2026/02/24 16:15:09 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,6 @@ void	extension_control(char *map_argv)
 	printf("Invalid map extension\n");
 	exit(1);
 }
-
-//void	init_player(t_player *player)
-//{
-//	player->x = WIDTH / 2;
-//	player->y = HEIGHT / 2;
-//	player->angle = 2 * PI;
-//	player->key_up = false;
-//	player->key_down = false;
-//	player->key_right = false;
-//	player->key_left = false;
-//	player->left_rotate = false;
-//	player->right_rotate = false;
-//	player->dir_check = 0;
-//}
 
 int	key_press(int keycode, t_player *player)
 {
@@ -77,10 +63,10 @@ int	key_release(int keycode, t_player *player)
 	return (0);
 }
 
-void	error_handle(char	*err_str)
+void	error_handle(char *err_str)
 {
 	t_game	*game;
-	
+
 	game = global_game();
 	ft_putendl_fd("Error", 2);
 	ft_putendl_fd(err_str, 2);

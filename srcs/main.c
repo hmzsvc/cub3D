@@ -6,13 +6,13 @@
 /*   By: hasivaci <hasivaci@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/04 15:45:28 by hasivaci          #+#    #+#             */
-/*   Updated: 2026/02/23 16:41:28 by hasivaci         ###   ########.fr       */
+/*   Updated: 2026/02/24 12:13:40 by hasivaci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/game.h"
 
-void	open_window()
+void	open_window(void)
 {
 	t_game	*game;
 
@@ -39,6 +39,7 @@ int	draw_loop(t_game *game)
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 	return (0);
 }
+
 int	success_close_game(t_game *game)
 {
 	if (game->n_tex.img && game->mlx)
